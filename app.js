@@ -2,7 +2,9 @@
 // TELEGRAM
 // ==========================================
 
-const tg = window.Telegram.WebApp;
+const tg =
+    window.Telegram.WebApp;
+
 
 tg.ready();
 
@@ -14,37 +16,176 @@ tg.expand();
 // ==========================================
 
 const STORAGE_KEY =
-    "flashcards_decks_v3";
+    "flashcards_universal_v4";
 
 
 let decks = [];
 
-let currentDeckId = null;
+let currentDeckId =
+    null;
 
 let studyCards = [];
 
-let currentCard = 0;
+let currentCard =
+    0;
 
 let knownCards = [];
 
+let selectedDeckEmoji =
+    "📚";
+
+let toastTimer =
+    null;
+
 
 // ==========================================
-// ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ
+// ЭМОДЗИ
+// ==========================================
+
+const CARD_EMOJIS = [
+    "📚",
+    "🧠",
+    "💼",
+    "📊",
+    "🐟",
+    "🚗",
+    "⚙️",
+    "⭐",
+    "📱",
+    "📦",
+    "🔑",
+    "💰",
+    "🏠",
+    "🎯",
+    "📅",
+    "📝",
+    "💡",
+    "🎓",
+    "🌍",
+    "❤️"
+];
+
+
+// ==========================================
+// БЕЗОПАСНЫЙ HTML
 // ==========================================
 
 function escapeHtml(text) {
 
     return String(text)
 
-        .replaceAll("&", "&amp;")
+        .replaceAll(
+            "&",
+            "&amp;"
+        )
 
-        .replaceAll("<", "&lt;")
+        .replaceAll(
+            "<",
+            "&lt;"
+        )
 
-        .replaceAll(">", "&gt;")
+        .replaceAll(
+            ">",
+            "&gt;"
+        )
 
-        .replaceAll('"', "&quot;")
+        .replaceAll(
+            '"',
+            "&quot;"
+        )
 
-        .replaceAll("'", "&#039;");
+        .replaceAll(
+            "'",
+            "&#039;"
+        );
+
+}
+
+
+// ==========================================
+// УВЕДОМЛЕНИЕ
+// ==========================================
+
+function showToast(
+    message,
+    icon = "✓"
+) {
+
+    const toast =
+        document.getElementById(
+            "toast"
+        );
+
+
+    const toastIcon =
+        document.getElementById(
+            "toastIcon"
+        );
+
+
+    const toastText =
+        document.getElementById(
+            "toastText"
+        );
+
+
+    toastIcon.textContent =
+        icon;
+
+
+    toastText.textContent =
+        message;
+
+
+    toast.classList.add(
+        "show"
+    );
+
+
+    clearTimeout(
+        toastTimer
+    );
+
+
+    toastTimer =
+        setTimeout(
+            function() {
+
+                toast.classList.remove(
+                    "show"
+                );
+
+            },
+            1800
+        );
+
+}
+
+
+// ==========================================
+// HAPTIC
+// ==========================================
+
+function haptic(type = "light") {
+
+    try {
+
+        if (
+            tg.HapticFeedback
+        ) {
+
+            tg.HapticFeedback
+                .impactOccurred(
+                    type
+                );
+
+        }
+
+    } catch {
+
+        // Ничего не делаем
+
+    }
 
 }
 
@@ -53,11 +194,9 @@ function escapeHtml(text) {
 // КАРТИНКА ПО УМОЛЧАНИЮ
 // ==========================================
 
-function makeDefaultImage(title) {
-
-    const safeTitle =
-        escapeHtml(title);
-
+function makeDefaultImage(
+    emoji
+) {
 
     const svg = `
 
@@ -74,34 +213,14 @@ function makeDefaultImage(title) {
                 fill="#f4f5f7"
             />
 
-            <circle
-                cx="400"
-                cy="210"
-                r="150"
-                fill="#ffffff"
-            />
-
-            <text
-                x="400"
-                y="220"
-                text-anchor="middle"
-                font-family="Arial"
-                font-size="38"
-                font-weight="700"
-                fill="#222"
-            >
-                Flash Cards
-            </text>
-
             <text
                 x="400"
                 y="280"
                 text-anchor="middle"
                 font-family="Arial"
-                font-size="22"
-                fill="#888"
+                font-size="180"
             >
-                ${safeTitle}
+                ${emoji}
             </text>
 
         </svg>
@@ -131,10 +250,13 @@ function createDefaultDeck() {
         name:
             "20 главных действий с предметами",
 
+        icon:
+            "📚",
+
         builtIn:
             true,
 
-        russianFirst:
+        universal:
             true,
 
         cards: [
@@ -148,8 +270,8 @@ function createDefaultDeck() {
                 back:
                     "Pick up the phone.",
 
-                image:
-                    "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=800&q=80"
+                emoji:
+                    "📱"
             },
 
 
@@ -162,8 +284,8 @@ function createDefaultDeck() {
                 back:
                     "Put the cup down on the table.",
 
-                image:
-                    "https://images.unsplash.com/photo-1514228742587-6b1558fcca3d?auto=format&fit=crop&w=800&q=80"
+                emoji:
+                    "☕"
             },
 
 
@@ -176,8 +298,8 @@ function createDefaultDeck() {
                 back:
                     "Move the book aside.",
 
-                image:
-                    "https://images.unsplash.com/photo-1544947950-fa07a98d237f?auto=format&fit=crop&w=800&q=80"
+                emoji:
+                    "📖"
             },
 
 
@@ -190,8 +312,8 @@ function createDefaultDeck() {
                 back:
                     "Move the box over here.",
 
-                image:
-                    "https://images.unsplash.com/photo-1607166452427-7e4477079cb9?auto=format&fit=crop&w=800&q=80"
+                emoji:
+                    "📦"
             },
 
 
@@ -204,8 +326,8 @@ function createDefaultDeck() {
                 back:
                     "Put the key in your pocket.",
 
-                image:
-                    "https://images.unsplash.com/photo-1558486012-817176f84c6d?auto=format&fit=crop&w=800&q=80"
+                emoji:
+                    "🔑"
             },
 
 
@@ -218,8 +340,8 @@ function createDefaultDeck() {
                 back:
                     "Take the key out of your pocket.",
 
-                image:
-                    "https://images.unsplash.com/photo-1582139329536-e7284fece509?auto=format&fit=crop&w=800&q=80"
+                emoji:
+                    "🔑"
             },
 
 
@@ -232,8 +354,8 @@ function createDefaultDeck() {
                 back:
                     "Give me the pen.",
 
-                image:
-                    "https://images.unsplash.com/photo-1583485088034-697b5bc54ccd?auto=format&fit=crop&w=800&q=80"
+                emoji:
+                    "🖊️"
             },
 
 
@@ -246,8 +368,8 @@ function createDefaultDeck() {
                 back:
                     "Lift the box up.",
 
-                image:
-                    "https://images.unsplash.com/photo-1586528116493-da8b2e6b1f4d?auto=format&fit=crop&w=800&q=80"
+                emoji:
+                    "📦"
             },
 
 
@@ -260,8 +382,8 @@ function createDefaultDeck() {
                 back:
                     "Lower the box slowly.",
 
-                image:
-                    "https://images.unsplash.com/photo-1601758123927-19640b8c2b5f?auto=format&fit=crop&w=800&q=80"
+                emoji:
+                    "📦"
             },
 
 
@@ -274,8 +396,8 @@ function createDefaultDeck() {
                 back:
                     "Tilt the bottle slightly.",
 
-                image:
-                    "https://images.unsplash.com/photo-1602143407151-7111542de6e8?auto=format&fit=crop&w=800&q=80"
+                emoji:
+                    "🍾"
             },
 
 
@@ -288,8 +410,8 @@ function createDefaultDeck() {
                 back:
                     "Keep the bottle upright.",
 
-                image:
-                    "https://images.unsplash.com/photo-1602143407151-7111542de6e8?auto=format&fit=crop&w=800&q=80"
+                emoji:
+                    "🧴"
             },
 
 
@@ -302,8 +424,8 @@ function createDefaultDeck() {
                 back:
                     "Bring the phone closer.",
 
-                image:
-                    "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=800&q=80"
+                emoji:
+                    "📱"
             },
 
 
@@ -316,8 +438,8 @@ function createDefaultDeck() {
                 back:
                     "Move the phone farther away.",
 
-                image:
-                    "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=800&q=80"
+                emoji:
+                    "📱"
             },
 
 
@@ -330,8 +452,8 @@ function createDefaultDeck() {
                 back:
                     "Give the bottle a good shake.",
 
-                image:
-                    "https://images.unsplash.com/photo-1602143407151-7111542de6e8?auto=format&fit=crop&w=800&q=80"
+                emoji:
+                    "🧴"
             },
 
 
@@ -344,8 +466,8 @@ function createDefaultDeck() {
                 back:
                     "Be careful! Don't drop the glass.",
 
-                image:
-                    "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=800&q=80"
+                emoji:
+                    "🥛"
             },
 
 
@@ -358,8 +480,8 @@ function createDefaultDeck() {
                 back:
                     "Carry the laptop carefully.",
 
-                image:
-                    "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?auto=format&fit=crop&w=800&q=80"
+                emoji:
+                    "💻"
             },
 
 
@@ -372,8 +494,8 @@ function createDefaultDeck() {
                 back:
                     "Set the plate down gently.",
 
-                image:
-                    "https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=800&q=80"
+                emoji:
+                    "🍽️"
             },
 
 
@@ -386,8 +508,8 @@ function createDefaultDeck() {
                 back:
                     "Turn the phone around.",
 
-                image:
-                    "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=800&q=80"
+                emoji:
+                    "📱"
             },
 
 
@@ -400,8 +522,8 @@ function createDefaultDeck() {
                 back:
                     "Turn the cup upside down.",
 
-                image:
-                    "https://images.unsplash.com/photo-1514228742587-6b1558fcca3d?auto=format&fit=crop&w=800&q=80"
+                emoji:
+                    "☕"
             },
 
 
@@ -414,8 +536,8 @@ function createDefaultDeck() {
                 back:
                     "Leave the keys there.",
 
-                image:
-                    "https://images.unsplash.com/photo-1558486012-817176f84c6d?auto=format&fit=crop&w=800&q=80"
+                emoji:
+                    "🔑"
             }
 
         ]
@@ -426,14 +548,15 @@ function createDefaultDeck() {
 
 
 // ==========================================
-// ЗАГРУЗКА ДАННЫХ
+// ЗАГРУЗКА
 // ==========================================
 
 function loadData() {
 
     if (
         tg.CloudStorage &&
-        typeof tg.CloudStorage.getItem === "function"
+        typeof tg.CloudStorage.getItem ===
+        "function"
     ) {
 
         tg.CloudStorage.getItem(
@@ -448,11 +571,14 @@ function loadData() {
                     try {
 
                         decks =
-                            JSON.parse(value);
+                            JSON.parse(
+                                value
+                            );
 
                     } catch {
 
-                        decks = [];
+                        decks =
+                            [];
 
                     }
 
@@ -506,7 +632,9 @@ function loadLocalData() {
         }
 
 
-        return JSON.parse(value);
+        return JSON.parse(
+            value
+        );
 
     } catch {
 
@@ -521,7 +649,9 @@ function loadLocalData() {
 // СОХРАНЕНИЕ
 // ==========================================
 
-function saveData(callback) {
+function saveData(
+    callback
+) {
 
     const data =
         JSON.stringify(
@@ -547,7 +677,8 @@ function saveData(callback) {
 
     if (
         tg.CloudStorage &&
-        typeof tg.CloudStorage.setItem === "function"
+        typeof tg.CloudStorage.setItem ===
+        "function"
     ) {
 
         tg.CloudStorage.setItem(
@@ -588,66 +719,24 @@ function saveData(callback) {
 
 
 // ==========================================
-// ПРОВЕРКА СТАНДАРТНОЙ КОЛОДЫ
+// СТАНДАРТНАЯ КОЛОДА
 // ==========================================
 
 function ensureDefaultDeck() {
 
-    const existingDeck =
-        decks.find(
+    const exists =
+        decks.some(
             deck =>
                 deck.id ===
                 "actions-20"
         );
 
 
-    if (!existingDeck) {
+    if (!exists) {
 
         decks.unshift(
             createDefaultDeck()
         );
-
-
-        saveData();
-
-
-        return;
-
-    }
-
-
-    /*
-        Если пользователь открыл приложение
-        после старой версии, где английский
-        был первым, исправляем порядок.
-    */
-
-    if (
-        !existingDeck.russianFirst
-    ) {
-
-        existingDeck.cards =
-            existingDeck.cards.map(
-                card => {
-
-                    return {
-
-                        ...card,
-
-                        front:
-                            card.back,
-
-                        back:
-                            card.front
-
-                    };
-
-                }
-            );
-
-
-        existingDeck.russianFirst =
-            true;
 
 
         saveData();
@@ -661,10 +750,14 @@ function ensureDefaultDeck() {
 // ПОКАЗ ЭКРАНА
 // ==========================================
 
-function showScreen(id) {
+function showScreen(
+    id
+) {
 
     document
-        .querySelectorAll(".screen")
+        .querySelectorAll(
+            ".screen"
+        )
         .forEach(
             screen =>
                 screen.classList.add(
@@ -674,7 +767,9 @@ function showScreen(id) {
 
 
     document
-        .getElementById(id)
+        .getElementById(
+            id
+        )
         .classList.remove(
             "hidden"
         );
@@ -699,7 +794,8 @@ function renderHome() {
         );
 
 
-    list.innerHTML = "";
+    list.innerHTML =
+        "";
 
 
     if (
@@ -710,12 +806,20 @@ function renderHome() {
 
             <div class="deck-item">
 
-                <div class="deck-name">
-                    Пока нет колод
+                <div class="deck-icon">
+                    📚
                 </div>
 
-                <div class="deck-count">
-                    Создайте первую колоду
+                <div class="deck-info">
+
+                    <div class="deck-name">
+                        Пока нет колод
+                    </div>
+
+                    <div class="deck-count">
+                        Создайте первую колоду
+                    </div>
+
                 </div>
 
             </div>
@@ -743,15 +847,28 @@ function renderHome() {
 
             item.innerHTML = `
 
-                <div class="deck-name">
+                <div class="deck-icon">
                     ${escapeHtml(
-                        deck.name
+                        deck.icon ||
+                        "📚"
                     )}
                 </div>
 
-                <div class="deck-count">
-                    ${deck.cards.length}
-                    карточек
+
+                <div class="deck-info">
+
+                    <div class="deck-name">
+                        ${escapeHtml(
+                            deck.name
+                        )}
+                    </div>
+
+
+                    <div class="deck-count">
+                        ${deck.cards.length}
+                        карточек
+                    </div>
+
                 </div>
 
             `;
@@ -785,6 +902,10 @@ function renderHome() {
 
 function openCreateDeck() {
 
+    selectedDeckEmoji =
+        "📚";
+
+
     showScreen(
         "createScreen"
     );
@@ -794,14 +915,45 @@ function openCreateDeck() {
         .getElementById(
             "deckName"
         )
-        .value = "";
+        .value =
+            "";
 
 
     document
         .getElementById(
             "newCardsList"
         )
-        .innerHTML = "";
+        .innerHTML =
+            "";
+
+
+    document
+        .querySelectorAll(
+            ".emoji-choice"
+        )
+        .forEach(
+            button => {
+
+                button.classList
+                    .remove(
+                        "selected"
+                    );
+
+
+                if (
+                    button.dataset.emoji ===
+                    "📚"
+                ) {
+
+                    button.classList
+                        .add(
+                            "selected"
+                        );
+
+                }
+
+            }
+        );
 
 
     addNewCard();
@@ -838,62 +990,138 @@ function addNewCard() {
     block.innerHTML = `
 
         <div class="card-number">
-            Карточка ${number}
+
+            Карточка
+            ${number}
+
         </div>
 
+
+        <!-- ЭМОДЗИ -->
+
+        <div class="card-emoji-select">
+
+            <div
+                class="selected-card-emoji"
+            >
+                💡
+            </div>
+
+
+            <div class="card-emoji-buttons">
+
+                ${CARD_EMOJIS
+                    .slice(0, 10)
+                    .map(
+                        emoji => `
+
+                            <button
+                                type="button"
+                                class="card-emoji-button"
+                                data-emoji="${emoji}"
+                            >
+                                ${emoji}
+                            </button>
+
+                        `
+                    )
+                    .join("")
+                }
+
+            </div>
+
+        </div>
+
+
+        <!-- ЛИЦЕВАЯ -->
 
         <div class="field">
 
             <label>
-                Русский
+                Лицевая сторона
             </label>
+
 
             <textarea
                 class="new-front"
-                placeholder="Например: Мне нужна помощь"
+                placeholder="Что хотите запомнить?"
             ></textarea>
 
         </div>
 
 
+        <!-- ОБРАТНАЯ -->
+
         <div class="field">
 
             <label>
-                English
+                Обратная сторона
             </label>
+
 
             <textarea
                 class="new-back"
-                placeholder="For example: I need some help"
+                placeholder="Ответ, объяснение или дополнительная информация"
             ></textarea>
-
-        </div>
-
-
-        <div class="field">
-
-            <label>
-                Ссылка на картинку
-            </label>
-
-            <input
-                class="new-image"
-                type="url"
-                placeholder="https://..."
-            >
 
         </div>
 
 
         <button
-            class="remove-card"
             type="button"
+            class="remove-card"
         >
             Удалить карточку
         </button>
 
     `;
 
+
+    // ======================================
+    // ВЫБОР ЭМОДЗИ
+    // ======================================
+
+    block
+        .querySelectorAll(
+            ".card-emoji-button"
+        )
+        .forEach(
+            button => {
+
+                button.addEventListener(
+                    "click",
+                    function() {
+
+                        const emoji =
+                            this.dataset.emoji;
+
+
+                        block
+                            .querySelector(
+                                ".selected-card-emoji"
+                            )
+                            .textContent =
+                                emoji;
+
+
+                        block.dataset.emoji =
+                            emoji;
+
+
+                        haptic(
+                            "light"
+                        );
+
+                    }
+                );
+
+            }
+        );
+
+
+    // ======================================
+    // УДАЛЕНИЕ КАРТОЧКИ
+    // ======================================
 
     block
         .querySelector(
@@ -903,23 +1131,49 @@ function addNewCard() {
             "click",
             function() {
 
-                block.remove();
+                block.classList.add(
+                    "removing"
+                );
 
-                renumberCards();
+
+                setTimeout(
+                    function() {
+
+                        block.remove();
+
+                        renumberCards();
+
+                        showToast(
+                            "Карточка удалена",
+                            "✓"
+                        );
+
+                    },
+                    220
+                );
 
             }
         );
+
+
+    block.dataset.emoji =
+        "💡";
 
 
     list.appendChild(
         block
     );
 
+
+    haptic(
+        "light"
+    );
+
 }
 
 
 // ==========================================
-// НУМЕРАЦИЯ КАРТОЧЕК
+// НУМЕРАЦИЯ
 // ==========================================
 
 function renumberCards() {
@@ -945,7 +1199,7 @@ function renumberCards() {
 
 
 // ==========================================
-// СОХРАНЕНИЕ НОВОЙ КОЛОДЫ
+// СОХРАНЕНИЕ КОЛОДЫ
 // ==========================================
 
 function saveNewDeck() {
@@ -977,7 +1231,8 @@ function saveNewDeck() {
         );
 
 
-    const newCards = [];
+    const newCards =
+        [];
 
 
     blocks.forEach(
@@ -1001,13 +1256,9 @@ function saveNewDeck() {
                     .trim();
 
 
-            const image =
-                block
-                    .querySelector(
-                        ".new-image"
-                    )
-                    .value
-                    .trim();
+            const emoji =
+                block.dataset.emoji ||
+                "💡";
 
 
             if (
@@ -1031,11 +1282,8 @@ function saveNewDeck() {
                     back:
                         back,
 
-                    image:
-                        image ||
-                        makeDefaultImage(
-                            front
-                        )
+                    emoji:
+                        emoji
 
                 });
 
@@ -1072,10 +1320,13 @@ function saveNewDeck() {
         name:
             name,
 
+        icon:
+            selectedDeckEmoji,
+
         builtIn:
             false,
 
-        russianFirst:
+        universal:
             true,
 
         cards:
@@ -1083,6 +1334,10 @@ function saveNewDeck() {
 
     };
 
+
+    /*
+        Добавляем колоду
+    */
 
     decks.push(
         newDeck
@@ -1093,11 +1348,33 @@ function saveNewDeck() {
         newDeck.id;
 
 
+    /*
+        Сохраняем
+    */
+
     saveData(
         function() {
 
-            openDeck(
-                newDeck.id
+            haptic(
+                "medium"
+            );
+
+
+            showToast(
+                "Колода создана",
+                "✓"
+            );
+
+
+            setTimeout(
+                function() {
+
+                    openDeck(
+                        newDeck.id
+                    );
+
+                },
+                500
             );
 
         }
@@ -1110,7 +1387,9 @@ function saveNewDeck() {
 // ОТКРЫТИЕ КОЛОДЫ
 // ==========================================
 
-function openDeck(id) {
+function openDeck(
+    id
+) {
 
     const deck =
         decks.find(
@@ -1146,10 +1425,14 @@ function openDeck(id) {
             deck.name;
 
 
-    /*
-        Каждый раз при открытии колоды
-        содержание скрыто.
-    */
+    document
+        .getElementById(
+            "deckIcon"
+        )
+        .textContent =
+            deck.icon ||
+            "📚";
+
 
     const content =
         document.getElementById(
@@ -1181,7 +1464,9 @@ function openDeck(id) {
 // СОДЕРЖАНИЕ КОЛОДЫ
 // ==========================================
 
-function renderDeckCards(deck) {
+function renderDeckCards(
+    deck
+) {
 
     const list =
         document.getElementById(
@@ -1189,7 +1474,8 @@ function renderDeckCards(deck) {
         );
 
 
-    list.innerHTML = "";
+    list.innerHTML =
+        "";
 
 
     deck.cards.forEach(
@@ -1207,17 +1493,26 @@ function renderDeckCards(deck) {
 
             row.innerHTML = `
 
-                <div class="deck-card-front">
-                    ${index + 1}.
-                    ${escapeHtml(
-                        card.front
-                    )}
+                <div class="deck-card-number">
+                    ${index + 1}
                 </div>
 
-                <div class="deck-card-back">
-                    ${escapeHtml(
-                        card.back
-                    )}
+
+                <div class="deck-card-content">
+
+                    <div class="deck-card-front">
+                        ${escapeHtml(
+                            card.front
+                        )}
+                    </div>
+
+
+                    <div class="deck-card-back">
+                        ${escapeHtml(
+                            card.back
+                        )}
+                    </div>
+
                 </div>
 
             `;
@@ -1234,7 +1529,7 @@ function renderDeckCards(deck) {
 
 
 // ==========================================
-// ПОКАЗ / СКРЫТИЕ СОДЕРЖАНИЯ
+// ПОКАЗ СОДЕРЖАНИЯ
 // ==========================================
 
 function toggleDeckContent() {
@@ -1283,10 +1578,10 @@ function toggleDeckContent() {
 
 
 // ==========================================
-// УДАЛЕНИЕ КОЛОДЫ
+// ОТКРЫТИЕ ПОДТВЕРЖДЕНИЯ
 // ==========================================
 
-function deleteCurrentDeck() {
+function openDeleteConfirmation() {
 
     const deck =
         decks.find(
@@ -1307,8 +1602,9 @@ function deleteCurrentDeck() {
         deck.builtIn
     ) {
 
-        alert(
-            "Стандартную колоду удалить нельзя."
+        showToast(
+            "Стандартную колоду удалить нельзя",
+            "!"
         );
 
 
@@ -1317,13 +1613,53 @@ function deleteCurrentDeck() {
     }
 
 
-    const confirmed =
-        confirm(
-            "Удалить эту колоду?"
+    document
+        .getElementById(
+            "confirmOverlay"
+        )
+        .classList
+        .remove(
+            "hidden"
+        );
+
+}
+
+
+// ==========================================
+// ЗАКРЫТИЕ ПОДТВЕРЖДЕНИЯ
+// ==========================================
+
+function closeDeleteConfirmation() {
+
+    document
+        .getElementById(
+            "confirmOverlay"
+        )
+        .classList
+        .add(
+            "hidden"
+        );
+
+}
+
+
+// ==========================================
+// УДАЛЕНИЕ КОЛОДЫ
+// ==========================================
+
+function deleteCurrentDeck() {
+
+    const deck =
+        decks.find(
+            item =>
+                item.id ===
+                currentDeckId
         );
 
 
-    if (!confirmed) {
+    if (!deck) {
+
+        closeDeleteConfirmation();
 
         return;
 
@@ -1342,10 +1678,31 @@ function deleteCurrentDeck() {
         null;
 
 
+    closeDeleteConfirmation();
+
+
+    haptic(
+        "medium"
+    );
+
+
     saveData(
         function() {
 
-            renderHome();
+            showToast(
+                "Колода удалена",
+                "✓"
+            );
+
+
+            setTimeout(
+                function() {
+
+                    renderHome();
+
+                },
+                500
+            );
 
         }
     );
@@ -1372,8 +1729,9 @@ function startCurrentDeck() {
         deck.cards.length === 0
     ) {
 
-        alert(
-            "В этой колоде нет карточек."
+        showToast(
+            "В колоде нет карточек",
+            "!"
         );
 
 
@@ -1405,6 +1763,15 @@ function startCurrentDeck() {
         )
         .textContent =
             deck.name;
+
+
+    document
+        .getElementById(
+            "studyDeckIcon"
+        )
+        .textContent =
+            deck.icon ||
+            "📚";
 
 
     showStudyCard();
@@ -1458,8 +1825,7 @@ function showStudyCard() {
 
 
     /*
-        ПЕРЕДНЯЯ СТОРОНА:
-        РУССКИЙ
+        ЛИЦЕВАЯ
     */
 
     document
@@ -1471,8 +1837,7 @@ function showStudyCard() {
 
 
     /*
-        ОБРАТНАЯ СТОРОНА:
-        АНГЛИЙСКИЙ
+        ОБРАТНАЯ
     */
 
     document
@@ -1484,23 +1849,25 @@ function showStudyCard() {
 
 
     /*
-        КАРТИНКА
+        ЭМОДЗИ
     */
 
     document
         .getElementById(
-            "cardImage"
+            "cardEmoji"
         )
-        .src =
-            item.image;
+        .textContent =
+            item.emoji ||
+            "💡";
 
 
     document
         .getElementById(
-            "cardImageBack"
+            "cardEmojiBack"
         )
-        .src =
-            item.image;
+        .textContent =
+            item.emoji ||
+            "💡";
 
 
     /*
@@ -1532,14 +1899,21 @@ function flipCard() {
             "flipped"
         );
 
+
+    haptic(
+        "light"
+    );
+
 }
 
 
 // ==========================================
-// ЗНАЮ / НЕ ЗНАЮ
+// ОТВЕТ
 // ==========================================
 
-function answer(known) {
+function answer(
+    known
+) {
 
     const item =
         studyCards[
@@ -1557,9 +1931,7 @@ function answer(known) {
     if (known) {
 
         /*
-            ЗНАЮ:
-            удаляем карточку
-            из текущего круга
+            ЗНАЮ
         */
 
         knownCards.push(
@@ -1570,6 +1942,11 @@ function answer(known) {
         studyCards.splice(
             currentCard,
             1
+        );
+
+
+        haptic(
+            "light"
         );
 
 
@@ -1597,9 +1974,7 @@ function answer(known) {
     } else {
 
         /*
-            НЕ ЗНАЮ:
-            переносим карточку
-            в конец списка
+            НЕ ЗНАЮ
         */
 
         studyCards.splice(
@@ -1610,6 +1985,11 @@ function answer(known) {
 
         studyCards.push(
             item
+        );
+
+
+        haptic(
+            "light"
         );
 
 
@@ -1632,7 +2012,7 @@ function answer(known) {
 
 
 // ==========================================
-// СЛЕДУЮЩАЯ КАРТОЧКА
+// СЛЕДУЮЩАЯ
 // ==========================================
 
 function nextCard() {
@@ -1670,6 +2050,11 @@ function finishLesson() {
         );
 
 
+    haptic(
+        "medium"
+    );
+
+
     alert(
 
         "Урок завершён!\n\n" +
@@ -1702,6 +2087,54 @@ function finishLesson() {
     }
 
 }
+
+
+// ==========================================
+// ВЫБОР ЭМОДЗИ КОЛОДЫ
+// ==========================================
+
+document
+    .querySelectorAll(
+        ".emoji-choice"
+    )
+    .forEach(
+        button => {
+
+            button.addEventListener(
+                "click",
+                function() {
+
+                    selectedDeckEmoji =
+                        this.dataset.emoji;
+
+
+                    document
+                        .querySelectorAll(
+                            ".emoji-choice"
+                        )
+                        .forEach(
+                            item =>
+                                item.classList
+                                    .remove(
+                                        "selected"
+                                    )
+                        );
+
+
+                    this.classList.add(
+                        "selected"
+                    );
+
+
+                    haptic(
+                        "light"
+                    );
+
+                }
+            );
+
+        }
+    );
 
 
 // ==========================================
@@ -1781,6 +2214,26 @@ document
 document
     .getElementById(
         "deleteDeckButton"
+    )
+    .addEventListener(
+        "click",
+        openDeleteConfirmation
+    );
+
+
+document
+    .getElementById(
+        "cancelDeleteButton"
+    )
+    .addEventListener(
+        "click",
+        closeDeleteConfirmation
+    );
+
+
+document
+    .getElementById(
+        "confirmDeleteButton"
     )
     .addEventListener(
         "click",
