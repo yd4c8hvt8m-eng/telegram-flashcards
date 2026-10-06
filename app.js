@@ -15,9 +15,9 @@ tg.expand();
 // ВСТАВЬ СЮДА СВОИ ДАННЫЕ ИЗ SUPABASE
 //
 
-const SUPABASE_URL = "ВСТАВЬ_СЮДА_PROJECT_URL";
+const SUPABASE_URL = "https://arnsfecpnwyjiuvmsoen.supabase.co";
 
-const SUPABASE_KEY = "ВСТАВЬ_СЮДА_PUBLISHABLE_KEY";
+const SUPABASE_KEY = "sb_publishable_sj2rVuSxhsUtB3xKft2dDw_8-KwPsFM";
 
 
 // ============================================================
