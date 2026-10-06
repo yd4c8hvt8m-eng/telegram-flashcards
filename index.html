@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    >
+
+    <title>FlashCards</title>
+
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="app">
+
+    <header>
+        <div class="title">FlashCards</div>
+        <div class="progress" id="progress">1 / 10</div>
+    </header>
+
+    <main>
+
+        <div class="card-container" id="cardContainer">
+
+            <div class="card" id="card">
+
+                <div class="card-side card-front">
+
+                    <img id="cardImage"
+                         src="https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=800&q=80">
+
+                    <div class="label">Русский</div>
+
+                    <div class="phrase" id="frontText">
+                        Я иду домой
+                    </div>
+
+                    <div class="hint">
+                        Нажмите на карточку
+                    </div>
+
+                </div>
+
+
+                <div class="card-side card-back">
+
+                    <img id="cardImageBack"
+                         src="https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=800&q=80">
+
+                    <div class="label">English</div>
+
+                    <div class="phrase" id="backText">
+                        I'm going home
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="buttons" id="buttons">
+
+            <button class="btn no" onclick="answer(false)">
+                ? Не знаю
+            </button>
+
+            <button class="btn yes" onclick="answer(true)">
+                ? Знаю
+            </button>
+
+        </div>
+
+        <button class="next" onclick="nextCard()">
+            Следующая ?
+        </button>
+
+    </main>
+
+</div>
+
+<script src="app.js"></script>
+
+</body>
+</html>
