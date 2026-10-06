@@ -1,4 +1,19 @@
 // ============================================================
+// ВЕРСИЯ ПРИЛОЖЕНИЯ
+// ============================================================
+//
+// ВОТ ЗДЕСЬ ПОТОМ МЕНЯЙ ВЕРСИЮ
+//
+// Например:
+// 1.1.0
+// 1.2.0
+// 2.0.0
+//
+
+const APP_VERSION = "2.5.b";
+
+
+// ============================================================
 // TELEGRAM
 // ============================================================
 
@@ -11,32 +26,28 @@ tg.expand();
 // ============================================================
 // SUPABASE
 // ============================================================
-//
-// ВСТАВЬ СЮДА СВОИ ДАННЫЕ ИЗ SUPABASE
-//
 
 const SUPABASE_URL = "https://arnsfecpnwyjiuvmsoen.supabase.co";
 
 const SUPABASE_KEY = "sb_publishable_sj2rVuSxhsUtB3xKft2dDw_8-KwPsFM";
 
 
-// ============================================================
-// SUPABASE CLIENT
-// ============================================================
-
-const supabaseClient = window.supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_KEY
-);
+const supabaseClient =
+    window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+    );
 
 
 // ============================================================
 // НАСТРОЙКИ
 // ============================================================
 
-const STORAGE_KEY = "flashcards_universal_v5";
+const STORAGE_KEY =
+    "flashcards_universal_v5";
 
-const IMAGE_BUCKET = "card-images";
+const IMAGE_BUCKET =
+    "card-images";
 
 
 // ============================================================
@@ -55,6 +66,8 @@ let currentStudyDeck = null;
 
 let selectedDeckIcon = "📚";
 
+let editingDeckId = null;
+
 let toastTimer = null;
 
 
@@ -62,91 +75,164 @@ let toastTimer = null;
 // ЭЛЕМЕНТЫ
 // ============================================================
 
-const homeScreen = document.getElementById("homeScreen");
-const createScreen = document.getElementById("createScreen");
-const deckScreen = document.getElementById("deckScreen");
-const studyScreen = document.getElementById("studyScreen");
+const homeScreen =
+    document.getElementById("homeScreen");
 
-const decksList = document.getElementById("decksList");
+const createScreen =
+    document.getElementById("createScreen");
 
-const createDeckBtn = document.getElementById("createDeckBtn");
+const deckScreen =
+    document.getElementById("deckScreen");
 
-const backFromCreate = document.getElementById("backFromCreate");
+const studyScreen =
+    document.getElementById("studyScreen");
 
-const backFromDeck = document.getElementById("backFromDeck");
+const decksList =
+    document.getElementById("decksList");
 
-const backFromStudy = document.getElementById("backFromStudy");
+const createDeckBtn =
+    document.getElementById("createDeckBtn");
 
-const deckNameInput = document.getElementById("deckNameInput");
+const backFromCreate =
+    document.getElementById("backFromCreate");
 
-const deckIconSelector = document.getElementById("deckIconSelector");
+const backFromDeck =
+    document.getElementById("backFromDeck");
 
-const newCardsList = document.getElementById("newCardsList");
+const backFromStudy =
+    document.getElementById("backFromStudy");
 
-const addCardBtn = document.getElementById("addCardBtn");
+const createScreenTitle =
+    document.getElementById("createScreenTitle");
 
-const saveDeckBtn = document.getElementById("saveDeckBtn");
+const deckNameInput =
+    document.getElementById("deckNameInput");
 
-const deckIcon = document.getElementById("deckIcon");
+const deckIconSelector =
+    document.getElementById("deckIconSelector");
 
-const deckTitle = document.getElementById("deckTitle");
+const newCardsList =
+    document.getElementById("newCardsList");
 
-const deckCount = document.getElementById("deckCount");
+const addCardBtn =
+    document.getElementById("addCardBtn");
 
-const startStudyBtn = document.getElementById("startStudyBtn");
+const saveDeckBtn =
+    document.getElementById("saveDeckBtn");
 
-const toggleContentBtn = document.getElementById("toggleContentBtn");
+const deckIcon =
+    document.getElementById("deckIcon");
 
-const contentContainer = document.getElementById("contentContainer");
+const deckTitle =
+    document.getElementById("deckTitle");
 
-const deleteDeckBtn = document.getElementById("deleteDeckBtn");
+const deckCount =
+    document.getElementById("deckCount");
 
-const flashcard = document.getElementById("flashcard");
+const startStudyBtn =
+    document.getElementById("startStudyBtn");
 
-const studyDeckIcon = document.getElementById("studyDeckIcon");
+const toggleContentBtn =
+    document.getElementById("toggleContentBtn");
 
-const studyDeckName = document.getElementById("studyDeckName");
+const editDeckBtn =
+    document.getElementById("editDeckBtn");
 
-const progressText = document.getElementById("progressText");
+const contentContainer =
+    document.getElementById("contentContainer");
 
-const progressFill = document.getElementById("progressFill");
+const deleteDeckBtn =
+    document.getElementById("deleteDeckBtn");
 
-const studyFront = document.getElementById("studyFront");
+const flashcard =
+    document.getElementById("flashcard");
 
-const studyBack = document.getElementById("studyBack");
+const studyDeckIcon =
+    document.getElementById("studyDeckIcon");
 
-const studyEmoji = document.getElementById("studyEmoji");
+const studyDeckName =
+    document.getElementById("studyDeckName");
 
-const studyEmojiBack = document.getElementById("studyEmojiBack");
+const progressText =
+    document.getElementById("progressText");
 
-const studyImage = document.getElementById("studyImage");
+const progressFill =
+    document.getElementById("progressFill");
 
-const studyImageBack = document.getElementById("studyImageBack");
+const studyFront =
+    document.getElementById("studyFront");
 
-const dontKnowBtn = document.getElementById("dontKnowBtn");
+const studyBack =
+    document.getElementById("studyBack");
 
-const knowBtn = document.getElementById("knowBtn");
+const studyImage =
+    document.getElementById("studyImage");
 
-const nextBtn = document.getElementById("nextBtn");
+const studyImageBack =
+    document.getElementById("studyImageBack");
 
-const toast = document.getElementById("toast");
+const studyImagePlaceholder =
+    document.getElementById(
+        "studyImagePlaceholder"
+    );
 
-const confirmOverlay = document.getElementById("confirmOverlay");
+const studyImageBackPlaceholder =
+    document.getElementById(
+        "studyImageBackPlaceholder"
+    );
 
-const cancelDeleteBtn = document.getElementById("cancelDeleteBtn");
+const dontKnowBtn =
+    document.getElementById("dontKnowBtn");
 
-const confirmDeleteBtn = document.getElementById("confirmDeleteBtn");
+const knowBtn =
+    document.getElementById("knowBtn");
+
+const nextBtn =
+    document.getElementById("nextBtn");
+
+const toast =
+    document.getElementById("toast");
+
+const confirmOverlay =
+    document.getElementById(
+        "confirmOverlay"
+    );
+
+const cancelDeleteBtn =
+    document.getElementById(
+        "cancelDeleteBtn"
+    );
+
+const confirmDeleteBtn =
+    document.getElementById(
+        "confirmDeleteBtn"
+    );
 
 
 // ============================================================
-// DEFAULT DECK
+// ВЕРСИЯ НА ЭКРАНЕ
+// ============================================================
+
+document
+    .querySelectorAll(".app-version-number")
+    .forEach(element => {
+
+        element.textContent =
+            APP_VERSION;
+
+    });
+
+
+// ============================================================
+// СТАНДАРТНАЯ КОЛОДА
 // ============================================================
 
 const defaultDeck = {
 
     id: "actions-20",
 
-    name: "20 главных действий с предметами",
+    name:
+        "20 главных действий с предметами",
 
     icon: "⚙️",
 
@@ -328,10 +414,6 @@ const defaultDeck = {
 init();
 
 
-// ============================================================
-// INIT
-// ============================================================
-
 function init() {
 
     loadDecks();
@@ -344,22 +426,30 @@ function init() {
 
 
 // ============================================================
-// ЗАГРУЗКА ДАННЫХ
+// ЗАГРУЗКА
 // ============================================================
 
 function loadDecks() {
 
     try {
 
-        const saved = localStorage.getItem(STORAGE_KEY);
+        const saved =
+            localStorage.getItem(
+                STORAGE_KEY
+            );
+
 
         if (saved) {
 
-            decks = JSON.parse(saved);
+            decks =
+                JSON.parse(saved);
 
         } else {
 
-            decks = [structuredClone(defaultDeck)];
+            decks =
+                [structuredClone(
+                    defaultDeck
+                )];
 
             saveDecks();
 
@@ -369,7 +459,10 @@ function loadDecks() {
 
         console.error(error);
 
-        decks = [structuredClone(defaultDeck)];
+        decks =
+            [structuredClone(
+                defaultDeck
+            )];
 
     }
 
@@ -377,7 +470,7 @@ function loadDecks() {
 
 
 // ============================================================
-// СОХРАНЕНИЕ ДАННЫХ
+// СОХРАНЕНИЕ
 // ============================================================
 
 function saveDecks() {
@@ -404,7 +497,7 @@ function setupEvents() {
 
     backFromCreate.addEventListener(
         "click",
-        () => showScreen(homeScreen)
+        handleBackFromCreate
     );
 
 
@@ -428,7 +521,7 @@ function setupEvents() {
 
     saveDeckBtn.addEventListener(
         "click",
-        saveNewDeck
+        saveDeckFromEditor
     );
 
 
@@ -441,6 +534,12 @@ function setupEvents() {
     toggleContentBtn.addEventListener(
         "click",
         toggleContent
+    );
+
+
+    editDeckBtn.addEventListener(
+        "click",
+        editCurrentDeck
     );
 
 
@@ -486,8 +585,21 @@ function setupEvents() {
     );
 
 
+    setupDeckIconEvents();
+
+}
+
+
+// ============================================================
+// ЗНАЧКИ КОЛОДЫ
+// ============================================================
+
+function setupDeckIconEvents() {
+
     deckIconSelector
-        .querySelectorAll(".emoji-option")
+        .querySelectorAll(
+            ".emoji-option"
+        )
         .forEach(button => {
 
             button.addEventListener(
@@ -495,12 +607,20 @@ function setupEvents() {
                 () => {
 
                     deckIconSelector
-                        .querySelectorAll(".emoji-option")
+                        .querySelectorAll(
+                            ".emoji-option"
+                        )
                         .forEach(item =>
-                            item.classList.remove("selected")
+                            item.classList.remove(
+                                "selected"
+                            )
                         );
 
-                    button.classList.add("selected");
+
+                    button.classList.add(
+                        "selected"
+                    );
+
 
                     selectedDeckIcon =
                         button.dataset.icon;
@@ -514,7 +634,7 @@ function setupEvents() {
 
 
 // ============================================================
-// ЭКРАНЫ
+// ЭКРАН
 // ============================================================
 
 function showScreen(screen) {
@@ -522,12 +642,21 @@ function showScreen(screen) {
     document
         .querySelectorAll(".screen")
         .forEach(item =>
-            item.classList.remove("active")
+            item.classList.remove(
+                "active"
+            )
         );
 
-    screen.classList.add("active");
 
-    window.scrollTo(0, 0);
+    screen.classList.add(
+        "active"
+    );
+
+
+    window.scrollTo(
+        0,
+        0
+    );
 
 }
 
@@ -540,10 +669,11 @@ function renderHome() {
 
     decksList.innerHTML = "";
 
-    if (decks.length === 0) {
+
+    if (!decks.length) {
 
         decksList.innerHTML = `
-            <div class="empty-state">
+            <div class="small-text">
                 У тебя пока нет колод.
             </div>
         `;
@@ -556,25 +686,36 @@ function renderHome() {
     decks.forEach(deck => {
 
         const item =
-            document.createElement("div");
+            document.createElement(
+                "div"
+            );
 
-        item.className = "deck-item";
+
+        item.className =
+            "deck-item";
+
 
         item.innerHTML = `
 
             <div class="deck-item-icon">
-                ${escapeHtml(deck.icon || "📚")}
+                ${escapeHtml(
+                    deck.icon || "📚"
+                )}
             </div>
 
             <div class="deck-item-info">
 
                 <div class="deck-item-title">
-                    ${escapeHtml(deck.name)}
+                    ${escapeHtml(
+                        deck.name
+                    )}
                 </div>
 
                 <div class="deck-item-count">
                     ${deck.cards.length}
-                    ${getCardWord(deck.cards.length)}
+                    ${getCardWord(
+                        deck.cards.length
+                    )}
                 </div>
 
             </div>
@@ -588,7 +729,9 @@ function renderHome() {
         );
 
 
-        decksList.appendChild(item);
+        decksList.appendChild(
+            item
+        );
 
     });
 
@@ -601,17 +744,98 @@ function renderHome() {
 
 function openCreateScreen() {
 
+    editingDeckId = null;
+
+
+    createScreenTitle.textContent =
+        "Новая колода";
+
+
+    saveDeckBtn.textContent =
+        "Сохранить колоду";
+
+
     deckNameInput.value = "";
 
-    selectedDeckIcon = "📚";
+
+    selectedDeckIcon =
+        "📚";
+
 
     deckIconSelector
-        .querySelectorAll(".emoji-option")
-        .forEach((button, index) => {
+        .querySelectorAll(
+            ".emoji-option"
+        )
+        .forEach(
+            (button, index) => {
+
+                button.classList.toggle(
+                    "selected",
+                    index === 0
+                );
+
+            }
+        );
+
+
+    newCardsList.innerHTML = "";
+
+
+    addNewCardBlock();
+
+
+    showScreen(
+        createScreen
+    );
+
+}
+
+
+// ============================================================
+// РЕДАКТИРОВАНИЕ КОЛОДЫ
+// ============================================================
+
+function editCurrentDeck() {
+
+    const deck =
+        getCurrentDeck();
+
+
+    if (!deck) {
+        return;
+    }
+
+
+    editingDeckId =
+        deck.id;
+
+
+    createScreenTitle.textContent =
+        "Редактировать колоду";
+
+
+    saveDeckBtn.textContent =
+        "Сохранить изменения";
+
+
+    deckNameInput.value =
+        deck.name;
+
+
+    selectedDeckIcon =
+        deck.icon || "📚";
+
+
+    deckIconSelector
+        .querySelectorAll(
+            ".emoji-option"
+        )
+        .forEach(button => {
 
             button.classList.toggle(
                 "selected",
-                index === 0
+                button.dataset.icon ===
+                selectedDeckIcon
             );
 
         });
@@ -619,27 +843,88 @@ function openCreateScreen() {
 
     newCardsList.innerHTML = "";
 
-    addNewCardBlock();
 
-    showScreen(createScreen);
+    deck.cards.forEach(
+        card =>
+            addNewCardBlock(card)
+    );
+
+
+    if (!deck.cards.length) {
+
+        addNewCardBlock();
+
+    }
+
+
+    showScreen(
+        createScreen
+    );
 
 }
 
 
 // ============================================================
-// ДОБАВЛЕНИЕ БЛОКА КАРТОЧКИ
+// НАЗАД ИЗ РЕДАКТОРА
 // ============================================================
 
-function addNewCardBlock() {
+function handleBackFromCreate() {
+
+    if (editingDeckId) {
+
+        const deck =
+            getCurrentDeck();
+
+
+        if (deck) {
+
+            openDeck(
+                deck.id
+            );
+
+            return;
+
+        }
+
+    }
+
+
+    showScreen(
+        homeScreen
+    );
+
+}
+
+
+// ============================================================
+// ДОБАВЛЕНИЕ КАРТОЧКИ В РЕДАКТОР
+// ============================================================
+
+function addNewCardBlock(existingCard = null) {
 
     const cardNumber =
         newCardsList.children.length + 1;
 
 
     const block =
-        document.createElement("div");
+        document.createElement(
+            "div"
+        );
 
-    block.className = "new-card";
+
+    block.className =
+        "new-card";
+
+
+    if (existingCard) {
+
+        block.dataset.cardId =
+            existingCard.id || "";
+
+        block.dataset.imageUrl =
+            existingCard.imageUrl || "";
+
+    }
 
 
     block.innerHTML = `
@@ -688,67 +973,6 @@ function addNewCardBlock() {
         </div>
 
 
-        <div class="card-field">
-
-            <label>
-                Значок
-            </label>
-
-            <div class="emoji-selector card-emoji-selector">
-
-                <button
-                    type="button"
-                    class="emoji-option selected"
-                    data-emoji="📚"
-                >
-                    📚
-                </button>
-
-                <button
-                    type="button"
-                    class="emoji-option"
-                    data-emoji="🧠"
-                >
-                    🧠
-                </button>
-
-                <button
-                    type="button"
-                    class="emoji-option"
-                    data-emoji="🔧"
-                >
-                    🔧
-                </button>
-
-                <button
-                    type="button"
-                    class="emoji-option"
-                    data-emoji="📦"
-                >
-                    📦
-                </button>
-
-                <button
-                    type="button"
-                    class="emoji-option"
-                    data-emoji="🐟"
-                >
-                    🐟
-                </button>
-
-                <button
-                    type="button"
-                    class="emoji-option"
-                    data-emoji="⭐"
-                >
-                    ⭐
-                </button>
-
-            </div>
-
-        </div>
-
-
         <div class="card-field photo-upload">
 
             <label>
@@ -757,7 +981,10 @@ function addNewCardBlock() {
 
             <label class="photo-button">
 
-                📷 Добавить фотографию
+                📷
+                ${existingCard && existingCard.imageUrl
+                    ? "Изменить фотографию"
+                    : "Добавить фотографию"}
 
                 <input
                     type="file"
@@ -772,7 +999,7 @@ function addNewCardBlock() {
 
                 <img
                     class="photo-preview"
-                    alt="Предпросмотр"
+                    alt="Фото карточки"
                 >
 
                 <button
@@ -790,67 +1017,75 @@ function addNewCardBlock() {
 
 
     // ========================================================
+    // ЗАПОЛНЯЕМ ДАННЫЕ ПРИ РЕДАКТИРОВАНИИ
+    // ========================================================
+
+    if (existingCard) {
+
+        block.querySelector(
+            ".front-input"
+        ).value =
+            existingCard.front || "";
+
+
+        block.querySelector(
+            ".back-input"
+        ).value =
+            existingCard.back || "";
+
+
+        if (existingCard.imageUrl) {
+
+            showExistingImage(
+                block,
+                existingCard.imageUrl
+            );
+
+        }
+
+    }
+
+
+    // ========================================================
     // УДАЛЕНИЕ КАРТОЧКИ
     // ========================================================
 
-    const removeButton =
-        block.querySelector(".remove-card-btn");
-
-
-    removeButton.addEventListener(
-        "click",
-        () => {
-
-            if (newCardsList.children.length <= 1) {
-
-                showToast(
-                    "В колоде должна остаться хотя бы одна карточка."
-                );
-
-                return;
-
-            }
-
-
-            block.classList.add("removing");
-
-
-            setTimeout(() => {
-
-                block.remove();
-
-                updateCardNumbers();
-
-            }, 200);
-
-        }
-    );
-
-
-    // ========================================================
-    // ЭМОДЗИ
-    // ========================================================
-
     block
-        .querySelectorAll(".card-emoji-selector .emoji-option")
-        .forEach(button => {
+        .querySelector(
+            ".remove-card-btn"
+        )
+        .addEventListener(
+            "click",
+            () => {
 
-            button.addEventListener(
-                "click",
-                () => {
+                if (
+                    newCardsList.children.length <= 1
+                ) {
 
-                    block
-                        .querySelectorAll(".card-emoji-selector .emoji-option")
-                        .forEach(item =>
-                            item.classList.remove("selected")
-                        );
+                    showToast(
+                        "В колоде должна остаться хотя бы одна карточка."
+                    );
 
-                    button.classList.add("selected");
+                    return;
 
                 }
-            );
 
-        });
+
+                block.classList.add(
+                    "removing"
+                );
+
+
+                setTimeout(() => {
+
+                    block.remove();
+
+                    updateCardNumbers();
+
+                }, 200);
+
+            }
+        );
 
 
     // ========================================================
@@ -858,36 +1093,54 @@ function addNewCardBlock() {
     // ========================================================
 
     const photoInput =
-        block.querySelector(".photo-input");
+        block.querySelector(
+            ".photo-input"
+        );
+
 
     const previewWrapper =
-        block.querySelector(".photo-preview-wrapper");
+        block.querySelector(
+            ".photo-preview-wrapper"
+        );
+
 
     const preview =
-        block.querySelector(".photo-preview");
+        block.querySelector(
+            ".photo-preview"
+        );
+
 
     const removePhoto =
-        block.querySelector(".remove-photo-btn");
+        block.querySelector(
+            ".remove-photo-btn"
+        );
 
 
     photoInput.addEventListener(
         "change",
         async () => {
 
-            const file = photoInput.files[0];
+            const file =
+                photoInput.files[0];
+
 
             if (!file) {
                 return;
             }
 
 
-            if (!file.type.startsWith("image/")) {
+            if (
+                !file.type.startsWith(
+                    "image/"
+                )
+            ) {
 
                 showToast(
                     "Можно загружать только изображения."
                 );
 
-                photoInput.value = "";
+                photoInput.value =
+                    "";
 
                 return;
 
@@ -898,13 +1151,16 @@ function addNewCardBlock() {
                 5 * 1024 * 1024;
 
 
-            if (file.size > maxSize) {
+            if (
+                file.size > maxSize
+            ) {
 
                 showToast(
                     "Максимальный размер фотографии — 5 МБ."
                 );
 
-                photoInput.value = "";
+                photoInput.value =
+                    "";
 
                 return;
 
@@ -912,15 +1168,19 @@ function addNewCardBlock() {
 
 
             const localUrl =
-                URL.createObjectURL(file);
+                URL.createObjectURL(
+                    file
+                );
 
 
-            preview.src = localUrl;
+            preview.src =
+                localUrl;
 
-            previewWrapper.classList.add("visible");
 
+            previewWrapper.classList.add(
+                "visible"
+            );
 
-            // Загружаем фотографию сразу
 
             showToast(
                 "Загружаем фотографию..."
@@ -928,13 +1188,28 @@ function addNewCardBlock() {
 
 
             const uploadedUrl =
-                await uploadImage(file);
+                await uploadImage(
+                    file
+                );
 
 
             if (uploadedUrl) {
 
                 block.dataset.imageUrl =
                     uploadedUrl;
+
+
+                const button =
+                    block.querySelector(
+                        ".photo-button"
+                    );
+
+
+                button.childNodes[
+                    0
+                ].textContent =
+                    "📷 Изменить фотографию";
+
 
                 showToast(
                     "Фотография загружена"
@@ -946,7 +1221,8 @@ function addNewCardBlock() {
                     "visible"
                 );
 
-                photoInput.value = "";
+                photoInput.value =
+                    "";
 
             }
 
@@ -954,19 +1230,40 @@ function addNewCardBlock() {
     );
 
 
+    // ========================================================
+    // УДАЛЕНИЕ ФОТО
+    // ========================================================
+
     removePhoto.addEventListener(
         "click",
         () => {
 
-            photoInput.value = "";
+            block.dataset.imageUrl =
+                "";
 
-            block.dataset.imageUrl = "";
 
-            preview.src = "";
+            photoInput.value =
+                "";
+
+
+            preview.src =
+                "";
+
 
             previewWrapper.classList.remove(
                 "visible"
             );
+
+
+            const button =
+                block.querySelector(
+                    ".photo-button"
+                );
+
+
+            button.textContent =
+                "📷 Добавить фотографию";
+
 
             showToast(
                 "Фотография удалена из карточки"
@@ -976,7 +1273,10 @@ function addNewCardBlock() {
     );
 
 
-    newCardsList.appendChild(block);
+    newCardsList.appendChild(
+        block
+    );
+
 
     updateCardNumbers();
 
@@ -984,30 +1284,69 @@ function addNewCardBlock() {
 
 
 // ============================================================
-// НУМЕРАЦИЯ КАРТОЧЕК
+// ПОКАЗ СУЩЕСТВУЮЩЕГО ФОТО
 // ============================================================
 
-function updateCardNumbers() {
+function showExistingImage(
+    block,
+    imageUrl
+) {
 
-    [...newCardsList.children]
-        .forEach((card, index) => {
+    const wrapper =
+        block.querySelector(
+            ".photo-preview-wrapper"
+        );
 
-            const number =
-                card.querySelector(".card-number");
 
-            number.textContent =
-                `Карточка ${index + 1}`;
+    const image =
+        block.querySelector(
+            ".photo-preview"
+        );
 
-        });
+
+    image.src =
+        imageUrl;
+
+
+    wrapper.classList.add(
+        "visible"
+    );
 
 }
 
 
 // ============================================================
-// СОХРАНЕНИЕ НОВОЙ КОЛОДЫ
+// НУМЕРАЦИЯ
 // ============================================================
 
-function saveNewDeck() {
+function updateCardNumbers() {
+
+    [
+        ...newCardsList.children
+    ]
+        .forEach(
+            (card, index) => {
+
+                const number =
+                    card.querySelector(
+                        ".card-number"
+                    );
+
+
+                number.textContent =
+                    `Карточка ${index + 1}`;
+
+            }
+        );
+
+}
+
+
+// ============================================================
+// СОХРАНЕНИЕ КОЛОДЫ
+// ============================================================
+
+function saveDeckFromEditor() {
 
     const name =
         deckNameInput.value.trim();
@@ -1025,13 +1364,19 @@ function saveNewDeck() {
 
 
     const cardBlocks =
-        [...newCardsList.children];
+        [
+            ...newCardsList.children
+        ];
 
 
     const cards = [];
 
 
-    for (let i = 0; i < cardBlocks.length; i++) {
+    for (
+        let i = 0;
+        i < cardBlocks.length;
+        i++
+    ) {
 
         const block =
             cardBlocks[i];
@@ -1039,14 +1384,18 @@ function saveNewDeck() {
 
         const front =
             block
-                .querySelector(".front-input")
+                .querySelector(
+                    ".front-input"
+                )
                 .value
                 .trim();
 
 
         const back =
             block
-                .querySelector(".back-input")
+                .querySelector(
+                    ".back-input"
+                )
                 .value
                 .trim();
 
@@ -1062,75 +1411,146 @@ function saveNewDeck() {
         }
 
 
-        const selectedEmoji =
-            block.querySelector(
-                ".card-emoji-selector .selected"
-            );
+        const oldCardId =
+            block.dataset.cardId;
 
 
-        const emoji =
-            selectedEmoji
-                ? selectedEmoji.dataset.emoji
-                : "📚";
-
-
-        cards.push({
+        const card = {
 
             id:
-                "card-" +
-                Date.now() +
-                "-" +
-                i,
+                oldCardId ||
+                (
+                    "card-" +
+                    Date.now() +
+                    "-" +
+                    i
+                ),
 
             front,
 
             back,
 
-            emoji,
-
             imageUrl:
-                block.dataset.imageUrl || ""
+                block.dataset.imageUrl ||
+                ""
 
-        });
+        };
+
+
+        cards.push(
+            card
+        );
 
     }
 
 
-    const newDeck = {
+    // ========================================================
+    // НОВАЯ КОЛОДА
+    // ========================================================
 
-        id:
-            "deck-" +
-            Date.now(),
+    if (!editingDeckId) {
 
-        name,
+        const newDeck = {
 
-        icon:
-            selectedDeckIcon,
+            id:
+                "deck-" +
+                Date.now(),
 
-        builtIn: false,
+            name,
 
-        universal: true,
+            icon:
+                selectedDeckIcon,
 
-        cards
+            builtIn: false,
 
-    };
+            universal: true,
+
+            cards
+
+        };
 
 
-    decks.push(newDeck);
+        decks.push(
+            newDeck
+        );
+
+
+        saveDecks();
+
+
+        // ВАЖНО:
+        // сразу перерисовываем список
+
+        renderHome();
+
+
+        showToast(
+            "Колода создана"
+        );
+
+
+        setTimeout(() => {
+
+            openDeck(
+                newDeck.id
+            );
+
+        }, 450);
+
+
+        return;
+
+    }
+
+
+    // ========================================================
+    // РЕДАКТИРОВАНИЕ
+    // ========================================================
+
+    const deck =
+        getCurrentDeck();
+
+
+    if (!deck) {
+        return;
+    }
+
+
+    deck.name =
+        name;
+
+
+    deck.icon =
+        selectedDeckIcon;
+
+
+    deck.cards =
+        cards;
+
 
     saveDecks();
 
 
+    renderHome();
+
+
+    renderDeckContent(
+        deck
+    );
+
+
     showToast(
-        "Колода создана"
+        "Изменения сохранены"
     );
 
 
     setTimeout(() => {
 
-        openDeck(newDeck.id);
+        openDeck(
+            deck.id
+        );
 
-    }, 500);
+    }, 450);
 
 }
 
@@ -1143,7 +1563,8 @@ function openDeck(deckId) {
 
     const deck =
         decks.find(
-            item => item.id === deckId
+            item =>
+                item.id === deckId
         );
 
 
@@ -1152,7 +1573,8 @@ function openDeck(deckId) {
     }
 
 
-    currentDeckId = deckId;
+    currentDeckId =
+        deckId;
 
 
     deckIcon.textContent =
@@ -1164,7 +1586,9 @@ function openDeck(deckId) {
 
 
     deckCount.textContent =
-        `${deck.cards.length} ${getCardWord(deck.cards.length)}`;
+        `${deck.cards.length} ${getCardWord(
+            deck.cards.length
+        )}`;
 
 
     contentContainer.classList.add(
@@ -1176,59 +1600,112 @@ function openDeck(deckId) {
         "☰ Содержание колоды";
 
 
-    renderDeckContent(deck);
+    renderDeckContent(
+        deck
+    );
 
 
-    showScreen(deckScreen);
+    showScreen(
+        deckScreen
+    );
 
 }
 
 
 // ============================================================
-// СОДЕРЖАНИЕ КОЛОДЫ
+// СОДЕРЖАНИЕ
 // ============================================================
 
-function renderDeckContent(deck) {
+function renderDeckContent(
+    deck
+) {
 
-    contentContainer.innerHTML = "";
+    contentContainer.innerHTML =
+        "";
 
 
     deck.cards.forEach(
         (card, index) => {
 
             const item =
-                document.createElement("div");
+                document.createElement(
+                    "div"
+                );
+
 
             item.className =
                 "content-card";
 
 
+            const imageHtml =
+                card.imageUrl
+
+                    ? `
+                        <img
+                            class="content-card-image"
+                            src="${escapeHtml(
+                                card.imageUrl
+                            )}"
+                            alt=""
+                        >
+                    `
+
+                    : `
+                        <div class="content-card-placeholder">
+                            📷
+                        </div>
+                    `;
+
+
             item.innerHTML = `
 
-                <div class="content-card-top">
+                ${imageHtml}
 
-                    <div class="content-card-emoji">
-                        ${escapeHtml(card.emoji || "📚")}
-                    </div>
-
-                    <div class="content-card-number">
-                        Карточка ${index + 1}
-                    </div>
-
+                <div class="content-card-number">
+                    Карточка ${index + 1}
                 </div>
 
                 <div class="content-front">
-                    ${escapeHtml(card.front || "")}
+                    ${escapeHtml(
+                        card.front || ""
+                    )}
                 </div>
 
                 <div class="content-back">
-                    ${escapeHtml(card.back || "")}
+                    ${escapeHtml(
+                        card.back || ""
+                    )}
                 </div>
+
+                <button
+                    class="content-edit-btn"
+                    type="button"
+                >
+                    ✏️ Редактировать
+                </button>
 
             `;
 
 
-            contentContainer.appendChild(item);
+            item
+                .querySelector(
+                    ".content-edit-btn"
+                )
+                .addEventListener(
+                    "click",
+                    () => {
+
+                        editCard(
+                            card.id
+                        );
+
+                    }
+                );
+
+
+            contentContainer.appendChild(
+                item
+            );
 
         }
     );
@@ -1237,7 +1714,105 @@ function renderDeckContent(deck) {
 
 
 // ============================================================
-// ПЕРЕКЛЮЧЕНИЕ СОДЕРЖАНИЯ
+// РЕДАКТИРОВАНИЕ КОНКРЕТНОЙ КАРТОЧКИ
+// ============================================================
+
+function editCard(
+    cardId
+) {
+
+    const deck =
+        getCurrentDeck();
+
+
+    if (!deck) {
+        return;
+    }
+
+
+    editingDeckId =
+        deck.id;
+
+
+    createScreenTitle.textContent =
+        "Редактировать колоду";
+
+
+    saveDeckBtn.textContent =
+        "Сохранить изменения";
+
+
+    deckNameInput.value =
+        deck.name;
+
+
+    selectedDeckIcon =
+        deck.icon || "📚";
+
+
+    deckIconSelector
+        .querySelectorAll(
+            ".emoji-option"
+        )
+        .forEach(button => {
+
+            button.classList.toggle(
+                "selected",
+                button.dataset.icon ===
+                selectedDeckIcon
+            );
+
+        });
+
+
+    newCardsList.innerHTML =
+        "";
+
+
+    deck.cards.forEach(
+        card => {
+
+            addNewCardBlock(
+                card
+            );
+
+        }
+    );
+
+
+    showScreen(
+        createScreen
+    );
+
+
+    setTimeout(() => {
+
+        const target =
+            [
+                ...newCardsList.children
+            ].find(
+                block =>
+                    block.dataset.cardId ===
+                    cardId
+            );
+
+
+        if (target) {
+
+            target.scrollIntoView({
+                behavior: "smooth",
+                block: "center"
+            });
+
+        }
+
+    }, 150);
+
+}
+
+
+// ============================================================
+// СОДЕРЖАНИЕ: ПОКАЗАТЬ / СКРЫТЬ
 // ============================================================
 
 function toggleContent() {
@@ -1254,6 +1829,7 @@ function toggleContent() {
             "hidden"
         );
 
+
         toggleContentBtn.textContent =
             "↑ Скрыть содержание";
 
@@ -1262,6 +1838,7 @@ function toggleContent() {
         contentContainer.classList.add(
             "hidden"
         );
+
 
         toggleContentBtn.textContent =
             "☰ Содержание колоды";
@@ -1335,7 +1912,8 @@ function deleteCurrentDeck() {
 
     decks =
         decks.filter(
-            item => item.id !== deck.id
+            item =>
+                item.id !== deck.id
         );
 
 
@@ -1345,6 +1923,9 @@ function deleteCurrentDeck() {
     closeDeleteConfirmation();
 
 
+    renderHome();
+
+
     showToast(
         "Колода удалена"
     );
@@ -1352,9 +1933,9 @@ function deleteCurrentDeck() {
 
     setTimeout(() => {
 
-        renderHome();
-
-        showScreen(homeScreen);
+        showScreen(
+            homeScreen
+        );
 
     }, 400);
 
@@ -1395,7 +1976,8 @@ function startStudy() {
         [...deck.cards];
 
 
-    currentStudyIndex = 0;
+    currentStudyIndex =
+        0;
 
 
     studyDeckIcon.textContent =
@@ -1411,7 +1993,9 @@ function startStudy() {
     );
 
 
-    showScreen(studyScreen);
+    showScreen(
+        studyScreen
+    );
 
 
     renderStudyCard();
@@ -1420,7 +2004,7 @@ function startStudy() {
 
 
 // ============================================================
-// ОТОБРАЖЕНИЕ КАРТОЧКИ
+// КАРТОЧКА ОБУЧЕНИЯ
 // ============================================================
 
 function renderStudyCard() {
@@ -1449,22 +2033,16 @@ function renderStudyCard() {
         card.back || "";
 
 
-    studyEmoji.textContent =
-        card.emoji || "📚";
-
-
-    studyEmojiBack.textContent =
-        card.emoji || "📚";
-
-
     setStudyImage(
         studyImage,
+        studyImagePlaceholder,
         card.imageUrl
     );
 
 
     setStudyImage(
         studyImageBack,
+        studyImageBackPlaceholder,
         card.imageUrl
     );
 
@@ -1482,7 +2060,9 @@ function renderStudyCard() {
 
 
     progressFill.style.width =
-        `${(current / total) * 100}%`;
+        `${(
+            current / total
+        ) * 100}%`;
 
 
     nextBtn.textContent =
@@ -1494,30 +2074,42 @@ function renderStudyCard() {
 
 
 // ============================================================
-// ИЗОБРАЖЕНИЕ В ОБУЧЕНИИ
+// ФОТО В ОБУЧЕНИИ
 // ============================================================
 
 function setStudyImage(
-    element,
+    imageElement,
+    placeholderElement,
     imageUrl
 ) {
 
     if (imageUrl) {
 
-        element.src =
+        imageElement.src =
             imageUrl;
 
-        element.classList.add(
+
+        imageElement.classList.add(
             "visible"
         );
+
+
+        placeholderElement.style.display =
+            "none";
 
     } else {
 
-        element.src = "";
+        imageElement.src =
+            "";
 
-        element.classList.remove(
+
+        imageElement.classList.remove(
             "visible"
         );
+
+
+        placeholderElement.style.display =
+            "flex";
 
     }
 
@@ -1534,6 +2126,7 @@ function flipCard() {
         "flipped"
     );
 
+
     haptic();
 
 }
@@ -1543,7 +2136,9 @@ function flipCard() {
 // ОТВЕТ
 // ============================================================
 
-function answerCard(known) {
+function answerCard(
+    known
+) {
 
     if (known) {
 
@@ -1561,6 +2156,7 @@ function answerCard(known) {
 
 
     haptic();
+
 
     setTimeout(
         nextCard,
@@ -1588,7 +2184,9 @@ function nextCard() {
 
         setTimeout(() => {
 
-            showScreen(deckScreen);
+            openDeck(
+                currentStudyDeck.id
+            );
 
         }, 500);
 
@@ -1610,12 +2208,16 @@ function nextCard() {
 // ЗАГРУЗКА ФОТО В SUPABASE
 // ============================================================
 
-async function uploadImage(file) {
+async function uploadImage(
+    file
+) {
 
     try {
 
         const extension =
-            getFileExtension(file.name);
+            getFileExtension(
+                file.name
+            );
 
 
         const fileName =
@@ -1629,24 +2231,27 @@ async function uploadImage(file) {
             extension;
 
 
-        const filePath =
-            fileName;
-
-
         const {
             data,
             error
         } =
             await supabaseClient
                 .storage
-                .from(IMAGE_BUCKET)
+                .from(
+                    IMAGE_BUCKET
+                )
                 .upload(
-                    filePath,
+                    fileName,
                     file,
                     {
-                        cacheControl: "3600",
-                        upsert: false,
-                        contentType: file.type
+                        cacheControl:
+                            "3600",
+
+                        upsert:
+                            false,
+
+                        contentType:
+                            file.type
                     }
                 );
 
@@ -1681,9 +2286,11 @@ async function uploadImage(file) {
         } =
             supabaseClient
                 .storage
-                .from(IMAGE_BUCKET)
+                .from(
+                    IMAGE_BUCKET
+                )
                 .getPublicUrl(
-                    filePath
+                    fileName
                 );
 
 
@@ -1692,7 +2299,9 @@ async function uploadImage(file) {
 
     } catch (error) {
 
-        console.error(error);
+        console.error(
+            error
+        );
 
 
         showToast(
@@ -1708,14 +2317,15 @@ async function uploadImage(file) {
 
 
 // ============================================================
-// ВСПОМОГАТЕЛЬНЫЕ
+// ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ
 // ============================================================
 
 function getCurrentDeck() {
 
     return decks.find(
         deck =>
-            deck.id === currentDeckId
+            deck.id ===
+            currentDeckId
     );
 
 }
@@ -1738,13 +2348,17 @@ function getFileExtension(
 }
 
 
-function getCardWord(number) {
+function getCardWord(
+    number
+) {
 
     if (
         number % 10 === 1 &&
         number % 100 !== 11
     ) {
+
         return "карточка";
+
     }
 
 
@@ -1756,7 +2370,9 @@ function getCardWord(number) {
             number % 100 >= 20
         )
     ) {
+
         return "карточки";
+
     }
 
 
@@ -1765,9 +2381,13 @@ function getCardWord(number) {
 }
 
 
-function showToast(message) {
+function showToast(
+    message
+) {
 
-    clearTimeout(toastTimer);
+    clearTimeout(
+        toastTimer
+    );
 
 
     toast.textContent =
@@ -1797,12 +2417,14 @@ function haptic() {
 
         if (
             tg.HapticFeedback &&
-            tg.HapticFeedback.impactOccurred
+            tg.HapticFeedback
+                .impactOccurred
         ) {
 
-            tg.HapticFeedback.impactOccurred(
-                "light"
-            );
+            tg.HapticFeedback
+                .impactOccurred(
+                    "light"
+                );
 
         }
 
@@ -1815,13 +2437,35 @@ function haptic() {
 }
 
 
-function escapeHtml(value) {
+function escapeHtml(
+    value
+) {
 
     return String(value)
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
+
+        .replaceAll(
+            "&",
+            "&amp;"
+        )
+
+        .replaceAll(
+            "<",
+            "&lt;"
+        )
+
+        .replaceAll(
+            ">",
+            "&gt;"
+        )
+
+        .replaceAll(
+            '"',
+            "&quot;"
+        )
+
+        .replaceAll(
+            "'",
+            "&#039;"
+        );
 
 }
