@@ -1,29 +1,39 @@
 /* =========================================
-   ОСНОВНЫЕ ПЕРЕМЕННЫЕ
+   FLASH CARDS — GREEN NEUTRAL THEME
 ========================================= */
 
 :root {
-  --bg: #080b16;
-  --bg-secondary: #0e1322;
-  --surface: #13192a;
-  --surface-light: #192138;
 
-  --primary: #7c6cff;
-  --primary-light: #9b8fff;
+  --bg: #07110d;
 
-  --text: #f5f7ff;
-  --text-secondary: #9ca5bd;
-  --text-muted: #68728c;
+  --bg-secondary: #0b1712;
 
-  --border: rgba(255,255,255,0.08);
+  --surface: #101f18;
 
-  --green: #42d392;
-  --red: #ff6377;
+  --surface-light: #16291f;
+
+  --primary: #36a269;
+
+  --primary-light: #55c487;
+
+  --primary-dark: #277a4f;
+
+  --text: #f2f7f4;
+
+  --text-secondary: #9caea4;
+
+  --text-muted: #65786d;
+
+  --border: rgba(255,255,255,0.075);
+
+  --green: #45c985;
+
+  --red: #ef6b76;
 
   --shadow:
-    0 15px 45px rgba(0,0,0,0.35);
+    0 15px 45px rgba(0,0,0,0.30);
 
-  --radius: 20px;
+  --radius: 18px;
 }
 
 
@@ -33,11 +43,14 @@
 
 * {
   box-sizing: border-box;
+
   -webkit-tap-highlight-color: transparent;
 }
 
+
 html,
 body {
+
   margin: 0;
   padding: 0;
 
@@ -47,7 +60,7 @@ body {
   background:
     radial-gradient(
       circle at 50% -10%,
-      rgba(124,108,255,0.22),
+      rgba(54,162,105,0.16),
       transparent 38%
     ),
     var(--bg);
@@ -63,8 +76,11 @@ body {
     sans-serif;
 }
 
+
 body {
+
   min-height: 100vh;
+
   overflow-x: hidden;
 }
 
@@ -74,6 +90,7 @@ body {
 ========================================= */
 
 .screen {
+
   display: none;
 
   min-height: 100vh;
@@ -86,71 +103,98 @@ body {
   position: relative;
 }
 
+
 .screen.active {
   display: block;
 }
 
 
 /* =========================================
-   HOME
+   HOME HEADER
 ========================================= */
 
 .home-header {
+
   text-align: center;
 
-  padding-top: 20px;
-  padding-bottom: 32px;
+  padding-top: 22px;
+
+  padding-bottom: 35px;
 }
 
-.brain-logo {
-  width: 82px;
-  height: 82px;
 
-  margin: 0 auto 18px;
+.app-logo {
+
+  width: 72px;
+  height: 72px;
+
+  margin:
+    0 auto 20px;
 
   display: flex;
+
   align-items: center;
+
   justify-content: center;
 
-  font-size: 42px;
-
-  border-radius: 26px;
+  border-radius: 21px;
 
   background:
     linear-gradient(
       145deg,
-      rgba(124,108,255,0.28),
-      rgba(92,72,220,0.08)
+      rgba(54,162,105,0.24),
+      rgba(54,162,105,0.07)
     );
 
-  border: 1px solid rgba(155,143,255,0.25);
+  border:
+    1px solid rgba(85,196,135,0.25);
+
+  color:
+    var(--primary-light);
+
+  font-size: 38px;
 
   box-shadow:
-    0 0 45px rgba(124,108,255,0.18);
+    0 0 40px rgba(54,162,105,0.10);
 }
+
 
 .app-title {
-  font-size: 25px;
+
+  font-size: 24px;
+
   font-weight: 800;
-  letter-spacing: 3px;
+
+  letter-spacing: 2.5px;
 }
+
 
 .app-subtitle {
-  margin-top: 8px;
 
-  color: var(--text-secondary);
+  margin-top: 9px;
+
+  color:
+    var(--text-secondary);
 
   font-size: 14px;
-  line-height: 1.4;
+
+  line-height: 1.45;
 }
 
 
+/* =========================================
+   SECTION TITLE
+========================================= */
+
 .home-section-title {
+
   margin-bottom: 12px;
 
-  color: var(--text-muted);
+  color:
+    var(--text-muted);
 
   font-size: 11px;
+
   font-weight: 800;
 
   letter-spacing: 1.5px;
@@ -162,19 +206,23 @@ body {
 ========================================= */
 
 .deck-list {
+
   display: flex;
+
   flex-direction: column;
 
-  gap: 12px;
+  gap: 11px;
 }
 
 
 .deck-item {
+
   width: 100%;
 
-  padding: 17px;
+  padding: 15px;
 
   display: flex;
+
   align-items: center;
 
   gap: 14px;
@@ -182,15 +230,18 @@ body {
   background:
     linear-gradient(
       145deg,
-      rgba(25,33,56,0.96),
-      rgba(16,21,37,0.96)
+      rgba(20,39,29,0.98),
+      rgba(14,28,21,0.98)
     );
 
-  border: 1px solid var(--border);
+  border:
+    1px solid var(--border);
 
-  border-radius: var(--radius);
+  border-radius:
+    var(--radius);
 
-  box-shadow: var(--shadow);
+  box-shadow:
+    var(--shadow);
 
   cursor: pointer;
 
@@ -199,45 +250,59 @@ body {
     border-color 0.15s ease;
 }
 
+
 .deck-item:active {
-  transform: scale(0.98);
+
+  transform:
+    scale(0.985);
 }
 
+
 .deck-item:hover {
-  border-color: rgba(124,108,255,0.4);
+
+  border-color:
+    rgba(85,196,135,0.30);
 }
 
 
 .deck-item-icon {
-  width: 52px;
-  height: 52px;
 
-  flex: 0 0 52px;
+  width: 51px;
+  height: 51px;
+
+  flex:
+    0 0 51px;
 
   display: flex;
+
   align-items: center;
+
   justify-content: center;
 
-  border-radius: 16px;
+  border-radius: 15px;
 
   background:
-    linear-gradient(
-      145deg,
-      rgba(124,108,255,0.22),
-      rgba(124,108,255,0.06)
-    );
+    rgba(54,162,105,0.11);
 
-  font-size: 25px;
+  border:
+    1px solid rgba(85,196,135,0.12);
+
+  font-size: 24px;
 }
 
 
 .deck-item-info {
+
   min-width: 0;
+
   flex: 1;
 }
 
+
 .deck-item-name {
+
   font-size: 16px;
+
   font-weight: 700;
 
   line-height: 1.25;
@@ -245,19 +310,105 @@ body {
   word-break: break-word;
 }
 
+
 .deck-item-count {
+
   margin-top: 5px;
 
-  color: var(--text-secondary);
+  color:
+    var(--text-secondary);
 
   font-size: 12px;
 }
 
 
 .deck-item-arrow {
-  color: var(--text-muted);
+
+  color:
+    var(--text-muted);
 
   font-size: 22px;
+}
+
+
+/* =========================================
+   EMPTY STATE
+========================================= */
+
+.empty-deck-state {
+
+  display: none;
+
+  padding:
+    32px 20px;
+
+  margin-top: 8px;
+
+  text-align: center;
+
+  border:
+    1px dashed rgba(85,196,135,0.18);
+
+  border-radius:
+    18px;
+
+  background:
+    rgba(54,162,105,0.035);
+}
+
+
+.empty-deck-state.visible {
+  display: block;
+}
+
+
+.empty-deck-icon {
+
+  width: 50px;
+  height: 50px;
+
+  margin:
+    0 auto 13px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border-radius: 15px;
+
+  background:
+    rgba(54,162,105,0.09);
+
+  color:
+    var(--primary-light);
+
+  font-size: 25px;
+}
+
+
+.empty-deck-title {
+
+  font-size: 15px;
+
+  font-weight: 700;
+}
+
+
+.empty-deck-text {
+
+  max-width: 280px;
+
+  margin:
+    7px auto 0;
+
+  color:
+    var(--text-muted);
+
+  font-size: 12px;
+
+  line-height: 1.45;
 }
 
 
@@ -266,23 +417,29 @@ body {
 ========================================= */
 
 button {
+
   border: none;
+
   font: inherit;
+
   color: inherit;
 
   cursor: pointer;
 }
 
+
 .primary-button,
 .secondary-button,
 .danger-button {
+
   width: 100%;
 
   min-height: 52px;
 
-  border-radius: 16px;
+  border-radius: 15px;
 
   font-size: 15px;
+
   font-weight: 700;
 
   transition:
@@ -290,55 +447,73 @@ button {
     opacity 0.15s ease;
 }
 
+
 .primary-button:active,
 .secondary-button:active,
 .danger-button:active {
-  transform: scale(0.98);
+
+  transform:
+    scale(0.985);
 }
 
 
 .primary-button {
+
   background:
     linear-gradient(
       135deg,
       var(--primary),
-      #6353e8
+      var(--primary-dark)
     );
 
   box-shadow:
-    0 12px 30px rgba(100,83,232,0.25);
+    0 12px 28px
+    rgba(54,162,105,0.20);
 }
 
+
 .primary-button:hover {
-  opacity: 0.95;
+
+  opacity: 0.94;
 }
 
 
 .secondary-button {
-  background: var(--surface);
 
-  border: 1px solid var(--border);
+  background:
+    var(--surface);
 
-  color: var(--text);
+  border:
+    1px solid var(--border);
+
+  color:
+    var(--text);
 }
 
 
 .danger-button {
+
   background:
-    rgba(255,99,119,0.09);
+    rgba(239,107,118,0.07);
 
-  border: 1px solid rgba(255,99,119,0.2);
+  border:
+    1px solid rgba(239,107,118,0.18);
 
-  color: #ff7c8d;
+  color:
+    #ef7c85;
 }
 
 
 .create-deck-button {
+
   margin-top: 18px;
 }
 
+
 .button-plus {
+
   font-size: 20px;
+
   vertical-align: -1px;
 }
 
@@ -348,11 +523,13 @@ button {
 ========================================= */
 
 .app-version {
+
   text-align: center;
 
   margin-top: 25px;
 
-  color: var(--text-muted);
+  color:
+    var(--text-muted);
 
   font-size: 10px;
 
@@ -366,42 +543,57 @@ button {
 
 .top-bar,
 .study-top-bar {
+
   display: flex;
+
   align-items: center;
 
   min-height: 48px;
 }
 
+
 .icon-button {
+
   width: 42px;
   height: 42px;
 
   border-radius: 13px;
 
-  background: var(--surface);
+  background:
+    var(--surface);
 
-  border: 1px solid var(--border);
+  border:
+    1px solid var(--border);
 
-  color: var(--text);
+  color:
+    var(--text);
 
   font-size: 31px;
+
   line-height: 1;
 
   display: flex;
+
   align-items: center;
+
   justify-content: center;
 }
 
+
 .top-title {
+
   flex: 1;
 
   text-align: center;
 
   font-size: 17px;
+
   font-weight: 800;
 }
 
+
 .top-spacer {
+
   width: 42px;
 }
 
@@ -411,48 +603,65 @@ button {
 ========================================= */
 
 .editor-container {
+
   margin-top: 25px;
 }
 
+
 .field-label {
+
   margin-bottom: 8px;
 
-  color: var(--text-muted);
+  color:
+    var(--text-muted);
 
   font-size: 11px;
+
   font-weight: 800;
 
   letter-spacing: 1.3px;
 }
 
+
 .deck-icon-label {
+
   margin-top: 23px;
 }
 
 
 .text-input,
 .card-textarea {
+
   width: 100%;
 
-  border: 1px solid var(--border);
+  border:
+    1px solid var(--border);
 
-  background: var(--surface);
+  background:
+    var(--surface);
 
-  color: var(--text);
+  color:
+    var(--text);
 
   outline: none;
 
-  border-radius: 15px;
+  border-radius: 14px;
 
   font-size: 15px;
 }
 
+
 .text-input {
+
   min-height: 52px;
-  padding: 0 15px;
+
+  padding:
+    0 15px;
 }
 
+
 .card-textarea {
+
   min-height: 85px;
 
   padding: 13px;
@@ -462,26 +671,35 @@ button {
   line-height: 1.45;
 }
 
+
 .text-input::placeholder,
 .card-textarea::placeholder {
-  color: var(--text-muted);
+
+  color:
+    var(--text-muted);
 }
+
 
 .text-input:focus,
 .card-textarea:focus {
-  border-color: rgba(124,108,255,0.65);
+
+  border-color:
+    rgba(85,196,135,0.55);
 
   box-shadow:
-    0 0 0 3px rgba(124,108,255,0.09);
+    0 0 0 3px
+    rgba(54,162,105,0.08);
 }
 
 
 /* =========================================
-   DECK ICON SELECTOR
+   ICON SELECTOR
 ========================================= */
 
 .deck-icon-selector {
+
   display: flex;
+
   gap: 9px;
 
   overflow-x: auto;
@@ -489,29 +707,38 @@ button {
   padding-bottom: 2px;
 }
 
+
 .deck-icon-option {
+
   width: 43px;
   height: 43px;
 
-  flex: 0 0 43px;
+  flex:
+    0 0 43px;
 
-  border-radius: 13px;
+  border-radius: 12px;
 
-  background: var(--surface);
+  background:
+    var(--surface);
 
-  border: 1px solid var(--border);
+  border:
+    1px solid var(--border);
 
   font-size: 21px;
 }
 
+
 .deck-icon-option.selected {
-  border-color: var(--primary);
+
+  border-color:
+    var(--primary);
 
   background:
-    rgba(124,108,255,0.18);
+    rgba(54,162,105,0.14);
 
   box-shadow:
-    0 0 0 2px rgba(124,108,255,0.1);
+    0 0 0 2px
+    rgba(54,162,105,0.08);
 }
 
 
@@ -520,11 +747,15 @@ button {
 ========================================= */
 
 .cards-editor-header {
+
   margin-top: 28px;
 }
 
+
 .editor-hint {
-  color: var(--text-muted);
+
+  color:
+    var(--text-muted);
 
   font-size: 12px;
 
@@ -533,9 +764,11 @@ button {
 
 
 .new-cards-list {
+
   margin-top: 12px;
 
   display: flex;
+
   flex-direction: column;
 
   gap: 14px;
@@ -543,42 +776,60 @@ button {
 
 
 .new-card {
+
   position: relative;
 
   padding: 15px;
 
-  border-radius: 18px;
+  border-radius: 17px;
 
-  background: var(--surface);
+  background:
+    var(--surface);
 
-  border: 1px solid var(--border);
+  border:
+    1px solid var(--border);
 
-  box-shadow: 0 10px 25px rgba(0,0,0,0.16);
+  box-shadow:
+    0 10px 25px
+    rgba(0,0,0,0.13);
 }
 
+
 .new-card.removing {
+
   opacity: 0;
-  transform: translateY(-8px);
-  transition: 0.2s ease;
+
+  transform:
+    translateY(-8px);
+
+  transition:
+    0.2s ease;
 }
 
 
 .card-number {
+
   margin-bottom: 12px;
 
-  color: var(--primary-light);
+  color:
+    var(--primary-light);
 
   font-size: 12px;
+
   font-weight: 800;
 }
 
 
 .card-editor-label {
-  margin: 10px 0 6px;
 
-  color: var(--text-muted);
+  margin:
+    10px 0 6px;
+
+  color:
+    var(--text-muted);
 
   font-size: 10px;
+
   font-weight: 800;
 
   letter-spacing: 1px;
@@ -586,40 +837,53 @@ button {
 
 
 /* =========================================
-   PHOTO UPLOAD
+   PHOTO
 ========================================= */
 
 .photo-section {
+
   margin-top: 12px;
 }
 
+
 .photo-upload-label {
+
   display: flex;
+
   align-items: center;
+
   justify-content: center;
 
   min-height: 45px;
 
-  border-radius: 13px;
+  border-radius: 12px;
 
-  border: 1px dashed rgba(124,108,255,0.35);
+  border:
+    1px dashed
+    rgba(85,196,135,0.30);
 
-  background: rgba(124,108,255,0.05);
+  background:
+    rgba(54,162,105,0.045);
 
-  color: var(--text-secondary);
+  color:
+    var(--text-secondary);
 
   font-size: 13px;
+
   font-weight: 600;
 
   cursor: pointer;
 }
 
+
 .photo-upload-input {
+
   display: none;
 }
 
 
 .photo-preview-wrapper {
+
   position: relative;
 
   width: 100%;
@@ -630,14 +894,18 @@ button {
 
   overflow: hidden;
 
-  border-radius: 15px;
+  border-radius: 14px;
 
-  background: var(--bg-secondary);
+  background:
+    var(--bg-secondary);
 
-  border: 1px solid var(--border);
+  border:
+    1px solid var(--border);
 }
 
+
 .photo-preview {
+
   width: 100%;
   height: 100%;
 
@@ -648,6 +916,7 @@ button {
 
 
 .remove-photo-button {
+
   position: absolute;
 
   top: 8px;
@@ -656,17 +925,20 @@ button {
   width: 34px;
   height: 34px;
 
-  border-radius: 11px;
+  border-radius: 10px;
 
-  background: rgba(0,0,0,0.7);
+  background:
+    rgba(0,0,0,0.68);
 
-  color: white;
+  color:
+    white;
 
   font-size: 17px;
 }
 
 
 .remove-card-button {
+
   position: absolute;
 
   top: 13px;
@@ -677,11 +949,15 @@ button {
 
   border-radius: 10px;
 
-  background: rgba(255,99,119,0.1);
+  background:
+    rgba(239,107,118,0.08);
 
-  color: #ff7c8d;
+  color:
+    #ef7c85;
 
-  border: 1px solid rgba(255,99,119,0.15);
+  border:
+    1px solid
+    rgba(239,107,118,0.14);
 }
 
 
@@ -690,10 +966,13 @@ button {
 ========================================= */
 
 .add-card-button {
+
   margin-top: 15px;
 }
 
+
 .save-deck-button {
+
   margin-top: 12px;
 }
 
@@ -703,66 +982,81 @@ button {
 ========================================= */
 
 .deck-heading {
+
   display: flex;
+
   align-items: center;
 
   gap: 15px;
 
   margin-top: 15px;
+
   margin-bottom: 20px;
 }
 
 
 .deck-heading-icon {
-  width: 64px;
-  height: 64px;
 
-  flex: 0 0 64px;
+  width: 62px;
+  height: 62px;
+
+  flex:
+    0 0 62px;
 
   display: flex;
+
   align-items: center;
+
   justify-content: center;
 
-  border-radius: 20px;
+  border-radius: 18px;
 
   background:
-    linear-gradient(
-      145deg,
-      rgba(124,108,255,0.25),
-      rgba(124,108,255,0.06)
-    );
+    rgba(54,162,105,0.11);
 
-  border: 1px solid rgba(124,108,255,0.18);
+  border:
+    1px solid
+    rgba(85,196,135,0.13);
 
-  font-size: 31px;
+  font-size: 30px;
 }
 
 
 .deck-heading-info {
+
   min-width: 0;
 }
 
+
 .deck-heading-title {
+
   font-size: 21px;
+
   font-weight: 800;
 
   line-height: 1.2;
 }
 
+
 .deck-heading-count {
+
   margin-top: 5px;
 
-  color: var(--text-secondary);
+  color:
+    var(--text-secondary);
 
   font-size: 13px;
 }
 
 
 .study-button {
+
   margin-bottom: 10px;
 }
 
+
 .content-button {
+
   margin-bottom: 10px;
 }
 
@@ -772,6 +1066,7 @@ button {
 ========================================= */
 
 .deck-content {
+
   margin-top: 20px;
 
   display: none;
@@ -781,28 +1076,36 @@ button {
   gap: 12px;
 }
 
+
 .deck-content.visible {
+
   display: flex;
 }
 
 
 .content-card {
+
   padding: 15px;
 
-  background: var(--surface);
+  background:
+    var(--surface);
 
-  border: 1px solid var(--border);
+  border:
+    1px solid var(--border);
 
-  border-radius: 18px;
+  border-radius: 17px;
 }
 
 
 .content-card-number {
+
   margin-bottom: 10px;
 
-  color: var(--primary-light);
+  color:
+    var(--primary-light);
 
   font-size: 11px;
+
   font-weight: 800;
 
   letter-spacing: 1px;
@@ -810,6 +1113,7 @@ button {
 
 
 .content-card-image {
+
   width: 100%;
 
   aspect-ratio: 1 / 1;
@@ -820,26 +1124,31 @@ button {
 
   margin-bottom: 12px;
 
-  border-radius: 14px;
+  border-radius: 13px;
 }
 
 
 .content-card-image-placeholder {
+
   width: 100%;
 
   aspect-ratio: 1 / 1;
 
   display: flex;
+
   align-items: center;
+
   justify-content: center;
 
   margin-bottom: 12px;
 
-  border-radius: 14px;
+  border-radius: 13px;
 
-  background: var(--bg-secondary);
+  background:
+    var(--bg-secondary);
 
-  color: var(--text-muted);
+  color:
+    var(--text-muted);
 
   font-size: 28px;
 }
@@ -847,30 +1156,40 @@ button {
 
 .content-card-front,
 .content-card-back {
-  padding: 11px 0;
 
-  border-bottom: 1px solid var(--border);
+  padding:
+    11px 0;
+
+  border-bottom:
+    1px solid var(--border);
 
   line-height: 1.45;
 
   font-size: 14px;
 }
 
-.content-card-back {
-  border-bottom: none;
 
-  color: var(--text-secondary);
+.content-card-back {
+
+  border-bottom:
+    none;
+
+  color:
+    var(--text-secondary);
 }
 
 
 .content-label {
+
   display: block;
 
   margin-bottom: 4px;
 
-  color: var(--text-muted);
+  color:
+    var(--text-muted);
 
   font-size: 9px;
+
   font-weight: 800;
 
   letter-spacing: 1px;
@@ -878,40 +1197,49 @@ button {
 
 
 .content-edit-button {
+
   width: 100%;
 
   margin-top: 10px;
 
   min-height: 40px;
 
-  border-radius: 12px;
+  border-radius: 11px;
 
-  background: rgba(124,108,255,0.08);
+  background:
+    rgba(54,162,105,0.07);
 
-  border: 1px solid rgba(124,108,255,0.14);
+  border:
+    1px solid
+    rgba(85,196,135,0.12);
 
-  color: var(--primary-light);
+  color:
+    var(--primary-light);
 
   font-size: 12px;
+
   font-weight: 700;
 }
 
 
 #deleteDeckButton {
+
   margin-top: 24px;
 }
 
 
 /* =========================================
-   STUDY SCREEN
+   STUDY
 ========================================= */
 
 .study-deck-name {
+
   flex: 1;
 
   text-align: center;
 
   font-size: 15px;
+
   font-weight: 700;
 
   overflow: hidden;
@@ -923,24 +1251,30 @@ button {
 
 
 .study-progress-area {
+
   margin-top: 18px;
+
   margin-bottom: 18px;
 }
 
 
 .study-progress-text {
+
   margin-bottom: 8px;
 
   text-align: center;
 
-  color: var(--text-secondary);
+  color:
+    var(--text-secondary);
 
   font-size: 12px;
+
   font-weight: 700;
 }
 
 
 .progress-track {
+
   height: 5px;
 
   width: 100%;
@@ -949,10 +1283,13 @@ button {
 
   border-radius: 99px;
 
-  background: rgba(255,255,255,0.07);
+  background:
+    rgba(255,255,255,0.07);
 }
 
+
 .progress-bar {
+
   height: 100%;
 
   width: 0%;
@@ -962,11 +1299,12 @@ button {
   background:
     linear-gradient(
       90deg,
-      var(--primary),
+      var(--primary-dark),
       var(--primary-light)
     );
 
-  transition: width 0.3s ease;
+  transition:
+    width 0.3s ease;
 }
 
 
@@ -975,6 +1313,7 @@ button {
 ========================================= */
 
 .flashcard {
+
   width: 100%;
 
   perspective: 1200px;
@@ -984,82 +1323,94 @@ button {
 
 
 .flashcard-inner {
+
   position: relative;
 
   width: 100%;
 
   min-height: 460px;
 
-  transform-style: preserve-3d;
+  transform-style:
+    preserve-3d;
 
-  transition: transform 0.55s cubic-bezier(.2,.75,.25,1);
+  transition:
+    transform
+    0.55s
+    cubic-bezier(.2,.75,.25,1);
 }
 
 
-.flashcard.flipped .flashcard-inner {
-  transform: rotateY(180deg);
+.flashcard.flipped
+.flashcard-inner {
+
+  transform:
+    rotateY(180deg);
 }
 
 
 .flashcard-face {
+
   position: absolute;
 
   inset: 0;
 
   min-height: 460px;
 
-  padding: 24px 20px;
+  padding:
+    24px 20px;
 
-  border-radius: 26px;
+  border-radius: 24px;
 
-  backface-visibility: hidden;
+  backface-visibility:
+    hidden;
 
-  -webkit-backface-visibility: hidden;
+  -webkit-backface-visibility:
+    hidden;
 
   background:
-    radial-gradient(
-      circle at 50% 0%,
-      rgba(124,108,255,0.18),
-      transparent 45%
-    ),
     linear-gradient(
       145deg,
-      #171e34,
-      #0f1526
+      #16261e,
+      #0d1913
     );
 
-  border: 1px solid rgba(255,255,255,0.09);
+  border:
+    1px solid
+    rgba(255,255,255,0.08);
 
   box-shadow:
-    0 25px 55px rgba(0,0,0,0.4);
+    0 25px 55px
+    rgba(0,0,0,0.36);
 
   display: flex;
+
   flex-direction: column;
+
   align-items: center;
 }
 
 
 .flashcard-back {
-  transform: rotateY(180deg);
+
+  transform:
+    rotateY(180deg);
 
   background:
-    radial-gradient(
-      circle at 50% 0%,
-      rgba(66,211,146,0.13),
-      transparent 45%
-    ),
     linear-gradient(
       145deg,
-      #172d2a,
-      #101d22
+      #183126,
+      #102019
     );
 }
 
 
 .flashcard-label {
-  color: var(--primary-light);
+
+  color:
+    var(--primary-light);
 
   font-size: 10px;
+
   font-weight: 800;
 
   letter-spacing: 1.7px;
@@ -1068,8 +1419,11 @@ button {
 }
 
 
-.flashcard-back .flashcard-label {
-  color: var(--green);
+.flashcard-back
+.flashcard-label {
+
+  color:
+    var(--green);
 }
 
 
@@ -1078,6 +1432,7 @@ button {
 ========================================= */
 
 .study-image-box {
+
   width: 100%;
 
   aspect-ratio: 1 / 1;
@@ -1088,17 +1443,21 @@ button {
 
   overflow: hidden;
 
-  border-radius: 18px;
+  border-radius: 17px;
 
-  background: rgba(0,0,0,0.15);
+  background:
+    rgba(0,0,0,0.15);
 
-  border: 1px solid rgba(255,255,255,0.06);
+  border:
+    1px solid
+    rgba(255,255,255,0.06);
 
   margin-bottom: 20px;
 }
 
 
 .study-image {
+
   width: 100%;
   height: 100%;
 
@@ -1109,25 +1468,31 @@ button {
 
 
 .study-image-placeholder {
+
   width: 100%;
   height: 100%;
 
   display: flex;
+
   align-items: center;
+
   justify-content: center;
 
-  color: var(--text-muted);
+  color:
+    var(--text-muted);
 
   font-size: 35px;
 }
 
 
 .flashcard-text {
+
   width: 100%;
 
   text-align: center;
 
   font-size: 21px;
+
   font-weight: 750;
 
   line-height: 1.4;
@@ -1137,11 +1502,13 @@ button {
 
 
 .flip-hint {
+
   margin-top: auto;
 
   padding-top: 25px;
 
-  color: var(--text-muted);
+  color:
+    var(--text-muted);
 
   text-align: center;
 
@@ -1154,9 +1521,11 @@ button {
 ========================================= */
 
 .study-actions {
+
   display: grid;
 
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns:
+    1fr 1fr;
 
   gap: 10px;
 
@@ -1165,20 +1534,25 @@ button {
 
 
 .study-answer-button {
+
   min-height: 54px;
 
-  border-radius: 16px;
+  border-radius: 15px;
 
-  background: var(--surface);
+  background:
+    var(--surface);
 
   font-size: 14px;
+
   font-weight: 800;
 
-  border: 1px solid var(--border);
+  border:
+    1px solid var(--border);
 }
 
 
 .study-answer-button span {
+
   font-size: 19px;
 
   margin-right: 4px;
@@ -1186,24 +1560,33 @@ button {
 
 
 .dont-know {
-  color: var(--red);
 
-  border-color: rgba(255,99,119,0.17);
+  color:
+    var(--red);
 
-  background: rgba(255,99,119,0.07);
+  border-color:
+    rgba(239,107,118,0.16);
+
+  background:
+    rgba(239,107,118,0.06);
 }
 
 
 .know {
-  color: var(--green);
 
-  border-color: rgba(66,211,146,0.17);
+  color:
+    var(--green);
 
-  background: rgba(66,211,146,0.07);
+  border-color:
+    rgba(69,201,133,0.17);
+
+  background:
+    rgba(69,201,133,0.06);
 }
 
 
 .next-button {
+
   margin-top: 10px;
 }
 
@@ -1213,36 +1596,50 @@ button {
 ========================================= */
 
 .toast {
+
   position: fixed;
 
   left: 18px;
+
   right: 18px;
 
   bottom:
-    calc(18px + env(safe-area-inset-bottom));
+    calc(
+      18px +
+      env(safe-area-inset-bottom)
+    );
 
   z-index: 100;
 
-  padding: 14px 16px;
+  padding:
+    14px 16px;
 
-  border-radius: 15px;
+  border-radius: 14px;
 
-  background: rgba(24,29,46,0.96);
+  background:
+    rgba(18,31,24,0.97);
 
-  border: 1px solid rgba(255,255,255,0.1);
+  border:
+    1px solid
+    rgba(85,196,135,0.13);
 
-  box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+  box-shadow:
+    0 15px 40px
+    rgba(0,0,0,0.38);
 
-  color: var(--text);
+  color:
+    var(--text);
 
   text-align: center;
 
   font-size: 13px;
+
   font-weight: 600;
 
   opacity: 0;
 
-  transform: translateY(15px);
+  transform:
+    translateY(15px);
 
   pointer-events: none;
 
@@ -1251,10 +1648,13 @@ button {
     transform 0.2s ease;
 }
 
+
 .toast.show {
+
   opacity: 1;
 
-  transform: translateY(0);
+  transform:
+    translateY(0);
 }
 
 
@@ -1263,6 +1663,7 @@ button {
 ========================================= */
 
 .modal-overlay {
+
   position: fixed;
 
   inset: 0;
@@ -1272,44 +1673,55 @@ button {
   display: none;
 
   align-items: center;
+
   justify-content: center;
 
   padding: 20px;
 
-  background: rgba(0,0,0,0.68);
+  background:
+    rgba(0,0,0,0.68);
 
-  backdrop-filter: blur(8px);
+  backdrop-filter:
+    blur(8px);
 }
 
+
 .modal-overlay.show {
+
   display: flex;
 }
 
 
 .modal {
+
   width: 100%;
+
   max-width: 360px;
 
   padding: 25px;
 
-  border-radius: 23px;
+  border-radius: 22px;
 
   background:
     linear-gradient(
       145deg,
-      #191f34,
-      #101525
+      #18291f,
+      #101d16
     );
 
-  border: 1px solid var(--border);
+  border:
+    1px solid var(--border);
 
-  box-shadow: 0 30px 70px rgba(0,0,0,0.55);
+  box-shadow:
+    0 30px 70px
+    rgba(0,0,0,0.5);
 
   text-align: center;
 }
 
 
 .modal-icon {
+
   font-size: 34px;
 
   margin-bottom: 10px;
@@ -1317,15 +1729,19 @@ button {
 
 
 .modal-title {
+
   font-size: 19px;
+
   font-weight: 800;
 }
 
 
 .modal-text {
+
   margin-top: 8px;
 
-  color: var(--text-secondary);
+  color:
+    var(--text-secondary);
 
   font-size: 13px;
 
@@ -1334,9 +1750,11 @@ button {
 
 
 .modal-actions {
+
   display: grid;
 
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns:
+    1fr 1fr;
 
   gap: 10px;
 
@@ -1351,20 +1769,28 @@ button {
 @media (max-width: 380px) {
 
   .screen {
+
     padding-left: 14px;
+
     padding-right: 14px;
   }
 
+
   .flashcard-inner,
   .flashcard-face {
+
     min-height: 420px;
   }
 
+
   .flashcard-text {
+
     font-size: 19px;
   }
 
+
   .study-image-box {
+
     max-height: 190px;
   }
 
@@ -1376,15 +1802,23 @@ button {
 ========================================= */
 
 ::-webkit-scrollbar {
+
   width: 4px;
 }
 
+
 ::-webkit-scrollbar-track {
-  background: transparent;
+
+  background:
+    transparent;
 }
 
-::-webkit-scrollbar-thumb {
-  background: rgba(255,255,255,0.12);
 
-  border-radius: 10px;
+::-webkit-scrollbar-thumb {
+
+  background:
+    rgba(85,196,135,0.18);
+
+  border-radius:
+    10px;
 }
