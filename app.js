@@ -1,21 +1,14 @@
-// ============================================================
-// ВЕРСИЯ ПРИЛОЖЕНИЯ
-// ============================================================
-//
-// ВОТ ЗДЕСЬ ПОТОМ МЕНЯЙ ВЕРСИЮ
-//
-// Например:
-// 1.1.0
-// 1.2.0
-// 2.0.0
-//
+/* =========================================================
+   FLASH CARDS
+   VERSION 1.2.0
+========================================================= */
 
-const APP_VERSION = "2.5.b";
+const APP_VERSION = "3.0.1";
 
 
-// ============================================================
-// TELEGRAM
-// ============================================================
+/* =========================================================
+   TELEGRAM
+========================================================= */
 
 const tg = window.Telegram.WebApp;
 
@@ -23,36 +16,32 @@ tg.ready();
 tg.expand();
 
 
-// ============================================================
-// SUPABASE
-// ============================================================
+/* =========================================================
+   SUPABASE
+========================================================= */
 
 const SUPABASE_URL = "https://arnsfecpnwyjiuvmsoen.supabase.co";
-
 const SUPABASE_KEY = "sb_publishable_sj2rVuSxhsUtB3xKft2dDw_8-KwPsFM";
 
-
 const supabaseClient =
-    window.supabase.createClient(
-        SUPABASE_URL,
-        SUPABASE_KEY
-    );
+  window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
 
 
-// ============================================================
-// НАСТРОЙКИ
-// ============================================================
+/* =========================================================
+   STORAGE
+========================================================= */
 
-const STORAGE_KEY =
-    "flashcards_universal_v5";
+const STORAGE_KEY = "flashcards_universal_v5";
 
-const IMAGE_BUCKET =
-    "card-images";
+const IMAGE_BUCKET = "card-images";
 
 
-// ============================================================
-// СОСТОЯНИЕ
-// ============================================================
+/* =========================================================
+   STATE
+========================================================= */
 
 let decks = [];
 
@@ -71,170 +60,335 @@ let editingDeckId = null;
 let toastTimer = null;
 
 
-// ============================================================
-// ЭЛЕМЕНТЫ
-// ============================================================
+/* =========================================================
+   DOM
+========================================================= */
 
 const homeScreen =
-    document.getElementById("homeScreen");
+  document.getElementById("homeScreen");
 
 const createScreen =
-    document.getElementById("createScreen");
+  document.getElementById("createScreen");
 
 const deckScreen =
-    document.getElementById("deckScreen");
+  document.getElementById("deckScreen");
 
 const studyScreen =
-    document.getElementById("studyScreen");
+  document.getElementById("studyScreen");
 
-const decksList =
-    document.getElementById("decksList");
 
-const createDeckBtn =
-    document.getElementById("createDeckBtn");
+/* =========================================================
+   INIT
+========================================================= */
 
-const backFromCreate =
-    document.getElementById("backFromCreate");
+document.addEventListener(
+  "DOMContentLoaded",
+  () => {
 
-const backFromDeck =
-    document.getElementById("backFromDeck");
+    initApp();
 
-const backFromStudy =
-    document.getElementById("backFromStudy");
+  }
+);
 
-const createScreenTitle =
-    document.getElementById("createScreenTitle");
 
-const deckNameInput =
-    document.getElementById("deckNameInput");
+function initApp() {
 
-const deckIconSelector =
-    document.getElementById("deckIconSelector");
+  setVersion();
 
-const newCardsList =
-    document.getElementById("newCardsList");
+  loadDecks();
 
-const addCardBtn =
-    document.getElementById("addCardBtn");
+  setupEvents();
 
-const saveDeckBtn =
-    document.getElementById("saveDeckBtn");
+  renderHome();
 
-const deckIcon =
-    document.getElementById("deckIcon");
+}
 
-const deckTitle =
-    document.getElementById("deckTitle");
 
-const deckCount =
-    document.getElementById("deckCount");
+/* =========================================================
+   VERSION
+========================================================= */
 
-const startStudyBtn =
-    document.getElementById("startStudyBtn");
+function setVersion() {
 
-const toggleContentBtn =
-    document.getElementById("toggleContentBtn");
-
-const editDeckBtn =
-    document.getElementById("editDeckBtn");
-
-const contentContainer =
-    document.getElementById("contentContainer");
-
-const deleteDeckBtn =
-    document.getElementById("deleteDeckBtn");
-
-const flashcard =
-    document.getElementById("flashcard");
-
-const studyDeckIcon =
-    document.getElementById("studyDeckIcon");
-
-const studyDeckName =
-    document.getElementById("studyDeckName");
-
-const progressText =
-    document.getElementById("progressText");
-
-const progressFill =
-    document.getElementById("progressFill");
-
-const studyFront =
-    document.getElementById("studyFront");
-
-const studyBack =
-    document.getElementById("studyBack");
-
-const studyImage =
-    document.getElementById("studyImage");
-
-const studyImageBack =
-    document.getElementById("studyImageBack");
-
-const studyImagePlaceholder =
-    document.getElementById(
-        "studyImagePlaceholder"
+  document
+    .querySelectorAll(".version-value")
+    .forEach(
+      element => {
+        element.textContent = APP_VERSION;
+      }
     );
 
-const studyImageBackPlaceholder =
-    document.getElementById(
-        "studyImageBackPlaceholder"
-    );
+}
 
-const dontKnowBtn =
-    document.getElementById("dontKnowBtn");
 
-const knowBtn =
-    document.getElementById("knowBtn");
+/* =========================================================
+   EVENTS
+========================================================= */
 
-const nextBtn =
-    document.getElementById("nextBtn");
+function setupEvents() {
 
-const toast =
-    document.getElementById("toast");
-
-const confirmOverlay =
-    document.getElementById(
-        "confirmOverlay"
-    );
-
-const cancelDeleteBtn =
-    document.getElementById(
-        "cancelDeleteBtn"
-    );
-
-const confirmDeleteBtn =
-    document.getElementById(
-        "confirmDeleteBtn"
+  document
+    .getElementById("createDeckButton")
+    .addEventListener(
+      "click",
+      openCreateScreen
     );
 
 
-// ============================================================
-// ВЕРСИЯ НА ЭКРАНЕ
-// ============================================================
-
-document
-    .querySelectorAll(".app-version-number")
-    .forEach(element => {
-
-        element.textContent =
-            APP_VERSION;
-
-    });
+  document
+    .getElementById("backFromCreate")
+    .addEventListener(
+      "click",
+      () => showScreen("homeScreen")
+    );
 
 
-// ============================================================
-// СТАНДАРТНАЯ КОЛОДА
-// ============================================================
+  document
+    .getElementById("backFromDeck")
+    .addEventListener(
+      "click",
+      () => showScreen("homeScreen")
+    );
 
-const defaultDeck = {
 
-    id: "actions-20",
+  document
+    .getElementById("backFromStudy")
+    .addEventListener(
+      "click",
+      () => showScreen("deckScreen")
+    );
 
-    name:
-        "20 главных действий с предметами",
 
-    icon: "⚙️",
+  document
+    .getElementById("addCardButton")
+    .addEventListener(
+      "click",
+      () => addNewCardBlock()
+    );
+
+
+  document
+    .getElementById("saveDeckButton")
+    .addEventListener(
+      "click",
+      saveDeckFromEditor
+    );
+
+
+  document
+    .getElementById("studyDeckButton")
+    .addEventListener(
+      "click",
+      startStudy
+    );
+
+
+  document
+    .getElementById("contentDeckButton")
+    .addEventListener(
+      "click",
+      toggleDeckContent
+    );
+
+
+  document
+    .getElementById("editDeckButton")
+    .addEventListener(
+      "click",
+      editCurrentDeck
+    );
+
+
+  document
+    .getElementById("deleteDeckButton")
+    .addEventListener(
+      "click",
+      deleteCurrentDeck
+    );
+
+
+  document
+    .getElementById("cancelDeleteButton")
+    .addEventListener(
+      "click",
+      closeDeleteModal
+    );
+
+
+  document
+    .getElementById("confirmDeleteButton")
+    .addEventListener(
+      "click",
+      confirmDeleteDeck
+    );
+
+
+  document
+    .getElementById("flashcard")
+    .addEventListener(
+      "click",
+      flipCard
+    );
+
+
+  document
+    .getElementById("dontKnowButton")
+    .addEventListener(
+      "click",
+      () => answerCard(false)
+    );
+
+
+  document
+    .getElementById("knowButton")
+    .addEventListener(
+      "click",
+      () => answerCard(true)
+    );
+
+
+  document
+    .getElementById("nextButton")
+    .addEventListener(
+      "click",
+      nextCard
+    );
+
+
+  document
+    .querySelectorAll(".deck-icon-option")
+    .forEach(
+      button => {
+
+        button.addEventListener(
+          "click",
+          () => {
+
+            selectedDeckIcon =
+              button.dataset.icon;
+
+            document
+              .querySelectorAll(
+                ".deck-icon-option"
+              )
+              .forEach(
+                item =>
+                  item.classList.remove(
+                    "selected"
+                  )
+              );
+
+            button.classList.add(
+              "selected"
+            );
+
+          }
+        );
+
+      }
+    );
+
+}
+
+
+/* =========================================================
+   SCREEN NAVIGATION
+========================================================= */
+
+function showScreen(screenId) {
+
+  document
+    .querySelectorAll(".screen")
+    .forEach(
+      screen =>
+        screen.classList.remove("active")
+    );
+
+
+  document
+    .getElementById(screenId)
+    .classList.add("active");
+
+
+  window.scrollTo({
+    top: 0,
+    behavior: "instant"
+  });
+
+}
+
+
+/* =========================================================
+   LOCAL STORAGE
+========================================================= */
+
+function loadDecks() {
+
+  const saved =
+    localStorage.getItem(
+      STORAGE_KEY
+    );
+
+
+  if (saved) {
+
+    try {
+
+      decks = JSON.parse(saved);
+
+    } catch (error) {
+
+      console.error(
+        "Ошибка чтения данных:",
+        error
+      );
+
+      decks = [];
+
+    }
+
+  }
+
+
+  ensureDemoDeck();
+
+  saveDecks();
+
+}
+
+
+function saveDecks() {
+
+  localStorage.setItem(
+    STORAGE_KEY,
+    JSON.stringify(decks)
+  );
+
+}
+
+
+/* =========================================================
+   DEMO DECK
+========================================================= */
+
+function ensureDemoDeck() {
+
+  const demoId =
+    "memory-demo-deck";
+
+  const existing =
+    decks.find(
+      deck => deck.id === demoId
+    );
+
+
+  const demoDeck = {
+
+    id: demoId,
+
+    name: "Проверь свою память",
+
+    icon: "🧠",
 
     builtIn: true,
 
@@ -242,2230 +396,1832 @@ const defaultDeck = {
 
     cards: [
 
-        {
-            id: "action-1",
-            front: "Открывать",
-            back: "Open",
-            emoji: "🚪",
-            imageUrl: ""
-        },
+      {
+        id: "memory-demo-1",
+        front:
+          "Что помогает лучше запоминать информацию?",
+        back:
+          "Повторение через интервалы времени.",
+        imageUrl: ""
+      },
 
-        {
-            id: "action-2",
-            front: "Закрывать",
-            back: "Close",
-            emoji: "🚪",
-            imageUrl: ""
-        },
+      {
+        id: "memory-demo-2",
+        front:
+          "Что такое ассоциация?",
+        back:
+          "Связь новой информации с уже знакомой.",
+        imageUrl: ""
+      },
 
-        {
-            id: "action-3",
-            front: "Брать",
-            back: "Take",
-            emoji: "✋",
-            imageUrl: ""
-        },
+      {
+        id: "memory-demo-3",
+        front:
+          "Какой сон важен для закрепления воспоминаний?",
+        back:
+          "Полноценный ночной сон.",
+        imageUrl: ""
+      },
 
-        {
-            id: "action-4",
-            front: "Класть",
-            back: "Put",
-            emoji: "📦",
-            imageUrl: ""
-        },
+      {
+        id: "memory-demo-4",
+        front:
+          "Что часто запоминается лучше: текст или образ?",
+        back:
+          "Образ, особенно вместе с текстом.",
+        imageUrl: ""
+      },
 
-        {
-            id: "action-5",
-            front: "Давать",
-            back: "Give",
-            emoji: "🤝",
-            imageUrl: ""
-        },
+      {
+        id: "memory-demo-5",
+        front:
+          "Зачем большой материал делить на части?",
+        back:
+          "Так его легче удерживать и вспоминать.",
+        imageUrl: ""
+      },
 
-        {
-            id: "action-6",
-            front: "Делать",
-            back: "Do",
-            emoji: "🔨",
-            imageUrl: ""
-        },
+      {
+        id: "memory-demo-6",
+        front:
+          "Что такое активное вспоминание?",
+        back:
+          "Попытка вспомнить ответ без подсказки.",
+        imageUrl: ""
+      },
 
-        {
-            id: "action-7",
-            front: "Использовать",
-            back: "Use",
-            emoji: "🛠️",
-            imageUrl: ""
-        },
+      {
+        id: "memory-demo-7",
+        front:
+          "Что мешает хорошему запоминанию?",
+        back:
+          "Постоянное переключение внимания.",
+        imageUrl: ""
+      },
 
-        {
-            id: "action-8",
-            front: "Мыть",
-            back: "Wash",
-            emoji: "🧼",
-            imageUrl: ""
-        },
+      {
+        id: "memory-demo-8",
+        front:
+          "Зачем использовать яркие ассоциации?",
+        back:
+          "Они создают дополнительные связи в памяти.",
+        imageUrl: ""
+      },
 
-        {
-            id: "action-9",
-            front: "Резать",
-            back: "Cut",
-            emoji: "🔪",
-            imageUrl: ""
-        },
+      {
+        id: "memory-demo-9",
+        front:
+          "Что полезнее: учить один раз или повторять?",
+        back:
+          "Короткие повторения через интервалы.",
+        imageUrl: ""
+      },
 
-        {
-            id: "action-10",
-            front: "Наливать",
-            back: "Pour",
-            emoji: "🥤",
-            imageUrl: ""
-        },
-
-        {
-            id: "action-11",
-            front: "Есть",
-            back: "Eat",
-            emoji: "🍽️",
-            imageUrl: ""
-        },
-
-        {
-            id: "action-12",
-            front: "Пить",
-            back: "Drink",
-            emoji: "🥤",
-            imageUrl: ""
-        },
-
-        {
-            id: "action-13",
-            front: "Включать",
-            back: "Turn on",
-            emoji: "🔌",
-            imageUrl: ""
-        },
-
-        {
-            id: "action-14",
-            front: "Выключать",
-            back: "Turn off",
-            emoji: "🔌",
-            imageUrl: ""
-        },
-
-        {
-            id: "action-15",
-            front: "Поднимать",
-            back: "Lift",
-            emoji: "🏋️",
-            imageUrl: ""
-        },
-
-        {
-            id: "action-16",
-            front: "Опускать",
-            back: "Lower",
-            emoji: "⬇️",
-            imageUrl: ""
-        },
-
-        {
-            id: "action-17",
-            front: "Нести",
-            back: "Carry",
-            emoji: "📦",
-            imageUrl: ""
-        },
-
-        {
-            id: "action-18",
-            front: "Двигать",
-            back: "Move",
-            emoji: "↔️",
-            imageUrl: ""
-        },
-
-        {
-            id: "action-19",
-            front: "Ставить",
-            back: "Place",
-            emoji: "📍",
-            imageUrl: ""
-        },
-
-        {
-            id: "action-20",
-            front: "Находить",
-            back: "Find",
-            emoji: "🔎",
-            imageUrl: ""
-        }
+      {
+        id: "memory-demo-10",
+        front:
+          "Главный принцип хорошего запоминания?",
+        back:
+          "Вспомнить самому, повторить и связать с известным.",
+        imageUrl: ""
+      }
 
     ]
 
-};
+  };
 
 
-// ============================================================
-// ЗАПУСК
-// ============================================================
+  if (!existing) {
 
-init();
+    decks.unshift(
+      demoDeck
+    );
+
+    return;
+
+  }
 
 
-function init() {
+  /*
+    Если демо-колода уже существует,
+    но старая версия была создана ранее,
+    обновляем её до новой версии.
+  */
 
-    loadDecks();
+  const index =
+    decks.findIndex(
+      deck => deck.id === demoId
+    );
 
-    setupEvents();
 
-    renderHome();
+  if (index !== -1) {
+
+    decks[index] = demoDeck;
+
+  }
 
 }
 
 
-// ============================================================
-// ЗАГРУЗКА
-// ============================================================
-
-function loadDecks() {
-
-    try {
-
-        const saved =
-            localStorage.getItem(
-                STORAGE_KEY
-            );
-
-
-        if (saved) {
-
-            decks =
-                JSON.parse(saved);
-
-        } else {
-
-            decks =
-                [structuredClone(
-                    defaultDeck
-                )];
-
-            saveDecks();
-
-        }
-
-    } catch (error) {
-
-        console.error(error);
-
-        decks =
-            [structuredClone(
-                defaultDeck
-            )];
-
-    }
-
-}
-
-
-// ============================================================
-// СОХРАНЕНИЕ
-// ============================================================
-
-function saveDecks() {
-
-    localStorage.setItem(
-        STORAGE_KEY,
-        JSON.stringify(decks)
-    );
-
-}
-
-
-// ============================================================
-// СОБЫТИЯ
-// ============================================================
-
-function setupEvents() {
-
-    createDeckBtn.addEventListener(
-        "click",
-        openCreateScreen
-    );
-
-
-    backFromCreate.addEventListener(
-        "click",
-        handleBackFromCreate
-    );
-
-
-    backFromDeck.addEventListener(
-        "click",
-        () => showScreen(homeScreen)
-    );
-
-
-    backFromStudy.addEventListener(
-        "click",
-        () => showScreen(deckScreen)
-    );
-
-
-    addCardBtn.addEventListener(
-        "click",
-        () => addNewCardBlock()
-    );
-
-
-    saveDeckBtn.addEventListener(
-        "click",
-        saveDeckFromEditor
-    );
-
-
-    startStudyBtn.addEventListener(
-        "click",
-        startStudy
-    );
-
-
-    toggleContentBtn.addEventListener(
-        "click",
-        toggleContent
-    );
-
-
-    editDeckBtn.addEventListener(
-        "click",
-        editCurrentDeck
-    );
-
-
-    deleteDeckBtn.addEventListener(
-        "click",
-        openDeleteConfirmation
-    );
-
-
-    cancelDeleteBtn.addEventListener(
-        "click",
-        closeDeleteConfirmation
-    );
-
-
-    confirmDeleteBtn.addEventListener(
-        "click",
-        deleteCurrentDeck
-    );
-
-
-    flashcard.addEventListener(
-        "click",
-        flipCard
-    );
-
-
-    dontKnowBtn.addEventListener(
-        "click",
-        () => answerCard(false)
-    );
-
-
-    knowBtn.addEventListener(
-        "click",
-        () => answerCard(true)
-    );
-
-
-    nextBtn.addEventListener(
-        "click",
-        nextCard
-    );
-
-
-    setupDeckIconEvents();
-
-}
-
-
-// ============================================================
-// ЗНАЧКИ КОЛОДЫ
-// ============================================================
-
-function setupDeckIconEvents() {
-
-    deckIconSelector
-        .querySelectorAll(
-            ".emoji-option"
-        )
-        .forEach(button => {
-
-            button.addEventListener(
-                "click",
-                () => {
-
-                    deckIconSelector
-                        .querySelectorAll(
-                            ".emoji-option"
-                        )
-                        .forEach(item =>
-                            item.classList.remove(
-                                "selected"
-                            )
-                        );
-
-
-                    button.classList.add(
-                        "selected"
-                    );
-
-
-                    selectedDeckIcon =
-                        button.dataset.icon;
-
-                }
-            );
-
-        });
-
-}
-
-
-// ============================================================
-// ЭКРАН
-// ============================================================
-
-function showScreen(screen) {
-
-    document
-        .querySelectorAll(".screen")
-        .forEach(item =>
-            item.classList.remove(
-                "active"
-            )
-        );
-
-
-    screen.classList.add(
-        "active"
-    );
-
-
-    window.scrollTo(
-        0,
-        0
-    );
-
-}
-
-
-// ============================================================
-// ГЛАВНАЯ
-// ============================================================
+/* =========================================================
+   HOME
+========================================================= */
 
 function renderHome() {
 
-    decksList.innerHTML = "";
-
-
-    if (!decks.length) {
-
-        decksList.innerHTML = `
-            <div class="small-text">
-                У тебя пока нет колод.
-            </div>
-        `;
-
-        return;
-
-    }
-
-
-    decks.forEach(deck => {
-
-        const item =
-            document.createElement(
-                "div"
-            );
-
-
-        item.className =
-            "deck-item";
-
-
-        item.innerHTML = `
-
-            <div class="deck-item-icon">
-                ${escapeHtml(
-                    deck.icon || "📚"
-                )}
-            </div>
-
-            <div class="deck-item-info">
-
-                <div class="deck-item-title">
-                    ${escapeHtml(
-                        deck.name
-                    )}
-                </div>
-
-                <div class="deck-item-count">
-                    ${deck.cards.length}
-                    ${getCardWord(
-                        deck.cards.length
-                    )}
-                </div>
-
-            </div>
-
-        `;
-
-
-        item.addEventListener(
-            "click",
-            () => openDeck(deck.id)
-        );
-
-
-        decksList.appendChild(
-            item
-        );
-
-    });
-
-}
-
-
-// ============================================================
-// СОЗДАНИЕ КОЛОДЫ
-// ============================================================
-
-function openCreateScreen() {
-
-    editingDeckId = null;
-
-
-    createScreenTitle.textContent =
-        "Новая колода";
-
-
-    saveDeckBtn.textContent =
-        "Сохранить колоду";
-
-
-    deckNameInput.value = "";
-
-
-    selectedDeckIcon =
-        "📚";
-
-
-    deckIconSelector
-        .querySelectorAll(
-            ".emoji-option"
-        )
-        .forEach(
-            (button, index) => {
-
-                button.classList.toggle(
-                    "selected",
-                    index === 0
-                );
-
-            }
-        );
-
-
-    newCardsList.innerHTML = "";
-
-
-    addNewCardBlock();
-
-
-    showScreen(
-        createScreen
+  const deckList =
+    document.getElementById(
+      "deckList"
     );
 
-}
+
+  deckList.innerHTML = "";
 
 
-// ============================================================
-// РЕДАКТИРОВАНИЕ КОЛОДЫ
-// ============================================================
+  decks.forEach(
+    deck => {
 
-function editCurrentDeck() {
+      const item =
+        document.createElement("div");
 
-    const deck =
-        getCurrentDeck();
-
-
-    if (!deck) {
-        return;
-    }
+      item.className =
+        "deck-item";
 
 
-    editingDeckId =
-        deck.id;
+      item.addEventListener(
+        "click",
+        () => openDeck(deck.id)
+      );
 
 
-    createScreenTitle.textContent =
-        "Редактировать колоду";
+      const icon =
+        document.createElement("div");
 
+      icon.className =
+        "deck-item-icon";
 
-    saveDeckBtn.textContent =
-        "Сохранить изменения";
-
-
-    deckNameInput.value =
-        deck.name;
-
-
-    selectedDeckIcon =
+      icon.textContent =
         deck.icon || "📚";
 
 
-    deckIconSelector
-        .querySelectorAll(
-            ".emoji-option"
-        )
-        .forEach(button => {
+      const info =
+        document.createElement("div");
 
-            button.classList.toggle(
-                "selected",
-                button.dataset.icon ===
-                selectedDeckIcon
-            );
+      info.className =
+        "deck-item-info";
 
+
+      const name =
+        document.createElement("div");
+
+      name.className =
+        "deck-item-name";
+
+      name.textContent =
+        deck.name;
+
+
+      const count =
+        document.createElement("div");
+
+      count.className =
+        "deck-item-count";
+
+      count.textContent =
+        getCardCountText(
+          deck.cards.length
+        );
+
+
+      info.appendChild(name);
+      info.appendChild(count);
+
+
+      const arrow =
+        document.createElement("div");
+
+      arrow.className =
+        "deck-item-arrow";
+
+      arrow.textContent =
+        "›";
+
+
+      item.appendChild(icon);
+      item.appendChild(info);
+      item.appendChild(arrow);
+
+
+      deckList.appendChild(item);
+
+    }
+  );
+
+}
+
+
+/* =========================================================
+   CARD COUNT
+========================================================= */
+
+function getCardCountText(count) {
+
+  if (
+    count % 10 === 1 &&
+    count % 100 !== 11
+  ) {
+
+    return `${count} карточка`;
+
+  }
+
+
+  if (
+    count >= 2 &&
+    count <= 4
+  ) {
+
+    return `${count} карточки`;
+
+  }
+
+
+  return `${count} карточек`;
+
+}
+
+
+/* =========================================================
+   CREATE SCREEN
+========================================================= */
+
+function openCreateScreen() {
+
+  editingDeckId = null;
+
+  selectedDeckIcon = "📚";
+
+
+  document
+    .getElementById("createTitle")
+    .textContent =
+      "Новая колода";
+
+
+  document
+    .getElementById("deckNameInput")
+    .value = "";
+
+
+  document
+    .querySelectorAll(".deck-icon-option")
+    .forEach(
+      button => {
+
+        button.classList.toggle(
+          "selected",
+          button.dataset.icon ===
+            selectedDeckIcon
+        );
+
+      }
+    );
+
+
+  document
+    .getElementById("newCardsList")
+    .innerHTML = "";
+
+
+  addNewCardBlock();
+
+
+  showScreen("createScreen");
+
+}
+
+
+/* =========================================================
+   EDIT CURRENT DECK
+========================================================= */
+
+function editCurrentDeck() {
+
+  const deck =
+    decks.find(
+      item => item.id === currentDeckId
+    );
+
+
+  if (!deck) return;
+
+
+  if (deck.builtIn) {
+
+    showToast(
+      "Эта колода предназначена для знакомства с приложением"
+    );
+
+    return;
+
+  }
+
+
+  editingDeckId =
+    deck.id;
+
+
+  selectedDeckIcon =
+    deck.icon || "📚";
+
+
+  document
+    .getElementById("createTitle")
+    .textContent =
+      "Редактировать колоду";
+
+
+  document
+    .getElementById("deckNameInput")
+    .value =
+      deck.name;
+
+
+  document
+    .querySelectorAll(".deck-icon-option")
+    .forEach(
+      button => {
+
+        button.classList.toggle(
+          "selected",
+          button.dataset.icon ===
+            selectedDeckIcon
+        );
+
+      }
+    );
+
+
+  const cardsList =
+    document.getElementById(
+      "newCardsList"
+    );
+
+  cardsList.innerHTML = "";
+
+
+  deck.cards.forEach(
+    card =>
+      addNewCardBlock(card)
+  );
+
+
+  showScreen("createScreen");
+
+}
+
+
+/* =========================================================
+   EDIT CARD
+========================================================= */
+
+function editCard(cardId) {
+
+  const deck =
+    decks.find(
+      item => item.id === currentDeckId
+    );
+
+
+  if (!deck) return;
+
+
+  if (deck.builtIn) {
+
+    showToast(
+      "Демо-колоду нельзя редактировать"
+    );
+
+    return;
+
+  }
+
+
+  editCurrentDeck();
+
+
+  setTimeout(
+    () => {
+
+      const card =
+        document.querySelector(
+          `[data-card-id="${cardId}"]`
+        );
+
+
+      if (card) {
+
+        card.scrollIntoView({
+          behavior: "smooth",
+          block: "center"
         });
 
+      }
 
-    newCardsList.innerHTML = "";
-
-
-    deck.cards.forEach(
-        card =>
-            addNewCardBlock(card)
-    );
-
-
-    if (!deck.cards.length) {
-
-        addNewCardBlock();
-
-    }
-
-
-    showScreen(
-        createScreen
-    );
+    },
+    100
+  );
 
 }
 
 
-// ============================================================
-// НАЗАД ИЗ РЕДАКТОРА
-// ============================================================
-
-function handleBackFromCreate() {
-
-    if (editingDeckId) {
-
-        const deck =
-            getCurrentDeck();
-
-
-        if (deck) {
-
-            openDeck(
-                deck.id
-            );
-
-            return;
-
-        }
-
-    }
-
-
-    showScreen(
-        homeScreen
-    );
-
-}
-
-
-// ============================================================
-// ДОБАВЛЕНИЕ КАРТОЧКИ В РЕДАКТОР
-// ============================================================
-
-function addNewCardBlock(existingCard = null) {
-
-    const cardNumber =
-        newCardsList.children.length + 1;
-
-
-    const block =
-        document.createElement(
-            "div"
-        );
-
-
-    block.className =
-        "new-card";
-
-
-    if (existingCard) {
-
-        block.dataset.cardId =
-            existingCard.id || "";
-
-        block.dataset.imageUrl =
-            existingCard.imageUrl || "";
-
-    }
-
-
-    block.innerHTML = `
-
-        <div class="card-header">
-
-            <div class="card-number">
-                Карточка ${cardNumber}
-            </div>
-
-            <button
-                class="remove-card-btn"
-                type="button"
-            >
-                ×
-            </button>
-
-        </div>
-
-
-        <div class="card-field">
-
-            <label>
-                Лицевая сторона
-            </label>
-
-            <textarea
-                class="front-input"
-                placeholder="Например: Молоток"
-            ></textarea>
-
-        </div>
-
-
-        <div class="card-field">
-
-            <label>
-                Обратная сторона
-            </label>
-
-            <textarea
-                class="back-input"
-                placeholder="Например: Hammer"
-            ></textarea>
-
-        </div>
-
-
-        <div class="card-field photo-upload">
-
-            <label>
-                Изображение
-            </label>
-
-            <label class="photo-button">
-
-                📷
-                ${existingCard && existingCard.imageUrl
-                    ? "Изменить фотографию"
-                    : "Добавить фотографию"}
-
-                <input
-                    type="file"
-                    class="photo-input"
-                    accept="image/*"
-                >
-
-            </label>
-
-
-            <div class="photo-preview-wrapper">
-
-                <img
-                    class="photo-preview"
-                    alt="Фото карточки"
-                >
-
-                <button
-                    type="button"
-                    class="remove-photo-btn"
-                >
-                    ×
-                </button>
-
-            </div>
-
-        </div>
-
-    `;
-
-
-    // ========================================================
-    // ЗАПОЛНЯЕМ ДАННЫЕ ПРИ РЕДАКТИРОВАНИИ
-    // ========================================================
-
-    if (existingCard) {
-
-        block.querySelector(
-            ".front-input"
-        ).value =
-            existingCard.front || "";
-
-
-        block.querySelector(
-            ".back-input"
-        ).value =
-            existingCard.back || "";
-
-
-        if (existingCard.imageUrl) {
-
-            showExistingImage(
-                block,
-                existingCard.imageUrl
-            );
-
-        }
-
-    }
-
-
-    // ========================================================
-    // УДАЛЕНИЕ КАРТОЧКИ
-    // ========================================================
-
-    block
-        .querySelector(
-            ".remove-card-btn"
-        )
-        .addEventListener(
-            "click",
-            () => {
-
-                if (
-                    newCardsList.children.length <= 1
-                ) {
-
-                    showToast(
-                        "В колоде должна остаться хотя бы одна карточка."
-                    );
-
-                    return;
-
-                }
-
-
-                block.classList.add(
-                    "removing"
-                );
-
-
-                setTimeout(() => {
-
-                    block.remove();
-
-                    updateCardNumbers();
-
-                }, 200);
-
-            }
-        );
-
-
-    // ========================================================
-    // ФОТО
-    // ========================================================
-
-    const photoInput =
-        block.querySelector(
-            ".photo-input"
-        );
-
-
-    const previewWrapper =
-        block.querySelector(
-            ".photo-preview-wrapper"
-        );
-
-
-    const preview =
-        block.querySelector(
-            ".photo-preview"
-        );
-
-
-    const removePhoto =
-        block.querySelector(
-            ".remove-photo-btn"
-        );
-
-
-    photoInput.addEventListener(
-        "change",
-        async () => {
-
-            const file =
-                photoInput.files[0];
-
-
-            if (!file) {
-                return;
-            }
-
-
-            if (
-                !file.type.startsWith(
-                    "image/"
-                )
-            ) {
-
-                showToast(
-                    "Можно загружать только изображения."
-                );
-
-                photoInput.value =
-                    "";
-
-                return;
-
-            }
-
-
-            const maxSize =
-                5 * 1024 * 1024;
-
-
-            if (
-                file.size > maxSize
-            ) {
-
-                showToast(
-                    "Максимальный размер фотографии — 5 МБ."
-                );
-
-                photoInput.value =
-                    "";
-
-                return;
-
-            }
-
-
-            const localUrl =
-                URL.createObjectURL(
-                    file
-                );
-
-
-            preview.src =
-                localUrl;
-
-
-            previewWrapper.classList.add(
-                "visible"
-            );
-
-
-            showToast(
-                "Загружаем фотографию..."
-            );
-
-
-            const uploadedUrl =
-                await uploadImage(
-                    file
-                );
-
-
-            if (uploadedUrl) {
-
-                block.dataset.imageUrl =
-                    uploadedUrl;
-
-
-                const button =
-                    block.querySelector(
-                        ".photo-button"
-                    );
-
-
-                button.childNodes[
-                    0
-                ].textContent =
-                    "📷 Изменить фотографию";
-
-
-                showToast(
-                    "Фотография загружена"
-                );
-
-            } else {
-
-                previewWrapper.classList.remove(
-                    "visible"
-                );
-
-                photoInput.value =
-                    "";
-
-            }
-
-        }
-    );
-
-
-    // ========================================================
-    // УДАЛЕНИЕ ФОТО
-    // ========================================================
-
-    removePhoto.addEventListener(
-        "click",
-        () => {
-
-            block.dataset.imageUrl =
-                "";
-
-
-            photoInput.value =
-                "";
-
-
-            preview.src =
-                "";
-
-
-            previewWrapper.classList.remove(
-                "visible"
-            );
-
-
-            const button =
-                block.querySelector(
-                    ".photo-button"
-                );
-
-
-            button.textContent =
-                "📷 Добавить фотографию";
-
-
-            showToast(
-                "Фотография удалена из карточки"
-            );
-
-        }
-    );
-
-
-    newCardsList.appendChild(
-        block
-    );
-
-
-    updateCardNumbers();
-
-}
-
-
-// ============================================================
-// ПОКАЗ СУЩЕСТВУЮЩЕГО ФОТО
-// ============================================================
-
-function showExistingImage(
-    block,
-    imageUrl
+/* =========================================================
+   ADD CARD BLOCK
+========================================================= */
+
+function addNewCardBlock(
+  existingCard = null
 ) {
 
-    const wrapper =
-        block.querySelector(
-            ".photo-preview-wrapper"
-        );
-
-
-    const image =
-        block.querySelector(
-            ".photo-preview"
-        );
-
-
-    image.src =
-        imageUrl;
-
-
-    wrapper.classList.add(
-        "visible"
+  const cardsList =
+    document.getElementById(
+      "newCardsList"
     );
+
+
+  const block =
+    document.createElement("div");
+
+  block.className =
+    "new-card";
+
+
+  if (existingCard) {
+
+    block.dataset.cardId =
+      existingCard.id;
+
+    block.dataset.imageUrl =
+      existingCard.imageUrl || "";
+
+  }
+
+
+  const cardNumber =
+    document.createElement("div");
+
+  cardNumber.className =
+    "card-number";
+
+  cardNumber.textContent =
+    `КАРТОЧКА ${
+      cardsList.children.length + 1
+    }`;
+
+
+  const removeButton =
+    document.createElement("button");
+
+  removeButton.className =
+    "remove-card-button";
+
+  removeButton.type =
+    "button";
+
+  removeButton.textContent =
+    "×";
+
+
+  removeButton.addEventListener(
+    "click",
+    () => {
+
+      block.classList.add(
+        "removing"
+      );
+
+
+      setTimeout(
+        () => {
+
+          block.remove();
+
+          updateCardNumbers();
+
+        },
+        200
+      );
+
+    }
+  );
+
+
+  const frontLabel =
+    document.createElement("div");
+
+  frontLabel.className =
+    "card-editor-label";
+
+  frontLabel.textContent =
+    "ЛИЦЕВАЯ СТОРОНА";
+
+
+  const frontInput =
+    document.createElement("textarea");
+
+  frontInput.className =
+    "card-textarea front-input";
+
+  frontInput.placeholder =
+    "Например: Что такое столица Франции?";
+
+  frontInput.value =
+    existingCard?.front || "";
+
+
+  const backLabel =
+    document.createElement("div");
+
+  backLabel.className =
+    "card-editor-label";
+
+  backLabel.textContent =
+    "ОБРАТНАЯ СТОРОНА";
+
+
+  const backInput =
+    document.createElement("textarea");
+
+  backInput.className =
+    "card-textarea back-input";
+
+  backInput.placeholder =
+    "Например: Париж";
+
+  backInput.value =
+    existingCard?.back || "";
+
+
+  const photoSection =
+    document.createElement("div");
+
+  photoSection.className =
+    "photo-section";
+
+
+  const photoLabel =
+    document.createElement("div");
+
+  photoLabel.className =
+    "card-editor-label";
+
+  photoLabel.textContent =
+    "ФОТО";
+
+
+  const uploadLabel =
+    document.createElement("label");
+
+  uploadLabel.className =
+    "photo-upload-label";
+
+  uploadLabel.textContent =
+    "📷 Добавить фотографию";
+
+
+  const fileInput =
+    document.createElement("input");
+
+  fileInput.type =
+    "file";
+
+  fileInput.accept =
+    "image/*";
+
+  fileInput.className =
+    "photo-upload-input";
+
+
+  uploadLabel.appendChild(
+    fileInput
+  );
+
+
+  const previewContainer =
+    document.createElement("div");
+
+  previewContainer.className =
+    "photo-preview-wrapper";
+
+  previewContainer.style.display =
+    existingCard?.imageUrl
+      ? "block"
+      : "none";
+
+
+  const preview =
+    document.createElement("img");
+
+  preview.className =
+    "photo-preview";
+
+  preview.alt =
+    "Фото карточки";
+
+
+  if (existingCard?.imageUrl) {
+
+    preview.src =
+      existingCard.imageUrl;
+
+  }
+
+
+  const removePhoto =
+    document.createElement("button");
+
+  removePhoto.type =
+    "button";
+
+  removePhoto.className =
+    "remove-photo-button";
+
+  removePhoto.textContent =
+    "×";
+
+
+  removePhoto.addEventListener(
+    "click",
+    () => {
+
+      block.dataset.imageUrl =
+        "";
+
+      preview.src =
+        "";
+
+      previewContainer.style.display =
+        "none";
+
+    }
+  );
+
+
+  previewContainer.appendChild(
+    preview
+  );
+
+  previewContainer.appendChild(
+    removePhoto
+  );
+
+
+  fileInput.addEventListener(
+    "change",
+    async event => {
+
+      const file =
+        event.target.files[0];
+
+
+      if (!file) return;
+
+
+      try {
+
+        showToast(
+          "Загружаю фотографию..."
+        );
+
+
+        const imageUrl =
+          await uploadImage(file);
+
+
+        block.dataset.imageUrl =
+          imageUrl;
+
+
+        preview.src =
+          imageUrl;
+
+
+        previewContainer.style.display =
+          "block";
+
+
+        showToast(
+          "Фотография добавлена"
+        );
+
+
+      } catch (error) {
+
+        console.error(error);
+
+        showToast(
+          "Не удалось загрузить фотографию"
+        );
+
+      }
+
+    }
+  );
+
+
+  photoSection.appendChild(
+    photoLabel
+  );
+
+  photoSection.appendChild(
+    uploadLabel
+  );
+
+  photoSection.appendChild(
+    previewContainer
+  );
+
+
+  block.appendChild(
+    cardNumber
+  );
+
+  block.appendChild(
+    removeButton
+  );
+
+  block.appendChild(
+    frontLabel
+  );
+
+  block.appendChild(
+    frontInput
+  );
+
+  block.appendChild(
+    backLabel
+  );
+
+  block.appendChild(
+    backInput
+  );
+
+  block.appendChild(
+    photoSection
+  );
+
+
+  cardsList.appendChild(
+    block
+  );
 
 }
 
 
-// ============================================================
-// НУМЕРАЦИЯ
-// ============================================================
+/* =========================================================
+   CARD NUMBERS
+========================================================= */
 
 function updateCardNumbers() {
 
-    [
-        ...newCardsList.children
-    ]
-        .forEach(
-            (card, index) => {
+  document
+    .querySelectorAll(
+      "#newCardsList .new-card"
+    )
+    .forEach(
+      (card, index) => {
 
-                const number =
-                    card.querySelector(
-                        ".card-number"
-                    );
+        const number =
+          card.querySelector(
+            ".card-number"
+          );
 
+        if (number) {
 
-                number.textContent =
-                    `Карточка ${index + 1}`;
+          number.textContent =
+            `КАРТОЧКА ${index + 1}`;
 
-            }
-        );
+        }
+
+      }
+    );
 
 }
 
 
-// ============================================================
-// СОХРАНЕНИЕ КОЛОДЫ
-// ============================================================
+/* =========================================================
+   SAVE DECK
+========================================================= */
 
-function saveDeckFromEditor() {
+async function saveDeckFromEditor() {
 
-    const name =
-        deckNameInput.value.trim();
-
-
-    if (!name) {
-
-        showToast(
-            "Введите название колоды."
-        );
-
-        return;
-
-    }
+  const name =
+    document
+      .getElementById(
+        "deckNameInput"
+      )
+      .value
+      .trim();
 
 
-    const cardBlocks =
-        [
-            ...newCardsList.children
-        ];
+  if (!name) {
+
+    showToast(
+      "Введите название колоды"
+    );
+
+    return;
+
+  }
 
 
-    const cards = [];
+  const blocks =
+    Array.from(
+      document.querySelectorAll(
+        "#newCardsList .new-card"
+      )
+    );
 
 
-    for (
-        let i = 0;
-        i < cardBlocks.length;
-        i++
-    ) {
+  if (!blocks.length) {
 
-        const block =
-            cardBlocks[i];
+    showToast(
+      "Добавьте хотя бы одну карточку"
+    );
 
+    return;
 
-        const front =
-            block
-                .querySelector(
-                    ".front-input"
-                )
-                .value
-                .trim();
+  }
 
 
-        const back =
-            block
-                .querySelector(
-                    ".back-input"
-                )
-                .value
-                .trim();
+  const cards = [];
 
 
-        if (!front && !back) {
+  for (
+    let i = 0;
+    i < blocks.length;
+    i++
+  ) {
 
-            showToast(
-                `Заполните карточку ${i + 1}.`
-            );
-
-            return;
-
-        }
-
-
-        const oldCardId =
-            block.dataset.cardId;
+    const block =
+      blocks[i];
 
 
-        const card = {
-
-            id:
-                oldCardId ||
-                (
-                    "card-" +
-                    Date.now() +
-                    "-" +
-                    i
-                ),
-
-            front,
-
-            back,
-
-            imageUrl:
-                block.dataset.imageUrl ||
-                ""
-
-        };
+    const front =
+      block
+        .querySelector(".front-input")
+        .value
+        .trim();
 
 
-        cards.push(
-            card
-        );
+    const back =
+      block
+        .querySelector(".back-input")
+        .value
+        .trim();
+
+
+    if (!front || !back) {
+
+      showToast(
+        `Заполните карточку ${i + 1}`
+      );
+
+      return;
 
     }
 
 
-    // ========================================================
-    // НОВАЯ КОЛОДА
-    // ========================================================
+    cards.push({
 
-    if (!editingDeckId) {
+      id:
+        block.dataset.cardId ||
+        generateId(),
 
-        const newDeck = {
+      front,
 
-            id:
-                "deck-" +
-                Date.now(),
+      back,
 
-            name,
+      imageUrl:
+        block.dataset.imageUrl || ""
 
-            icon:
-                selectedDeckIcon,
+    });
 
-            builtIn: false,
-
-            universal: true,
-
-            cards
-
-        };
+  }
 
 
-        decks.push(
-            newDeck
-        );
-
-
-        saveDecks();
-
-
-        // ВАЖНО:
-        // сразу перерисовываем список
-
-        renderHome();
-
-
-        showToast(
-            "Колода создана"
-        );
-
-
-        setTimeout(() => {
-
-            openDeck(
-                newDeck.id
-            );
-
-        }, 450);
-
-
-        return;
-
-    }
-
-
-    // ========================================================
-    // РЕДАКТИРОВАНИЕ
-    // ========================================================
+  if (editingDeckId) {
 
     const deck =
-        getCurrentDeck();
+      decks.find(
+        item =>
+          item.id ===
+          editingDeckId
+      );
 
 
-    if (!deck) {
-        return;
+    if (!deck) return;
+
+
+    if (deck.builtIn) {
+
+      showToast(
+        "Эту колоду нельзя редактировать"
+      );
+
+      return;
+
     }
 
 
     deck.name =
-        name;
-
+      name;
 
     deck.icon =
-        selectedDeckIcon;
-
+      selectedDeckIcon;
 
     deck.cards =
-        cards;
-
-
-    saveDecks();
-
-
-    renderHome();
-
-
-    renderDeckContent(
-        deck
-    );
-
-
-    showToast(
-        "Изменения сохранены"
-    );
-
-
-    setTimeout(() => {
-
-        openDeck(
-            deck.id
-        );
-
-    }, 450);
-
-}
-
-
-// ============================================================
-// ОТКРЫТИЕ КОЛОДЫ
-// ============================================================
-
-function openDeck(deckId) {
-
-    const deck =
-        decks.find(
-            item =>
-                item.id === deckId
-        );
-
-
-    if (!deck) {
-        return;
-    }
+      cards;
 
 
     currentDeckId =
-        deckId;
-
-
-    deckIcon.textContent =
-        deck.icon || "📚";
-
-
-    deckTitle.textContent =
-        deck.name;
-
-
-    deckCount.textContent =
-        `${deck.cards.length} ${getCardWord(
-            deck.cards.length
-        )}`;
-
-
-    contentContainer.classList.add(
-        "hidden"
-    );
-
-
-    toggleContentBtn.textContent =
-        "☰ Содержание колоды";
-
-
-    renderDeckContent(
-        deck
-    );
-
-
-    showScreen(
-        deckScreen
-    );
-
-}
-
-
-// ============================================================
-// СОДЕРЖАНИЕ
-// ============================================================
-
-function renderDeckContent(
-    deck
-) {
-
-    contentContainer.innerHTML =
-        "";
-
-
-    deck.cards.forEach(
-        (card, index) => {
-
-            const item =
-                document.createElement(
-                    "div"
-                );
-
-
-            item.className =
-                "content-card";
-
-
-            const imageHtml =
-                card.imageUrl
-
-                    ? `
-                        <img
-                            class="content-card-image"
-                            src="${escapeHtml(
-                                card.imageUrl
-                            )}"
-                            alt=""
-                        >
-                    `
-
-                    : `
-                        <div class="content-card-placeholder">
-                            📷
-                        </div>
-                    `;
-
-
-            item.innerHTML = `
-
-                ${imageHtml}
-
-                <div class="content-card-number">
-                    Карточка ${index + 1}
-                </div>
-
-                <div class="content-front">
-                    ${escapeHtml(
-                        card.front || ""
-                    )}
-                </div>
-
-                <div class="content-back">
-                    ${escapeHtml(
-                        card.back || ""
-                    )}
-                </div>
-
-                <button
-                    class="content-edit-btn"
-                    type="button"
-                >
-                    ✏️ Редактировать
-                </button>
-
-            `;
-
-
-            item
-                .querySelector(
-                    ".content-edit-btn"
-                )
-                .addEventListener(
-                    "click",
-                    () => {
-
-                        editCard(
-                            card.id
-                        );
-
-                    }
-                );
-
-
-            contentContainer.appendChild(
-                item
-            );
-
-        }
-    );
-
-}
-
-
-// ============================================================
-// РЕДАКТИРОВАНИЕ КОНКРЕТНОЙ КАРТОЧКИ
-// ============================================================
-
-function editCard(
-    cardId
-) {
-
-    const deck =
-        getCurrentDeck();
-
-
-    if (!deck) {
-        return;
-    }
-
-
-    editingDeckId =
-        deck.id;
-
-
-    createScreenTitle.textContent =
-        "Редактировать колоду";
-
-
-    saveDeckBtn.textContent =
-        "Сохранить изменения";
-
-
-    deckNameInput.value =
-        deck.name;
-
-
-    selectedDeckIcon =
-        deck.icon || "📚";
-
-
-    deckIconSelector
-        .querySelectorAll(
-            ".emoji-option"
-        )
-        .forEach(button => {
-
-            button.classList.toggle(
-                "selected",
-                button.dataset.icon ===
-                selectedDeckIcon
-            );
-
-        });
-
-
-    newCardsList.innerHTML =
-        "";
-
-
-    deck.cards.forEach(
-        card => {
-
-            addNewCardBlock(
-                card
-            );
-
-        }
-    );
-
-
-    showScreen(
-        createScreen
-    );
-
-
-    setTimeout(() => {
-
-        const target =
-            [
-                ...newCardsList.children
-            ].find(
-                block =>
-                    block.dataset.cardId ===
-                    cardId
-            );
-
-
-        if (target) {
-
-            target.scrollIntoView({
-                behavior: "smooth",
-                block: "center"
-            });
-
-        }
-
-    }, 150);
-
-}
-
-
-// ============================================================
-// СОДЕРЖАНИЕ: ПОКАЗАТЬ / СКРЫТЬ
-// ============================================================
-
-function toggleContent() {
-
-    const hidden =
-        contentContainer.classList.contains(
-            "hidden"
-        );
-
-
-    if (hidden) {
-
-        contentContainer.classList.remove(
-            "hidden"
-        );
-
-
-        toggleContentBtn.textContent =
-            "↑ Скрыть содержание";
-
-    } else {
-
-        contentContainer.classList.add(
-            "hidden"
-        );
-
-
-        toggleContentBtn.textContent =
-            "☰ Содержание колоды";
-
-    }
-
-}
-
-
-// ============================================================
-// УДАЛЕНИЕ КОЛОДЫ
-// ============================================================
-
-function openDeleteConfirmation() {
-
-    const deck =
-        getCurrentDeck();
-
-
-    if (!deck) {
-        return;
-    }
-
-
-    if (deck.builtIn) {
-
-        showToast(
-            "Стандартную колоду удалить нельзя."
-        );
-
-        return;
-
-    }
-
-
-    confirmOverlay.classList.remove(
-        "hidden"
-    );
-
-}
-
-
-function closeDeleteConfirmation() {
-
-    confirmOverlay.classList.add(
-        "hidden"
-    );
-
-}
-
-
-function deleteCurrentDeck() {
-
-    const deck =
-        getCurrentDeck();
-
-
-    if (!deck) {
-        return;
-    }
-
-
-    if (deck.builtIn) {
-
-        closeDeleteConfirmation();
-
-        return;
-
-    }
-
-
-    decks =
-        decks.filter(
-            item =>
-                item.id !== deck.id
-        );
+      deck.id;
 
 
     saveDecks();
 
-
-    closeDeleteConfirmation();
-
-
     renderHome();
 
+    openDeck(deck.id);
 
     showToast(
-        "Колода удалена"
+      "Колода обновлена"
     );
 
+    return;
 
-    setTimeout(() => {
+  }
 
-        showScreen(
-            homeScreen
-        );
 
-    }, 400);
+  const newDeck = {
+
+    id:
+      generateId(),
+
+    name,
+
+    icon:
+      selectedDeckIcon,
+
+    builtIn:
+      false,
+
+    universal:
+      true,
+
+    cards
+
+  };
+
+
+  decks.push(
+    newDeck
+  );
+
+
+  currentDeckId =
+    newDeck.id;
+
+
+  saveDecks();
+
+  renderHome();
+
+  openDeck(
+    newDeck.id
+  );
+
+  showToast(
+    "Колода создана"
+  );
 
 }
 
 
-// ============================================================
-// ОБУЧЕНИЕ
-// ============================================================
+/* =========================================================
+   OPEN DECK
+========================================================= */
+
+function openDeck(deckId) {
+
+  const deck =
+    decks.find(
+      item => item.id === deckId
+    );
+
+
+  if (!deck) return;
+
+
+  currentDeckId =
+    deckId;
+
+
+  document
+    .getElementById(
+      "deckHeadingIcon"
+    )
+    .textContent =
+      deck.icon || "📚";
+
+
+  document
+    .getElementById(
+      "deckHeadingTitle"
+    )
+    .textContent =
+      deck.name;
+
+
+  document
+    .getElementById(
+      "deckHeadingCount"
+    )
+    .textContent =
+      getCardCountText(
+        deck.cards.length
+      );
+
+
+  const editButton =
+    document.getElementById(
+      "editDeckButton"
+    );
+
+
+  const deleteButton =
+    document.getElementById(
+      "deleteDeckButton"
+    );
+
+
+  if (deck.builtIn) {
+
+    editButton.style.display =
+      "none";
+
+    deleteButton.style.display =
+      "none";
+
+  } else {
+
+    editButton.style.display =
+      "block";
+
+    deleteButton.style.display =
+      "block";
+
+  }
+
+
+  document
+    .getElementById(
+      "deckContent"
+    )
+    .classList.remove(
+      "visible"
+    );
+
+
+  renderDeckContent(
+    deck
+  );
+
+
+  showScreen(
+    "deckScreen"
+  );
+
+}
+
+
+/* =========================================================
+   CONTENT
+========================================================= */
+
+function toggleDeckContent() {
+
+  const content =
+    document.getElementById(
+      "deckContent"
+    );
+
+
+  content.classList.toggle(
+    "visible"
+  );
+
+}
+
+
+function renderDeckContent(
+  deck
+) {
+
+  const container =
+    document.getElementById(
+      "deckContent"
+    );
+
+
+  container.innerHTML = "";
+
+
+  deck.cards.forEach(
+    (card, index) => {
+
+      const cardElement =
+        document.createElement("div");
+
+      cardElement.className =
+        "content-card";
+
+
+      const number =
+        document.createElement("div");
+
+      number.className =
+        "content-card-number";
+
+      number.textContent =
+        `КАРТОЧКА ${index + 1}`;
+
+
+      cardElement.appendChild(
+        number
+      );
+
+
+      if (card.imageUrl) {
+
+        const image =
+          document.createElement("img");
+
+        image.className =
+          "content-card-image";
+
+        image.src =
+          card.imageUrl;
+
+        image.alt =
+          "Фото карточки";
+
+        cardElement.appendChild(
+          image
+        );
+
+      } else {
+
+        const placeholder =
+          document.createElement("div");
+
+        placeholder.className =
+          "content-card-image-placeholder";
+
+        placeholder.textContent =
+          "📷";
+
+        cardElement.appendChild(
+          placeholder
+        );
+
+      }
+
+
+      const front =
+        document.createElement("div");
+
+      front.className =
+        "content-card-front";
+
+      front.innerHTML =
+        `<span class="content-label">
+          ЛИЦЕВАЯ СТОРОНА
+        </span>`;
+
+      const frontText =
+        document.createElement("div");
+
+      frontText.textContent =
+        card.front;
+
+      front.appendChild(
+        frontText
+      );
+
+
+      const back =
+        document.createElement("div");
+
+      back.className =
+        "content-card-back";
+
+      back.innerHTML =
+        `<span class="content-label">
+          ОБРАТНАЯ СТОРОНА
+        </span>`;
+
+      const backText =
+        document.createElement("div");
+
+      backText.textContent =
+        card.back;
+
+      back.appendChild(
+        backText
+      );
+
+
+      cardElement.appendChild(
+        front
+      );
+
+      cardElement.appendChild(
+        back
+      );
+
+
+      if (!deck.builtIn) {
+
+        const editButton =
+          document.createElement("button");
+
+        editButton.className =
+          "content-edit-button";
+
+        editButton.textContent =
+          "✏️ Редактировать";
+
+        editButton.addEventListener(
+          "click",
+          event => {
+
+            event.stopPropagation();
+
+            editCard(
+              card.id
+            );
+
+          }
+        );
+
+
+        cardElement.appendChild(
+          editButton
+        );
+
+      }
+
+
+      container.appendChild(
+        cardElement
+      );
+
+    }
+  );
+
+}
+
+
+/* =========================================================
+   DELETE DECK
+========================================================= */
+
+function deleteCurrentDeck() {
+
+  const deck =
+    decks.find(
+      item => item.id === currentDeckId
+    );
+
+
+  if (!deck) return;
+
+
+  if (deck.builtIn) {
+
+    showToast(
+      "Стандартную колоду удалить нельзя"
+    );
+
+    return;
+
+  }
+
+
+  document
+    .getElementById(
+      "deleteModal"
+    )
+    .classList.add(
+      "show"
+    );
+
+}
+
+
+function closeDeleteModal() {
+
+  document
+    .getElementById(
+      "deleteModal"
+    )
+    .classList.remove(
+      "show"
+    );
+
+}
+
+
+function confirmDeleteDeck() {
+
+  const deck =
+    decks.find(
+      item => item.id === currentDeckId
+    );
+
+
+  if (!deck || deck.builtIn) {
+
+    closeDeleteModal();
+
+    return;
+
+  }
+
+
+  decks =
+    decks.filter(
+      item => item.id !== currentDeckId
+    );
+
+
+  saveDecks();
+
+  closeDeleteModal();
+
+  renderHome();
+
+  showScreen(
+    "homeScreen"
+  );
+
+
+  showToast(
+    "Колода удалена"
+  );
+
+}
+
+
+/* =========================================================
+   STUDY
+========================================================= */
 
 function startStudy() {
 
-    const deck =
-        getCurrentDeck();
-
-
-    if (!deck) {
-        return;
-    }
-
-
-    if (!deck.cards.length) {
-
-        showToast(
-            "В этой колоде нет карточек."
-        );
-
-        return;
-
-    }
-
-
-    currentStudyDeck =
-        deck;
-
-
-    currentStudyCards =
-        [...deck.cards];
-
-
-    currentStudyIndex =
-        0;
-
-
-    studyDeckIcon.textContent =
-        deck.icon || "📚";
-
-
-    studyDeckName.textContent =
-        deck.name;
-
-
-    flashcard.classList.remove(
-        "flipped"
+  const deck =
+    decks.find(
+      item => item.id === currentDeckId
     );
 
 
-    showScreen(
-        studyScreen
+  if (!deck) return;
+
+
+  if (!deck.cards.length) {
+
+    showToast(
+      "В колоде нет карточек"
     );
 
+    return;
 
-    renderStudyCard();
+  }
+
+
+  currentStudyDeck =
+    deck;
+
+
+  currentStudyCards =
+    [...deck.cards];
+
+
+  currentStudyIndex =
+    0;
+
+
+  document
+    .getElementById(
+      "studyDeckName"
+    )
+    .textContent =
+      deck.name;
+
+
+  showScreen(
+    "studyScreen"
+  );
+
+
+  renderStudyCard();
 
 }
 
 
-// ============================================================
-// КАРТОЧКА ОБУЧЕНИЯ
-// ============================================================
+/* =========================================================
+   RENDER STUDY CARD
+========================================================= */
 
 function renderStudyCard() {
 
-    const card =
-        currentStudyCards[
-            currentStudyIndex
-        ];
+  const card =
+    currentStudyCards[
+      currentStudyIndex
+    ];
 
 
-    if (!card) {
-        return;
-    }
+  if (!card) return;
 
 
-    flashcard.classList.remove(
-        "flipped"
+  const flashcard =
+    document.getElementById(
+      "flashcard"
     );
 
 
-    studyFront.textContent =
-        card.front || "";
+  flashcard.classList.remove(
+    "flipped"
+  );
 
 
-    studyBack.textContent =
-        card.back || "";
+  document
+    .getElementById(
+      "studyProgress"
+    )
+    .textContent =
+      `${currentStudyIndex + 1} / ${
+        currentStudyCards.length
+      }`;
 
 
-    setStudyImage(
-        studyImage,
-        studyImagePlaceholder,
-        card.imageUrl
-    );
+  const progress =
+    (
+      (currentStudyIndex + 1) /
+      currentStudyCards.length
+    ) * 100;
 
 
-    setStudyImage(
-        studyImageBack,
-        studyImageBackPlaceholder,
-        card.imageUrl
-    );
+  document
+    .getElementById(
+      "studyProgressBar"
+    )
+    .style.width =
+      `${progress}%`;
 
 
-    const current =
-        currentStudyIndex + 1;
+  document
+    .getElementById(
+      "studyFrontText"
+    )
+    .textContent =
+      card.front;
 
 
-    const total =
-        currentStudyCards.length;
+  document
+    .getElementById(
+      "studyBackText"
+    )
+    .textContent =
+      card.back;
 
 
-    progressText.textContent =
-        `${current} / ${total}`;
+  setupStudyImage(
+    card.imageUrl,
+    "studyFrontImage",
+    "studyFrontPlaceholder"
+  );
 
 
-    progressFill.style.width =
-        `${(
-            current / total
-        ) * 100}%`;
-
-
-    nextBtn.textContent =
-        current === total
-            ? "Завершить"
-            : "Следующая";
+  setupStudyImage(
+    card.imageUrl,
+    "studyBackImage",
+    "studyBackPlaceholder"
+  );
 
 }
 
 
-// ============================================================
-// ФОТО В ОБУЧЕНИИ
-// ============================================================
+/* =========================================================
+   STUDY IMAGE
+========================================================= */
 
-function setStudyImage(
-    imageElement,
-    placeholderElement,
-    imageUrl
+function setupStudyImage(
+  imageUrl,
+  imageId,
+  placeholderId
 ) {
 
-    if (imageUrl) {
+  const image =
+    document.getElementById(
+      imageId
+    );
 
-        imageElement.src =
-            imageUrl;
-
-
-        imageElement.classList.add(
-            "visible"
-        );
-
-
-        placeholderElement.style.display =
-            "none";
-
-    } else {
-
-        imageElement.src =
-            "";
+  const placeholder =
+    document.getElementById(
+      placeholderId
+    );
 
 
-        imageElement.classList.remove(
-            "visible"
-        );
+  if (imageUrl) {
 
+    image.src =
+      imageUrl;
 
-        placeholderElement.style.display =
-            "flex";
+    image.style.display =
+      "block";
 
-    }
+    placeholder.style.display =
+      "none";
+
+  } else {
+
+    image.src =
+      "";
+
+    image.style.display =
+      "none";
+
+    placeholder.style.display =
+      "flex";
+
+  }
 
 }
 
 
-// ============================================================
-// FLIP
-// ============================================================
+/* =========================================================
+   FLIP
+========================================================= */
 
 function flipCard() {
 
-    flashcard.classList.toggle(
-        "flipped"
+  document
+    .getElementById(
+      "flashcard"
+    )
+    .classList.toggle(
+      "flipped"
     );
-
-
-    haptic();
 
 }
 
 
-// ============================================================
-// ОТВЕТ
-// ============================================================
+/* =========================================================
+   ANSWER
+========================================================= */
 
 function answerCard(
-    known
+  known
 ) {
 
-    if (known) {
+  if (known) {
 
-        showToast(
-            "Знаю"
-        );
-
-    } else {
-
-        showToast(
-            "Повторим ещё раз"
-        );
-
-    }
-
-
-    haptic();
-
-
-    setTimeout(
-        nextCard,
-        250
+    showToast(
+      "Запомнил"
     );
+
+  } else {
+
+    showToast(
+      "Повторим ещё раз"
+    );
+
+  }
+
+
+  setTimeout(
+    () => {
+
+      nextCard();
+
+    },
+    350
+  );
 
 }
 
 
-// ============================================================
-// СЛЕДУЮЩАЯ
-// ============================================================
+/* =========================================================
+   NEXT CARD
+========================================================= */
 
 function nextCard() {
 
-    if (
-        currentStudyIndex >=
-        currentStudyCards.length - 1
-    ) {
-
-        showToast(
-            "Колода закончена"
-        );
-
-
-        setTimeout(() => {
-
-            openDeck(
-                currentStudyDeck.id
-            );
-
-        }, 500);
-
-
-        return;
-
-    }
-
+  if (
+    currentStudyIndex <
+    currentStudyCards.length - 1
+  ) {
 
     currentStudyIndex++;
 
-
     renderStudyCard();
 
+    return;
+
+  }
+
+
+  showToast(
+    "Колода закончена"
+  );
+
+
+  setTimeout(
+    () => {
+
+      showScreen(
+        "deckScreen"
+      );
+
+    },
+    600
+  );
+
 }
 
 
-// ============================================================
-// ЗАГРУЗКА ФОТО В SUPABASE
-// ============================================================
+/* =========================================================
+   UPLOAD IMAGE
+========================================================= */
 
 async function uploadImage(
-    file
+  file
 ) {
 
-    try {
-
-        const extension =
-            getFileExtension(
-                file.name
-            );
-
-
-        const fileName =
-            "card_" +
-            Date.now() +
-            "_" +
-            Math.random()
-                .toString(36)
-                .substring(2, 10) +
-            "." +
-            extension;
-
-
-        const {
-            data,
-            error
-        } =
-            await supabaseClient
-                .storage
-                .from(
-                    IMAGE_BUCKET
-                )
-                .upload(
-                    fileName,
-                    file,
-                    {
-                        cacheControl:
-                            "3600",
-
-                        upsert:
-                            false,
-
-                        contentType:
-                            file.type
-                    }
-                );
-
-
-        if (error) {
-
-            console.error(
-                "Supabase upload error:",
-                error
-            );
-
-
-            showToast(
-                "Ошибка загрузки: " +
-                error.message
-            );
-
-
-            return null;
-
-        }
-
-
-        console.log(
-            "Uploaded:",
-            data
-        );
-
-
-        const {
-            data: publicData
-        } =
-            supabaseClient
-                .storage
-                .from(
-                    IMAGE_BUCKET
-                )
-                .getPublicUrl(
-                    fileName
-                );
-
-
-        return publicData.publicUrl;
-
-
-    } catch (error) {
-
-        console.error(
-            error
-        );
-
-
-        showToast(
-            "Ошибка загрузки фотографии."
-        );
-
-
-        return null;
-
-    }
-
-}
-
-
-// ============================================================
-// ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ
-// ============================================================
-
-function getCurrentDeck() {
-
-    return decks.find(
-        deck =>
-            deck.id ===
-            currentDeckId
+  const extension =
+    getFileExtension(
+      file.name
     );
 
+
+  const fileName =
+    "card_" +
+    Date.now() +
+    "_" +
+    Math.random()
+      .toString(36)
+      .substring(2, 10) +
+    "." +
+    extension;
+
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .storage
+      .from(
+        IMAGE_BUCKET
+      )
+      .upload(
+        fileName,
+        file,
+        {
+          cacheControl:
+            "3600",
+
+          upsert:
+            false,
+
+          contentType:
+            file.type
+        }
+      );
+
+
+  if (error) {
+
+    throw error;
+
+  }
+
+
+  const {
+    data: publicData
+  } =
+    supabaseClient
+      .storage
+      .from(
+        IMAGE_BUCKET
+      )
+      .getPublicUrl(
+        fileName
+      );
+
+
+  return publicData.publicUrl;
+
 }
 
+
+/* =========================================================
+   FILE EXTENSION
+========================================================= */
 
 function getFileExtension(
-    fileName
+  fileName
 ) {
 
-    const parts =
-        fileName.split(".");
+  const parts =
+    fileName.split(".");
 
 
-    return (
-        parts.length > 1
-            ? parts.pop()
-            : "jpg"
-    ).toLowerCase();
+  if (parts.length < 2) {
+
+    return "jpg";
+
+  }
+
+
+  return parts
+    .pop()
+    .toLowerCase();
 
 }
 
 
-function getCardWord(
-    number
-) {
+/* =========================================================
+   ID
+========================================================= */
 
-    if (
-        number % 10 === 1 &&
-        number % 100 !== 11
-    ) {
+function generateId() {
 
-        return "карточка";
-
-    }
-
-
-    if (
-        number % 10 >= 2 &&
-        number % 10 <= 4 &&
-        (
-            number % 100 < 10 ||
-            number % 100 >= 20
-        )
-    ) {
-
-        return "карточки";
-
-    }
-
-
-    return "карточек";
+  return (
+    Date.now().toString(36) +
+    Math.random()
+      .toString(36)
+      .substring(2, 10)
+  );
 
 }
 
+
+/* =========================================================
+   TOAST
+========================================================= */
 
 function showToast(
-    message
+  message
 ) {
 
-    clearTimeout(
-        toastTimer
+  const toast =
+    document.getElementById(
+      "toast"
+    );
+
+  const text =
+    document.getElementById(
+      "toastText"
     );
 
 
-    toast.textContent =
-        message;
+  text.textContent =
+    message;
 
 
-    toast.classList.add(
-        "show"
-    );
+  toast.classList.add(
+    "show"
+  );
 
 
-    toastTimer =
-        setTimeout(() => {
-
-            toast.classList.remove(
-                "show"
-            );
-
-        }, 2200);
-
-}
+  clearTimeout(
+    toastTimer
+  );
 
 
-function haptic() {
+  toastTimer =
+    setTimeout(
+      () => {
 
-    try {
-
-        if (
-            tg.HapticFeedback &&
-            tg.HapticFeedback
-                .impactOccurred
-        ) {
-
-            tg.HapticFeedback
-                .impactOccurred(
-                    "light"
-                );
-
-        }
-
-    } catch (error) {
-
-        // Ничего не делаем
-
-    }
-
-}
-
-
-function escapeHtml(
-    value
-) {
-
-    return String(value)
-
-        .replaceAll(
-            "&",
-            "&amp;"
-        )
-
-        .replaceAll(
-            "<",
-            "&lt;"
-        )
-
-        .replaceAll(
-            ">",
-            "&gt;"
-        )
-
-        .replaceAll(
-            '"',
-            "&quot;"
-        )
-
-        .replaceAll(
-            "'",
-            "&#039;"
+        toast.classList.remove(
+          "show"
         );
+
+      },
+      2200
+    );
 
 }
