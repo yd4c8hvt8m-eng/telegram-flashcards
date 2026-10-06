@@ -1,532 +1,419 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
+  <meta charset="UTF-8">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+  >
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
-    >
+  <title>Flash Cards</title>
 
-    <title>Flash Cards</title>
+  <link rel="stylesheet" href="style.css">
 
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
-
-    <!-- Supabase -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-    <link rel="stylesheet" href="style.css">
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 
 <body>
 
-<div id="app">
+  <!-- =========================
+       ГЛАВНЫЙ ЭКРАН
+  ========================== -->
+  <section id="homeScreen" class="screen active">
 
-    <!-- ==================== ГЛАВНАЯ ==================== -->
+    <div class="home-header">
 
-    <section id="homeScreen" class="screen active">
+      <div class="brain-logo">
+        🧠
+      </div>
 
-        <div class="top-header">
+      <div class="app-title">
+        FLASH CARDS
+      </div>
 
-            <div>
-                <div class="app-title">
-                    Flash Cards
-                </div>
+      <div class="app-subtitle">
+        Тренируй память. Учись чему угодно.
+      </div>
 
-                <div class="app-subtitle">
-                    Учись чему угодно
-                </div>
-            </div>
+    </div>
 
+    <div class="home-section-title">
+      МОИ КОЛОДЫ
+    </div>
+
+    <div id="deckList" class="deck-list"></div>
+
+    <button id="createDeckButton" class="primary-button create-deck-button">
+      <span class="button-plus">＋</span>
+      Создать колоду
+    </button>
+
+    <div class="app-version">
+      v<span class="version-value"></span>
+    </div>
+
+  </section>
+
+
+  <!-- =========================
+       СОЗДАНИЕ / РЕДАКТИРОВАНИЕ
+  ========================== -->
+  <section id="createScreen" class="screen">
+
+    <div class="top-bar">
+
+      <button id="backFromCreate" class="icon-button">
+        ‹
+      </button>
+
+      <div id="createTitle" class="top-title">
+        Новая колода
+      </div>
+
+      <div class="top-spacer"></div>
+
+    </div>
+
+
+    <div class="editor-container">
+
+      <div class="field-label">
+        НАЗВАНИЕ КОЛОДЫ
+      </div>
+
+      <input
+        id="deckNameInput"
+        class="text-input"
+        type="text"
+        placeholder="Например: Английский язык"
+        maxlength="60"
+      >
+
+
+      <div class="field-label deck-icon-label">
+        ИКОНКА
+      </div>
+
+      <div id="deckIconSelector" class="deck-icon-selector">
+
+        <button class="deck-icon-option selected" data-icon="📚">📚</button>
+        <button class="deck-icon-option" data-icon="🧠">🧠</button>
+        <button class="deck-icon-option" data-icon="💼">💼</button>
+        <button class="deck-icon-option" data-icon="📊">📊</button>
+        <button class="deck-icon-option" data-icon="🐟">🐟</button>
+        <button class="deck-icon-option" data-icon="🚗">🚗</button>
+        <button class="deck-icon-option" data-icon="⚙️">⚙️</button>
+        <button class="deck-icon-option" data-icon="⭐">⭐</button>
+
+      </div>
+
+
+      <div class="cards-editor-header">
+
+        <div>
+          <div class="field-label">
+            КАРТОЧКИ
+          </div>
+
+          <div class="editor-hint">
+            Добавляй вопрос, ответ и фотографию
+          </div>
         </div>
 
+      </div>
 
-        <div class="section-title">
-            Мои колоды
+
+      <div id="newCardsList" class="new-cards-list"></div>
+
+
+      <button id="addCardButton" class="secondary-button add-card-button">
+        ＋ Добавить карточку
+      </button>
+
+
+      <button id="saveDeckButton" class="primary-button save-deck-button">
+        Сохранить колоду
+      </button>
+
+    </div>
+
+
+    <div class="app-version">
+      v<span class="version-value"></span>
+    </div>
+
+  </section>
+
+
+  <!-- =========================
+       ЭКРАН КОЛОДЫ
+  ========================== -->
+  <section id="deckScreen" class="screen">
+
+    <div class="top-bar">
+
+      <button id="backFromDeck" class="icon-button">
+        ‹
+      </button>
+
+      <div class="top-spacer"></div>
+
+    </div>
+
+
+    <div class="deck-heading">
+
+      <div id="deckHeadingIcon" class="deck-heading-icon">
+        📚
+      </div>
+
+      <div class="deck-heading-info">
+
+        <div id="deckHeadingTitle" class="deck-heading-title">
+          Колода
         </div>
 
-
-        <div id="decksList" class="decks-list"></div>
-
-
-        <button
-            id="createDeckBtn"
-            class="primary-btn"
-        >
-            ＋ Создать колоду
-        </button>
-
-
-        <div class="app-version">
-            Версия <span class="app-version-number"></span>
+        <div id="deckHeadingCount" class="deck-heading-count">
+          0 карточек
         </div>
 
-    </section>
+      </div>
+
+    </div>
 
 
-    <!-- ==================== СОЗДАНИЕ / РЕДАКТИРОВАНИЕ КОЛОДЫ ==================== -->
+    <button id="studyDeckButton" class="primary-button study-button">
+      <span>▶</span>
+      Учить колоду
+    </button>
 
-    <section id="createScreen" class="screen">
 
-        <div class="screen-header">
+    <button id="contentDeckButton" class="secondary-button content-button">
+      <span>☰</span>
+      Содержание колоды
+    </button>
 
-            <button
-                id="backFromCreate"
-                class="back-btn"
+
+    <button id="editDeckButton" class="secondary-button">
+      ✏️ Редактировать колоду
+    </button>
+
+
+    <div id="deckContent" class="deck-content"></div>
+
+
+    <button
+      id="deleteDeckButton"
+      class="danger-button"
+    >
+      🗑 Удалить колоду
+    </button>
+
+
+    <div class="app-version">
+      v<span class="version-value"></span>
+    </div>
+
+  </section>
+
+
+  <!-- =========================
+       ЭКРАН ОБУЧЕНИЯ
+  ========================== -->
+  <section id="studyScreen" class="screen">
+
+    <div class="study-top-bar">
+
+      <button id="backFromStudy" class="icon-button">
+        ‹
+      </button>
+
+      <div id="studyDeckName" class="study-deck-name">
+        Колода
+      </div>
+
+      <div class="top-spacer"></div>
+
+    </div>
+
+
+    <div class="study-progress-area">
+
+      <div id="studyProgress" class="study-progress-text">
+        1 / 10
+      </div>
+
+      <div class="progress-track">
+        <div id="studyProgressBar" class="progress-bar"></div>
+      </div>
+
+    </div>
+
+
+    <div id="flashcard" class="flashcard">
+
+      <div class="flashcard-inner">
+
+        <!-- ЛИЦЕВАЯ СТОРОНА -->
+        <div class="flashcard-face flashcard-front">
+
+          <div class="flashcard-label">
+            ЛИЦЕВАЯ СТОРОНА
+          </div>
+
+          <div class="study-image-box">
+            <img
+              id="studyFrontImage"
+              class="study-image"
+              src=""
+              alt=""
             >
-                ←
-            </button>
-
-            <h2 id="createScreenTitle">
-                Новая колода
-            </h2>
-
-        </div>
-
-
-        <div class="form-card">
-
-            <label>
-                Название колоды
-            </label>
-
-            <input
-                id="deckNameInput"
-                type="text"
-                placeholder="Например: Английский язык"
-            >
-
-
-            <label>
-                Значок колоды
-            </label>
 
             <div
-                id="deckIconSelector"
-                class="emoji-selector"
+              id="studyFrontPlaceholder"
+              class="study-image-placeholder"
             >
-
-                <button
-                    class="emoji-option selected"
-                    data-icon="📚"
-                    type="button"
-                >
-                    📚
-                </button>
-
-                <button
-                    class="emoji-option"
-                    data-icon="🧠"
-                    type="button"
-                >
-                    🧠
-                </button>
-
-                <button
-                    class="emoji-option"
-                    data-icon="💼"
-                    type="button"
-                >
-                    💼
-                </button>
-
-                <button
-                    class="emoji-option"
-                    data-icon="📊"
-                    type="button"
-                >
-                    📊
-                </button>
-
-                <button
-                    class="emoji-option"
-                    data-icon="🐟"
-                    type="button"
-                >
-                    🐟
-                </button>
-
-                <button
-                    class="emoji-option"
-                    data-icon="🚗"
-                    type="button"
-                >
-                    🚗
-                </button>
-
-                <button
-                    class="emoji-option"
-                    data-icon="⚙️"
-                    type="button"
-                >
-                    ⚙️
-                </button>
-
-                <button
-                    class="emoji-option"
-                    data-icon="⭐"
-                    type="button"
-                >
-                    ⭐
-                </button>
-
+              📷
             </div>
+          </div>
 
-        </div>
+          <div id="studyFrontText" class="flashcard-text">
+            Вопрос
+          </div>
 
-
-        <div class="section-title">
-            Карточки
-        </div>
-
-
-        <div id="newCardsList"></div>
-
-
-        <button
-            id="addCardBtn"
-            class="secondary-btn"
-        >
-            ＋ Добавить карточку
-        </button>
-
-
-        <button
-            id="saveDeckBtn"
-            class="primary-btn"
-        >
-            Сохранить колоду
-        </button>
-
-
-        <div class="app-version">
-            Версия <span class="app-version-number"></span>
-        </div>
-
-    </section>
-
-
-    <!-- ==================== КОЛОДА ==================== -->
-
-    <section id="deckScreen" class="screen">
-
-        <div class="screen-header">
-
-            <button
-                id="backFromDeck"
-                class="back-btn"
-            >
-                ←
-            </button>
-
-
-            <div class="deck-heading">
-
-                <div
-                    id="deckIcon"
-                    class="deck-heading-icon"
-                >
-                    📚
-                </div>
-
-
-                <div>
-
-                    <h2 id="deckTitle">
-                        Колода
-                    </h2>
-
-                    <div
-                        id="deckCount"
-                        class="small-text"
-                    >
-                        0 карточек
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div>
-
-
-        <button
-            id="startStudyBtn"
-            class="primary-btn study-main-btn"
-        >
-            ▶ Учить колоду
-        </button>
-
-
-        <button
-            id="toggleContentBtn"
-            class="secondary-btn"
-        >
-            ☰ Содержание колоды
-        </button>
-
-
-        <button
-            id="editDeckBtn"
-            class="secondary-btn"
-        >
-            ✏️ Редактировать колоду
-        </button>
-
-
-        <div
-            id="contentContainer"
-            class="content-container hidden"
-        >
-        </div>
-
-
-        <button
-            id="deleteDeckBtn"
-            class="danger-btn"
-        >
-            🗑 Удалить колоду
-        </button>
-
-
-        <div class="app-version">
-            Версия <span class="app-version-number"></span>
-        </div>
-
-    </section>
-
-
-    <!-- ==================== ОБУЧЕНИЕ ==================== -->
-
-    <section id="studyScreen" class="screen">
-
-        <div class="screen-header">
-
-            <button
-                id="backFromStudy"
-                class="back-btn"
-            >
-                ←
-            </button>
-
-
-            <div class="study-heading">
-
-                <span id="studyDeckIcon">
-                    📚
-                </span>
-
-                <span id="studyDeckName">
-                    Колода
-                </span>
-
-            </div>
-
-        </div>
-
-
-        <div class="progress-container">
-
-            <div class="progress-text">
-                <span id="progressText">
-                    1 / 1
-                </span>
-            </div>
-
-
-            <div class="progress-bar">
-
-                <div id="progressFill"></div>
-
-            </div>
-
-        </div>
-
-
-        <div
-            id="flashcard"
-            class="flashcard"
-        >
-
-            <div class="flashcard-inner">
-
-
-                <!-- ЛИЦЕВАЯ СТОРОНА -->
-
-                <div class="flashcard-face flashcard-front">
-
-                    <div class="side-label">
-                        Лицевая сторона
-                    </div>
-
-
-                    <div class="study-image-box">
-
-                        <img
-                            id="studyImage"
-                            class="study-image"
-                            alt=""
-                        >
-
-                        <div
-                            id="studyImagePlaceholder"
-                            class="study-image-placeholder"
-                        >
-                            📷
-                        </div>
-
-                    </div>
-
-
-                    <div
-                        id="studyFront"
-                        class="card-text"
-                    >
-                    </div>
-
-                </div>
-
-
-                <!-- ОБРАТНАЯ СТОРОНА -->
-
-                <div class="flashcard-face flashcard-back">
-
-                    <div class="side-label">
-                        Обратная сторона
-                    </div>
-
-
-                    <div class="study-image-box">
-
-                        <img
-                            id="studyImageBack"
-                            class="study-image"
-                            alt=""
-                        >
-
-                        <div
-                            id="studyImageBackPlaceholder"
-                            class="study-image-placeholder"
-                        >
-                            📷
-                        </div>
-
-                    </div>
-
-
-                    <div
-                        id="studyBack"
-                        class="card-text"
-                    >
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div>
-
-
-        <div class="hint">
+          <div class="flip-hint">
             Нажми на карточку, чтобы перевернуть
-        </div>
-
-
-        <div class="study-buttons">
-
-            <button
-                id="dontKnowBtn"
-                class="study-btn dont-know"
-            >
-                Не знаю
-            </button>
-
-
-            <button
-                id="knowBtn"
-                class="study-btn know"
-            >
-                Знаю
-            </button>
+          </div>
 
         </div>
 
+
+        <!-- ОБРАТНАЯ СТОРОНА -->
+        <div class="flashcard-face flashcard-back">
+
+          <div class="flashcard-label">
+            ОБРАТНАЯ СТОРОНА
+          </div>
+
+          <div class="study-image-box">
+            <img
+              id="studyBackImage"
+              class="study-image"
+              src=""
+              alt=""
+            >
+
+            <div
+              id="studyBackPlaceholder"
+              class="study-image-placeholder"
+            >
+              📷
+            </div>
+          </div>
+
+          <div id="studyBackText" class="flashcard-text">
+            Ответ
+          </div>
+
+          <div class="flip-hint">
+            Нажми на карточку, чтобы вернуться
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div class="study-actions">
+
+      <button
+        id="dontKnowButton"
+        class="study-answer-button dont-know"
+      >
+        <span>×</span>
+        Не знаю
+      </button>
+
+      <button
+        id="knowButton"
+        class="study-answer-button know"
+      >
+        <span>✓</span>
+        Знаю
+      </button>
+
+    </div>
+
+
+    <button
+      id="nextButton"
+      class="secondary-button next-button"
+    >
+      Следующая →
+    </button>
+
+
+    <div class="app-version">
+      v<span class="version-value"></span>
+    </div>
+
+  </section>
+
+
+  <!-- =========================
+       TOAST
+  ========================== -->
+  <div id="toast" class="toast">
+    <span id="toastText"></span>
+  </div>
+
+
+  <!-- =========================
+       ПОДТВЕРЖДЕНИЕ УДАЛЕНИЯ
+  ========================== -->
+  <div id="deleteModal" class="modal-overlay">
+
+    <div class="modal">
+
+      <div class="modal-icon">
+        🗑
+      </div>
+
+      <div class="modal-title">
+        Удалить колоду?
+      </div>
+
+      <div class="modal-text">
+        Все карточки этой колоды будут удалены.
+      </div>
+
+      <div class="modal-actions">
 
         <button
-            id="nextBtn"
-            class="secondary-btn next-btn"
+          id="cancelDeleteButton"
+          class="secondary-button"
         >
-            Следующая
+          Отмена
         </button>
 
+        <button
+          id="confirmDeleteButton"
+          class="danger-button"
+        >
+          Удалить
+        </button>
 
-        <div class="app-version">
-            Версия <span class="app-version-number"></span>
-        </div>
-
-    </section>
-
-
-    <!-- ==================== УВЕДОМЛЕНИЕ ==================== -->
-
-    <div
-        id="toast"
-        class="toast"
-    >
-    </div>
-
-
-    <!-- ==================== ПОДТВЕРЖДЕНИЕ УДАЛЕНИЯ ==================== -->
-
-    <div
-        id="confirmOverlay"
-        class="confirm-overlay hidden"
-    >
-
-        <div class="confirm-box">
-
-            <div class="confirm-icon">
-                🗑
-            </div>
-
-
-            <h3>
-                Удалить колоду?
-            </h3>
-
-
-            <p>
-                Колода и её карточки будут удалены.
-            </p>
-
-
-            <div class="confirm-buttons">
-
-                <button
-                    id="cancelDeleteBtn"
-                    class="secondary-btn"
-                >
-                    Отмена
-                </button>
-
-
-                <button
-                    id="confirmDeleteBtn"
-                    class="danger-btn"
-                >
-                    Удалить
-                </button>
-
-            </div>
-
-        </div>
+      </div>
 
     </div>
 
-</div>
+  </div>
 
 
-<script src="app.js"></script>
+  <script src="app.js"></script>
 
 </body>
 </html>
