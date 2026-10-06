@@ -1,7 +1,3 @@
-// ==========================================
-// TELEGRAM
-// ==========================================
-
 const tg = window.Telegram.WebApp;
 
 tg.ready();
@@ -9,177 +5,605 @@ tg.expand();
 
 
 // ==========================================
-// КАРТОЧКИ
+// ВСТРОЕННЫЕ ИЛЛЮСТРАЦИИ
 // ==========================================
 
-const cards = [
+function makeImage(emoji, title) {
 
-    {
-        image: "https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=800&q=80",
-        front: "\u042f \u0438\u0434\u0443 \u0434\u043e\u043c\u043e\u0439",
-        back: "I'm going home"
-    },
+    const svg = `
+    <svg xmlns="http://www.w3.org/2000/svg"
+         width="800"
+         height="500"
+         viewBox="0 0 800 500">
 
-    {
-        image: "https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=800&q=80",
-        front: "\u041c\u043d\u0435 \u043d\u0443\u0436\u043d\u0430 \u043f\u043e\u043c\u043e\u0449\u044c",
-        back: "I need help"
-    },
+        <rect width="800"
+              height="500"
+              fill="#f4f5f7"/>
 
-    {
-        image: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=800&q=80",
-        front: "\u0413\u0434\u0435 \u043d\u0430\u0445\u043e\u0434\u0438\u0442\u0441\u044f \u043c\u0430\u0433\u0430\u0437\u0438\u043d?",
-        back: "Where is the shop?"
-    },
+        <circle
+            cx="400"
+            cy="210"
+            r="150"
+            fill="#ffffff"/>
 
-    {
-        image: "https://images.unsplash.com/photo-1506157786151-b8491531f063?auto=format&fit=crop&w=800&q=80",
-        front: "\u042f \u043d\u0435 \u043f\u043e\u043d\u0438\u043c\u0430\u044e",
-        back: "I don't understand"
-    },
+        <text
+            x="400"
+            y="245"
+            text-anchor="middle"
+            font-size="150">
+            ${emoji}
+        </text>
 
-    {
-        image: "https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=800&q=80",
-        front: "\u0414\u0430\u0432\u0430\u0439\u0442\u0435 \u043d\u0430\u0447\u043d\u0435\u043c",
-        back: "Let's start"
-    },
+        <text
+            x="400"
+            y="410"
+            text-anchor="middle"
+            font-family="Arial, sans-serif"
+            font-size="30"
+            font-weight="600"
+            fill="#555">
+            ${title}
+        </text>
 
-    {
-        image: "https://images.unsplash.com/photo-1493770348161-369560ae357d?auto=format&fit=crop&w=800&q=80",
-        front: "\u042f \u0445\u043e\u0447\u0443 \u0437\u0430\u043a\u0430\u0437\u0430\u0442\u044c",
-        back: "I want to order"
-    },
+    </svg>
+    `;
 
-    {
-        image: "https://images.unsplash.com/photo-1504608524841-42fe6f032b4b?auto=format&fit=crop&w=800&q=80",
-        front: "\u041a\u0430\u043a\u0430\u044f \u0441\u0435\u0433\u043e\u0434\u043d\u044f \u043f\u043e\u0433\u043e\u0434\u0430?",
-        back: "What's the weather like today?"
-    },
-
-    {
-        image: "https://images.unsplash.com/photo-1495020689067-958852a7765e?auto=format&fit=crop&w=800&q=80",
-        front: "\u0414\u043e \u0432\u0441\u0442\u0440\u0435\u0447\u0438",
-        back: "See you"
-    },
-
-    {
-        image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=800&q=80",
-        front: "\u0427\u0442\u043e \u044d\u0442\u043e \u0437\u043d\u0430\u0447\u0438\u0442?",
-        back: "What does it mean?"
-    },
-
-    {
-        image: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=800&q=80",
-        front: "\u041c\u043e\u0436\u043d\u043e \u0441\u0447\u0435\u0442, \u043f\u043e\u0436\u0430\u043b\u0443\u0439\u0441\u0442\u0430?",
-        back: "Can I have the bill, please?"
-    }
-
-];
+    return "data:image/svg+xml;charset=UTF-8," +
+        encodeURIComponent(svg);
+}
 
 
 // ==========================================
-// СОСТОЯНИЕ
+// ГОТОВАЯ КОЛОДА
 // ==========================================
 
-let currentCard = 0;
+const defaultDeck = {
+
+    id: "actions-20",
+
+    name: "20 главных действий с предметами",
+
+    cards: [
+
+        {
+            id: "action-01",
+            front: "Pick up the phone.",
+            back: "Подними / возьми телефон.",
+            image: makeImage("📱", "Pick up")
+        },
+
+        {
+            id: "action-02",
+            front: "Put the cup down on the table.",
+            back: "Поставь чашку на стол.",
+            image: makeImage("☕", "Put down")
+        },
+
+        {
+            id: "action-03",
+            front: "Move the book aside.",
+            back: "Отодвинь книгу в сторону.",
+            image: makeImage("📖", "Move aside")
+        },
+
+        {
+            id: "action-04",
+            front: "Move the box over here.",
+            back: "Передвинь / переставь коробку сюда.",
+            image: makeImage("📦", "Move here")
+        },
+
+        {
+            id: "action-05",
+            front: "Put the key in your pocket.",
+            back: "Положи ключ в карман.",
+            image: makeImage("🔑", "Put inside")
+        },
+
+        {
+            id: "action-06",
+            front: "Take the key out of your pocket.",
+            back: "Достань ключ из кармана.",
+            image: makeImage("🔑", "Take out")
+        },
+
+        {
+            id: "action-07",
+            front: "Give me the pen.",
+            back: "Дай мне ручку.",
+            image: makeImage("🖊️", "Give me")
+        },
+
+        {
+            id: "action-08",
+            front: "Lift the box up.",
+            back: "Подними коробку вверх.",
+            image: makeImage("📦", "Lift up")
+        },
+
+        {
+            id: "action-09",
+            front: "Lower the box slowly.",
+            back: "Медленно опусти коробку.",
+            image: makeImage("📦", "Lower")
+        },
+
+        {
+            id: "action-10",
+            front: "Tilt the bottle slightly.",
+            back: "Слегка наклони бутылку.",
+            image: makeImage("🍾", "Tilt")
+        },
+
+        {
+            id: "action-11",
+            front: "Keep the bottle upright.",
+            back: "Держи бутылку вертикально.",
+            image: makeImage("🧴", "Keep upright")
+        },
+
+        {
+            id: "action-12",
+            front: "Bring the phone closer.",
+            back: "Поднеси телефон ближе.",
+            image: makeImage("📱", "Bring closer")
+        },
+
+        {
+            id: "action-13",
+            front: "Move the phone farther away.",
+            back: "Отодвинь / отнеси телефон подальше.",
+            image: makeImage("📱", "Move away")
+        },
+
+        {
+            id: "action-14",
+            front: "Give the bottle a good shake.",
+            back: "Хорошенько встряхни бутылку.",
+            image: makeImage("🧴", "Shake")
+        },
+
+        {
+            id: "action-15",
+            front: "Be careful! Don't drop the glass.",
+            back: "Осторожно! Не урони стакан.",
+            image: makeImage("🥛", "Don't drop")
+        },
+
+        {
+            id: "action-16",
+            front: "Carry the laptop carefully.",
+            back: "Неси ноутбук осторожно.",
+            image: makeImage("💻", "Carry")
+        },
+
+        {
+            id: "action-17",
+            front: "Set the plate down gently.",
+            back: "Аккуратно поставь тарелку.",
+            image: makeImage("🍽️", "Set down")
+        },
+
+        {
+            id: "action-18",
+            front: "Turn the phone around.",
+            back: "Разверни телефон.",
+            image: makeImage("📱", "Turn around")
+        },
+
+        {
+            id: "action-19",
+            front: "Turn the cup upside down.",
+            back: "Переверни чашку вверх дном.",
+            image: makeImage("☕", "Turn upside down")
+        },
+
+        {
+            id: "action-20",
+            front: "Leave the keys there.",
+            back: "Оставь ключи там.",
+            image: makeImage("🔑", "Leave there")
+        }
+
+    ]
+
+};
+
+
+// ==========================================
+// ЗАГРУЗКА КОЛОД
+// ==========================================
+
+let decks = [];
+
+let currentDeckId = null;
+
+let currentStudyCards = [];
+
+let currentCardIndex = 0;
 
 let knownCards = [];
 
-let unknownCards = [];
+
+// ==========================================
+// ХРАНИЛИЩЕ TELEGRAM
+// ==========================================
+
+const STORAGE_KEY = "flashcards_decks";
 
 
 // ==========================================
-// ЭЛЕМЕНТЫ
+// ЗАГРУЗКА ДАННЫХ
 // ==========================================
 
-const card = document.getElementById("card");
+function loadData() {
 
-const frontText = document.getElementById("frontText");
+    tg.CloudStorage.getItem(
+        STORAGE_KEY,
+        function(error, value) {
 
-const backText = document.getElementById("backText");
+            if (error) {
 
-const cardImage = document.getElementById("cardImage");
+                decks = [];
 
-const cardImageBack = document.getElementById("cardImageBack");
+                addDefaultDeck();
 
-const progress = document.getElementById("progress");
+                return;
+            }
 
 
-// ==========================================
-// ПОКАЗАТЬ КАРТОЧКУ
-// ==========================================
+            if (value) {
 
-function showCard() {
+                try {
 
-    const item = cards[currentCard];
+                    decks = JSON.parse(value);
 
-    card.classList.remove("flipped");
+                } catch {
 
-    frontText.textContent = item.front;
+                    decks = [];
 
-    backText.textContent = item.back;
+                }
 
-    cardImage.src = item.image;
+            } else {
 
-    cardImageBack.src = item.image;
+                decks = [];
 
-    progress.textContent =
-        `${currentCard + 1} / ${cards.length}`;
+            }
+
+
+            // Добавляем нашу готовую колоду,
+            // если её ещё нет
+
+            const exists =
+                decks.some(
+                    deck =>
+                        deck.id === defaultDeck.id
+                );
+
+
+            if (!exists) {
+
+                decks.unshift(defaultDeck);
+
+                saveData(function() {
+
+                    showHome();
+
+                });
+
+            } else {
+
+                showHome();
+
+            }
+
+        }
+    );
 }
 
 
 // ==========================================
-// ПЕРЕВОРОТ
+// ДОБАВЛЕНИЕ ГОТОВОЙ КОЛОДЫ
 // ==========================================
 
-card.addEventListener("click", function () {
+function addDefaultDeck() {
 
-    card.classList.toggle("flipped");
+    decks = [defaultDeck];
 
-});
+    saveData(function() {
+
+        showHome();
+
+    });
+
+}
 
 
 // ==========================================
-// ОТВЕТ
+// СОХРАНЕНИЕ
 // ==========================================
 
-function answer(known) {
+function saveData(callback) {
 
-    if (known) {
+    tg.CloudStorage.setItem(
 
-        knownCards.push(currentCard);
+        STORAGE_KEY,
 
-        if (tg.HapticFeedback) {
+        JSON.stringify(decks),
 
-            tg.HapticFeedback.notificationOccurred("success");
+        function(error) {
+
+            if (error) {
+
+                console.log(error);
+
+                alert(
+                    "Ошибка сохранения данных."
+                );
+
+                return;
+
+            }
+
+
+            if (callback) {
+
+                callback();
+
+            }
 
         }
 
-    } else {
+    );
 
-        unknownCards.push(currentCard);
+}
 
-        if (tg.HapticFeedback) {
 
-            tg.HapticFeedback.notificationOccurred("error");
+// ==========================================
+// ЭКРАНЫ
+// ==========================================
 
-        }
+function hideAllScreens() {
+
+    document
+        .querySelectorAll(".screen")
+        .forEach(
+            screen =>
+                screen.classList.add("hidden")
+        );
+
+}
+
+
+function showHome() {
+
+    hideAllScreens();
+
+    document
+        .getElementById("homeScreen")
+        .classList.remove("hidden");
+
+    renderDecks();
+
+}
+
+
+// ==========================================
+// СПИСОК КОЛОД
+// ==========================================
+
+function renderDecks() {
+
+    const container =
+        document.getElementById("decksList");
+
+    container.innerHTML = "";
+
+
+    if (decks.length === 0) {
+
+        const empty =
+            document.createElement("div");
+
+        empty.className = "deck-item";
+
+        empty.innerHTML = `
+            <div class="deck-name">
+                Нет колод
+            </div>
+
+            <div class="deck-count">
+                Создайте первую колоду
+            </div>
+        `;
+
+        container.appendChild(empty);
+
+        return;
 
     }
 
-    nextCard();
+
+    decks.forEach(deck => {
+
+        const item =
+            document.createElement("div");
+
+        item.className = "deck-item";
+
+        item.onclick =
+            () => openDeck(deck.id);
+
+
+        item.innerHTML = `
+
+            <div class="deck-name">
+                ${escapeHtml(deck.name)}
+            </div>
+
+            <div class="deck-count">
+                ${deck.cards.length}
+                карточек
+            </div>
+
+        `;
+
+
+        container.appendChild(item);
+
+    });
+
 }
 
 
 // ==========================================
-// СЛЕДУЮЩАЯ КАРТОЧКА
+// ОТКРЫТИЕ КОЛОДЫ
 // ==========================================
 
-function nextCard() {
+function openDeck(id) {
 
-    currentCard++;
+    const deck =
+        decks.find(
+            item => item.id === id
+        );
 
-    if (currentCard >= cards.length) {
+
+    if (!deck) {
+
+        showHome();
+
+        return;
+
+    }
+
+
+    currentDeckId = id;
+
+
+    hideAllScreens();
+
+
+    document
+        .getElementById("deckScreen")
+        .classList.remove("hidden");
+
+
+    document
+        .getElementById("deckTitle")
+        .textContent =
+            deck.name;
+
+
+    renderDeckCards(deck);
+
+}
+
+
+// ==========================================
+// СПИСОК КАРТОЧЕК
+// ==========================================
+
+function renderDeckCards(deck) {
+
+    const container =
+        document.getElementById("deckCardsList");
+
+    container.innerHTML = "";
+
+
+    deck.cards.forEach(
+        (card, index) => {
+
+            const row =
+                document.createElement("div");
+
+            row.className =
+                "deck-card-row";
+
+
+            row.innerHTML = `
+
+                <div class="deck-card-front">
+                    ${index + 1}.
+                    ${escapeHtml(card.front)}
+                </div>
+
+                <div class="deck-card-back">
+                    ${escapeHtml(card.back)}
+                </div>
+
+            `;
+
+
+            container.appendChild(row);
+
+        }
+    );
+
+}
+
+
+// ==========================================
+// НАЧАЛО ОБУЧЕНИЯ
+// ==========================================
+
+function startCurrentDeck() {
+
+    const deck =
+        decks.find(
+            item =>
+                item.id === currentDeckId
+        );
+
+
+    if (!deck) {
+
+        return;
+
+    }
+
+
+    currentStudyCards =
+        [...deck.cards];
+
+
+    currentCardIndex = 0;
+
+    knownCards = [];
+
+
+    hideAllScreens();
+
+
+    document
+        .getElementById("studyScreen")
+        .classList.remove("hidden");
+
+
+    document
+        .getElementById("studyDeckName")
+        .textContent =
+            deck.name;
+
+
+    showStudyCard();
+
+}
+
+
+// ==========================================
+// ПОКАЗ КАРТОЧКИ
+// ==========================================
+
+function showStudyCard() {
+
+    const item =
+        currentStudyCards[
+            currentCardIndex
+        ];
+
+
+    if (!item) {
 
         finishLesson();
 
@@ -187,41 +611,241 @@ function nextCard() {
 
     }
 
-    showCard();
+
+    const card =
+        document.getElementById("card");
+
+
+    card.classList.remove(
+        "flipped"
+    );
+
+
+    document
+        .getElementById("frontText")
+        .textContent =
+            item.front;
+
+
+    document
+        .getElementById("backText")
+        .textContent =
+            item.back;
+
+
+    document
+        .getElementById("progress")
+        .textContent =
+            `${currentCardIndex + 1} / ${currentStudyCards.length}`;
+
+
+    document
+        .getElementById("cardImage")
+        .src =
+            item.image;
+
+
+    document
+        .getElementById("cardImageBack")
+        .src =
+            item.image;
+
 }
 
 
 // ==========================================
-// КОНЕЦ УРОКА
+// ПЕРЕВОРОТ
+// ==========================================
+
+document
+    .getElementById("card")
+    .addEventListener(
+        "click",
+        function() {
+
+            this.classList.toggle(
+                "flipped"
+            );
+
+        }
+    );
+
+
+// ==========================================
+// ЗНАЮ / НЕ ЗНАЮ
+// ==========================================
+
+function answer(known) {
+
+    const current =
+        currentStudyCards[
+            currentCardIndex
+        ];
+
+
+    if (!current) {
+
+        return;
+
+    }
+
+
+    if (known) {
+
+        knownCards.push(
+            current.id
+        );
+
+
+        currentCardIndex++;
+
+
+    } else {
+
+        // Убираем карточку
+        // из текущей позиции
+
+        currentStudyCards.splice(
+            currentCardIndex,
+            1
+        );
+
+
+        // И ставим её в конец
+
+        currentStudyCards.push(
+            current
+        );
+
+
+        currentCardIndex++;
+
+    }
+
+
+    if (
+        currentCardIndex >=
+        currentStudyCards.length
+    ) {
+
+        finishLesson();
+
+        return;
+
+    }
+
+
+    showStudyCard();
+
+}
+
+
+// ==========================================
+// СЛЕДУЮЩАЯ
+// ==========================================
+
+function nextCard() {
+
+    currentCardIndex++;
+
+
+    if (
+        currentCardIndex >=
+        currentStudyCards.length
+    ) {
+
+        finishLesson();
+
+        return;
+
+    }
+
+
+    showStudyCard();
+
+}
+
+
+// ==========================================
+// ЗАВЕРШЕНИЕ
 // ==========================================
 
 function finishLesson() {
 
-    const total = cards.length;
+    const deck =
+        decks.find(
+            item =>
+                item.id === currentDeckId
+        );
 
-    const known = knownCards.length;
 
-    const percent =
-        Math.round((known / total) * 100);
+    hideAllScreens();
+
+
+    document
+        .getElementById("deckScreen")
+        .classList.remove("hidden");
+
+
+    if (deck) {
+
+        document
+            .getElementById("deckTitle")
+            .textContent =
+                deck.name;
+
+
+        renderDeckCards(deck);
+
+    }
+
 
     alert(
-        "\u0423\u0440\u043e\u043a \u0437\u0430\u043a\u043e\u043d\u0447\u0435\u043d!\n\n" +
-        "\u0417\u043d\u0430\u0435\u0442\u0435: " +
-        known +
-        " \u0438\u0437 " +
-        total +
-        "\n\u0420\u0435\u0437\u0443\u043b\u044c\u0442\u0430\u0442: " +
-        percent +
-        "%"
+        "Урок завершён!\n\n" +
+        "Колода: " +
+        (deck
+            ? deck.name
+            : "") +
+        "\nКарточек: " +
+        knownCards.length
     );
 
-    currentCard = 0;
+}
 
-    knownCards = [];
 
-    unknownCards = [];
+// ==========================================
+// БЕЗОПАСНЫЙ ВЫВОД ТЕКСТА
+// ==========================================
 
-    showCard();
+function escapeHtml(text) {
+
+    return String(text)
+
+        .replaceAll(
+            "&",
+            "&amp;"
+        )
+
+        .replaceAll(
+            "<",
+            "&lt;"
+        )
+
+        .replaceAll(
+            ">",
+            "&gt;"
+        )
+
+        .replaceAll(
+            '"',
+            "&quot;"
+        )
+
+        .replaceAll(
+            "'",
+            "&#039;"
+        );
+
 }
 
 
@@ -229,4 +853,4 @@ function finishLesson() {
 // ЗАПУСК
 // ==========================================
 
-showCard();
+loadData();
