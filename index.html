@@ -87,6 +87,7 @@
                 ←
             </button>
 
+
             <div class="screen-title">
                 Новая колода
             </div>
@@ -94,18 +95,108 @@
         </div>
 
 
+        <!-- НАЗВАНИЕ -->
+
         <div class="field">
 
             <label>
                 Название колоды
             </label>
 
+
             <input
                 id="deckName"
                 type="text"
                 maxlength="60"
-                placeholder="Например: Английский для работы"
+                placeholder="Например: История Казахстана"
             >
+
+        </div>
+
+
+        <!-- ЭМОДЗИ КОЛОДЫ -->
+
+        <div class="field">
+
+            <label>
+                Иконка колоды
+            </label>
+
+
+            <div class="emoji-row">
+
+                <button
+                    type="button"
+                    class="emoji-choice selected"
+                    data-emoji="📚"
+                >
+                    📚
+                </button>
+
+
+                <button
+                    type="button"
+                    class="emoji-choice"
+                    data-emoji="🧠"
+                >
+                    🧠
+                </button>
+
+
+                <button
+                    type="button"
+                    class="emoji-choice"
+                    data-emoji="💼"
+                >
+                    💼
+                </button>
+
+
+                <button
+                    type="button"
+                    class="emoji-choice"
+                    data-emoji="📊"
+                >
+                    📊
+                </button>
+
+
+                <button
+                    type="button"
+                    class="emoji-choice"
+                    data-emoji="🐟"
+                >
+                    🐟
+                </button>
+
+
+                <button
+                    type="button"
+                    class="emoji-choice"
+                    data-emoji="🚗"
+                >
+                    🚗
+                </button>
+
+
+                <button
+                    type="button"
+                    class="emoji-choice"
+                    data-emoji="⚙️"
+                >
+                    ⚙️
+                </button>
+
+
+                <button
+                    type="button"
+                    class="emoji-choice"
+                    data-emoji="⭐"
+                >
+                    ⭐
+                </button>
+
+            </div>
 
         </div>
 
@@ -155,6 +246,15 @@
                 ←
             </button>
 
+
+            <div
+                id="deckIcon"
+                class="deck-header-icon"
+            >
+                📚
+            </div>
+
+
             <div
                 id="deckTitle"
                 class="screen-title"
@@ -165,7 +265,7 @@
         </div>
 
 
-        <!-- УЧИТЬ КОЛОДУ — ВВЕРХУ -->
+        <!-- УЧИТЬ -->
 
         <button
             id="startDeckButton"
@@ -198,7 +298,7 @@
         </div>
 
 
-        <!-- УДАЛЕНИЕ -->
+        <!-- УДАЛИТЬ -->
 
         <button
             id="deleteDeckButton"
@@ -222,11 +322,22 @@
 
         <header>
 
-            <div class="title">
+            <div class="study-header">
 
-                <span id="studyDeckName">
+                <div
+                    id="studyDeckIcon"
+                    class="study-icon"
+                >
+                    📚
+                </div>
+
+
+                <div
+                    id="studyDeckName"
+                    class="title"
+                >
                     Flash Cards
-                </span>
+                </div>
 
             </div>
 
@@ -251,25 +362,24 @@
             >
 
 
-                <!-- ========================= -->
-                <!-- ПЕРЕДНЯЯ СТОРОНА -->
-                <!-- ========================= -->
+                <!-- ЛИЦЕВАЯ -->
 
                 <div
                     class="card-side card-front"
                 >
 
-                    <img
-                        id="cardImage"
-                        src=""
-                        alt="Изображение"
+                    <div
+                        id="cardEmoji"
+                        class="card-emoji"
                     >
+                        📚
+                    </div>
 
 
                     <div class="card-content">
 
                         <div class="label">
-                            Русский
+                            Лицевая сторона
                         </div>
 
 
@@ -289,25 +399,24 @@
 
 
 
-                <!-- ========================= -->
-                <!-- ОБРАТНАЯ СТОРОНА -->
-                <!-- ========================= -->
+                <!-- ОБРАТНАЯ -->
 
                 <div
                     class="card-side card-back"
                 >
 
-                    <img
-                        id="cardImageBack"
-                        src=""
-                        alt="Изображение"
+                    <div
+                        id="cardEmojiBack"
+                        class="card-emoji"
                     >
+                        📚
+                    </div>
 
 
                     <div class="card-content">
 
                         <div class="label">
-                            English
+                            Обратная сторона
                         </div>
 
 
@@ -325,8 +434,7 @@
         </div>
 
 
-
-        <!-- КНОПКИ -->
+        <!-- ОТВЕТ -->
 
         <div class="buttons">
 
@@ -356,6 +464,81 @@
         </button>
 
     </section>
+
+
+
+    <!-- ================================= -->
+    <!-- УВЕДОМЛЕНИЕ -->
+    <!-- ================================= -->
+
+    <div
+        id="toast"
+        class="toast"
+    >
+
+        <div
+            id="toastIcon"
+            class="toast-icon"
+        >
+            ✓
+        </div>
+
+
+        <div
+            id="toastText"
+            class="toast-text"
+        >
+            Готово
+        </div>
+
+    </div>
+
+
+
+    <!-- ================================= -->
+    <!-- ПОДТВЕРЖДЕНИЕ УДАЛЕНИЯ -->
+    <!-- ================================= -->
+
+    <div
+        id="confirmOverlay"
+        class="overlay hidden"
+    >
+
+        <div class="confirm-box">
+
+            <div class="confirm-title">
+                Удалить колоду?
+            </div>
+
+
+            <div class="confirm-text">
+                Все карточки этой колоды
+                будут удалены.
+            </div>
+
+
+            <div class="confirm-buttons">
+
+                <button
+                    id="cancelDeleteButton"
+                    class="secondary-button"
+                >
+                    Отмена
+                </button>
+
+
+                <button
+                    id="confirmDeleteButton"
+                    class="delete-confirm-button"
+                >
+                    Удалить
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
 
 
 </div>
