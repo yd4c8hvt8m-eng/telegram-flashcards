@@ -2,67 +2,95 @@
     box-sizing: border-box;
 }
 
+
+html,
 body {
     margin: 0;
     padding: 0;
 
-    font-family: -apple-system,
-                 BlinkMacSystemFont,
-                 "Segoe UI",
-                 Roboto,
-                 Arial,
-                 sans-serif;
+    width: 100%;
+    min-height: 100%;
+
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Arial,
+        sans-serif;
 
     background: #f2f3f5;
 
     color: #111;
 
+    -webkit-tap-highlight-color: transparent;
+}
+
+
+body {
     min-height: 100vh;
 }
 
+
 .app {
+
+    width: 100%;
+
     max-width: 600px;
 
     margin: 0 auto;
 
     padding: 16px;
+
 }
 
-header {
-    display: flex;
 
-    justify-content: space-between;
+header {
+
+    display: flex;
 
     align-items: center;
 
+    justify-content: space-between;
+
     margin-bottom: 20px;
+
 }
+
 
 .title {
-    font-size: 22px;
+
+    font-size: 24px;
 
     font-weight: 700;
+
 }
+
 
 .progress {
+
+    font-size: 15px;
+
     color: #777;
 
-    font-size: 14px;
 }
 
 
-/* �������� */
+/* =========================
+   КАРТОЧКА
+========================= */
+
 
 .card-container {
 
     width: 100%;
 
-    height: 480px;
+    height: 470px;
 
     perspective: 1200px;
 
-    cursor: pointer;
 }
+
 
 .card {
 
@@ -72,14 +100,21 @@ header {
 
     position: relative;
 
-    transition: transform 0.6s;
+    cursor: pointer;
 
     transform-style: preserve-3d;
+
+    transition:
+        transform 0.6s
+        cubic-bezier(0.4, 0.2, 0.2, 1);
+
 }
+
 
 .card.flipped {
 
     transform: rotateY(180deg);
+
 }
 
 
@@ -87,20 +122,66 @@ header {
 
     position: absolute;
 
+    inset: 0;
+
     width: 100%;
 
     height: 100%;
 
-    border-radius: 24px;
-
     overflow: hidden;
 
-    background: white;
+    border-radius: 24px;
+
+    background: #ffffff;
 
     box-shadow:
-        0 10px 30px rgba(0,0,0,0.12);
+        0 10px 30px rgba(0, 0, 0, 0.12);
 
     backface-visibility: hidden;
+
+    -webkit-backface-visibility: hidden;
+
+}
+
+
+.card-front {
+
+    transform: rotateY(0deg);
+
+}
+
+
+.card-back {
+
+    transform: rotateY(180deg);
+
+}
+
+
+/* =========================
+   КАРТИНКА
+========================= */
+
+
+.card-side img {
+
+    display: block;
+
+    width: 100%;
+
+    height: 270px;
+
+    object-fit: cover;
+
+}
+
+
+/* =========================
+   ТЕКСТ КАРТОЧКИ
+========================= */
+
+
+.card-content {
 
     display: flex;
 
@@ -109,66 +190,57 @@ header {
     align-items: center;
 
     justify-content: center;
-}
 
+    text-align: center;
 
-.card-back {
+    height: 200px;
 
-    transform: rotateY(180deg);
+    padding: 15px 20px;
 
-    background: #ffffff;
-}
-
-
-.card-side img {
-
-    width: 100%;
-
-    height: 260px;
-
-    object-fit: cover;
-
-    position: absolute;
-
-    top: 0;
-
-    left: 0;
 }
 
 
 .label {
 
-    margin-top: 220px;
+    font-size: 14px;
 
     color: #888;
 
-    font-size: 14px;
+    margin-bottom: 8px;
+
 }
 
 
 .phrase {
 
-    font-size: 30px;
+    font-size: 28px;
+
+    line-height: 1.2;
 
     font-weight: 700;
 
-    text-align: center;
+    color: #111;
 
-    padding: 15px 25px;
+    word-break: normal;
+
 }
 
 
 .hint {
 
+    margin-top: 12px;
+
+    font-size: 13px;
+
     color: #999;
 
-    font-size: 14px;
-
-    margin-top: 10px;
 }
 
 
-/* ������ */
+/* =========================
+   КНОПКИ
+========================= */
+
 
 .buttons {
 
@@ -177,79 +249,176 @@ header {
     gap: 12px;
 
     margin-top: 20px;
+
 }
+
 
 .btn {
 
     flex: 1;
 
+    min-height: 58px;
+
     border: none;
 
     border-radius: 16px;
-
-    padding: 17px 10px;
 
     font-size: 16px;
 
     font-weight: 600;
 
     cursor: pointer;
+
+    transition: transform 0.15s;
+
 }
+
+
+.btn:active {
+
+    transform: scale(0.97);
+
+}
+
 
 .no {
 
     background: #ffe8e8;
 
-    color: #d33;
+    color: #d93030;
+
 }
+
 
 .yes {
 
-    background: #e5f8eb;
+    background: #e4f7eb;
 
     color: #198754;
+
 }
+
+
+/* =========================
+   КНОПКА СЛЕДУЮЩАЯ
+========================= */
 
 
 .next {
 
     width: 100%;
 
+    min-height: 58px;
+
+    margin-top: 12px;
+
     border: none;
 
     border-radius: 16px;
 
-    padding: 16px;
-
-    margin-top: 12px;
-
     background: #111;
 
-    color: white;
+    color: #fff;
 
     font-size: 16px;
 
     font-weight: 600;
 
     cursor: pointer;
+
 }
+
+
+.next:active {
+
+    transform: scale(0.98);
+
+}
+
+
+/* =========================
+   ТЕЛЕФОН
+========================= */
 
 
 @media (max-width: 500px) {
 
-    .card-container {
-        height: 430px;
+    .app {
+
+        padding: 14px;
+
     }
+
+
+    .title {
+
+        font-size: 22px;
+
+    }
+
+
+    .card-container {
+
+        height: 440px;
+
+    }
+
 
     .card-side img {
-        height: 230px;
+
+        height: 250px;
+
     }
 
-    .label {
-        margin-top: 200px;
+
+    .card-content {
+
+        height: 190px;
+
     }
+
 
     .phrase {
+
         font-size: 25px;
+
     }
+
+}
+
+
+/* =========================
+   МАЛЕНЬКИЙ ЭКРАН
+========================= */
+
+
+@media (max-height: 700px) {
+
+    .card-container {
+
+        height: 390px;
+
+    }
+
+
+    .card-side img {
+
+        height: 210px;
+
+    }
+
+
+    .card-content {
+
+        height: 180px;
+
+    }
+
+
+    .phrase {
+
+        font-size: 23px;
+
+    }
+
 }
