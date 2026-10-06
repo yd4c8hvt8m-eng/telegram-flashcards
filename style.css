@@ -1,23 +1,13 @@
-/* =========================================
-   ОСНОВНЫЕ НАСТРОЙКИ
-========================================= */
-
 * {
     box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
 }
-
 
 html,
 body {
-
     margin: 0;
-
     padding: 0;
-
-    width: 100%;
-
     min-height: 100%;
-
     font-family:
         -apple-system,
         BlinkMacSystemFont,
@@ -26,1316 +16,722 @@ body {
         Arial,
         sans-serif;
 
-    background: #f2f3f5;
-
-    color: #111;
-
-    -webkit-tap-highlight-color: transparent;
-
+    background: #f4f6f8;
+    color: #111827;
 }
-
 
 body {
-
-    min-height: 100vh;
-
+    padding-bottom: 30px;
 }
-
 
 button,
-input,
-textarea {
-
-    font-family: inherit;
-
+input {
+    font: inherit;
 }
 
-
-/* =========================================
-   ПРИЛОЖЕНИЕ
-========================================= */
-
-.app {
-
-    width: 100%;
-
-    max-width: 600px;
-
-    margin: 0 auto;
-
-    padding: 16px;
-
+button {
+    border: 0;
+    cursor: pointer;
 }
-
-
-.hidden {
-
-    display: none !important;
-
-}
-
-
-/* =========================================
-   ЭКРАНЫ
-========================================= */
 
 .screen {
-
-    animation:
-        screenIn
-        0.25s
-        ease;
-
+    display: none;
+    padding: 18px;
+    max-width: 600px;
+    margin: 0 auto;
 }
 
+.screen.active {
+    display: block;
+    animation: screenIn 0.25s ease;
+}
 
 @keyframes screenIn {
-
     from {
-
         opacity: 0;
-
-        transform:
-            translateY(8px);
-
+        transform: translateY(8px);
     }
 
     to {
-
         opacity: 1;
-
-        transform:
-            translateY(0);
-
+        transform: translateY(0);
     }
-
 }
 
 
-/* =========================================
-   HEADER
-========================================= */
+/* ==================== HEADER ==================== */
 
-header {
-
+.top-header {
     display: flex;
-
-    align-items: center;
-
     justify-content: space-between;
-
-    margin-bottom: 24px;
-
-}
-
-
-.title {
-
-    font-size: 25px;
-
-    font-weight: 700;
-
-}
-
-
-.progress {
-
-    font-size: 15px;
-
-    color: #777;
-
-}
-
-
-.study-header {
-
-    display: flex;
-
     align-items: center;
-
-    gap: 10px;
-
+    margin-bottom: 25px;
 }
 
-
-.study-icon {
-
-    font-size: 27px;
-
+.app-title {
+    font-size: 30px;
+    font-weight: 800;
 }
 
-
-/* =========================================
-   ЗАГОЛОВКИ
-========================================= */
+.app-subtitle {
+    color: #6b7280;
+    margin-top: 4px;
+}
 
 .section-title {
-
-    font-size: 21px;
-
-    font-weight: 700;
-
-    margin-bottom: 14px;
-
+    font-size: 20px;
+    font-weight: 750;
+    margin: 22px 0 12px;
 }
-
-
-.section-title.small {
-
-    margin-top: 24px;
-
-    font-size: 18px;
-
-}
-
 
 .screen-header {
-
     display: flex;
-
     align-items: center;
-
-    gap: 10px;
-
-    margin-bottom: 24px;
-
+    gap: 12px;
+    margin-bottom: 20px;
 }
 
-
-.screen-title {
-
+.screen-header h2 {
+    margin: 0;
     font-size: 22px;
+}
 
-    font-weight: 700;
+.back-btn {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    background: white;
+    font-size: 24px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.07);
+}
 
-    overflow: hidden;
+.deck-heading {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
 
-    text-overflow: ellipsis;
+.deck-heading h2 {
+    margin: 0;
+}
 
-    white-space: nowrap;
+.deck-heading-icon {
+    font-size: 38px;
+}
 
+.small-text {
+    margin-top: 3px;
+    color: #6b7280;
+    font-size: 14px;
 }
 
 
-.back-button {
+/* ==================== DECKS ==================== */
 
-    flex-shrink: 0;
-
-    width: 44px;
-
-    height: 44px;
-
-    border: none;
-
-    border-radius: 13px;
-
-    background: #fff;
-
-    font-size: 25px;
-
-    cursor: pointer;
-
+.decks-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
-
-
-.deck-header-icon {
-
-    flex-shrink: 0;
-
-    font-size: 27px;
-
-}
-
-
-/* =========================================
-   КОЛОДЫ
-========================================= */
 
 .deck-item {
-
-    width: 100%;
-
     display: flex;
-
     align-items: center;
-
     gap: 14px;
-
-    padding: 17px;
-
-    margin-bottom: 12px;
-
-    border-radius: 18px;
-
-    background: #fff;
-
-    box-shadow:
-        0 4px 15px rgba(0,0,0,0.06);
-
-    cursor: pointer;
-
-    animation:
-        itemIn
-        0.25s
-        ease;
-
-    transition:
-        transform 0.15s ease;
-
+    background: white;
+    border-radius: 17px;
+    padding: 15px;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.06);
+    animation: itemIn 0.25s ease;
 }
-
 
 @keyframes itemIn {
-
     from {
-
         opacity: 0;
-
-        transform:
-            translateY(8px);
-
+        transform: translateY(7px);
     }
 
     to {
-
         opacity: 1;
-
-        transform:
-            translateY(0);
-
+        transform: translateY(0);
     }
-
 }
-
 
 .deck-item:active {
-
-    transform:
-        scale(0.98);
-
+    transform: scale(0.98);
 }
 
-
-.deck-icon {
-
-    width: 50px;
-
-    height: 50px;
-
-    flex-shrink: 0;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-
+.deck-item-icon {
+    width: 52px;
+    height: 52px;
     border-radius: 14px;
-
-    background: #f2f3f5;
-
+    background: #f1f5f9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     font-size: 28px;
-
+    flex-shrink: 0;
 }
 
-
-.deck-info {
-
+.deck-item-info {
+    flex: 1;
     min-width: 0;
-
 }
 
-
-.deck-name {
-
-    font-size: 18px;
-
-    font-weight: 700;
-
-    margin-bottom: 5px;
-
+.deck-item-title {
+    font-weight: 750;
+    font-size: 17px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
-
-.deck-count {
-
-    font-size: 14px;
-
-    color: #888;
-
-}
-
-
-/* =========================================
-   ПОЛЯ
-========================================= */
-
-.field {
-
-    margin-bottom: 16px;
-
-}
-
-
-.field label {
-
-    display: block;
-
-    margin-bottom: 7px;
-
-    font-size: 14px;
-
-    color: #777;
-
-}
-
-
-input,
-textarea {
-
-    width: 100%;
-
-    border: none;
-
-    outline: none;
-
-    border-radius: 14px;
-
-    padding: 15px;
-
-    background: #fff;
-
-    font-size: 16px;
-
-    color: #111;
-
-}
-
-
-textarea {
-
-    min-height: 90px;
-
-    resize: vertical;
-
-}
-
-
-input:focus,
-textarea:focus {
-
-    box-shadow:
-        0 0 0 2px rgba(0,0,0,0.08);
-
-}
-
-
-/* =========================================
-   ЭМОДЗИ
-========================================= */
-
-.emoji-row {
-
-    display: flex;
-
-    flex-wrap: wrap;
-
-    gap: 8px;
-
-}
-
-
-.emoji-choice {
-
-    width: 46px;
-
-    height: 46px;
-
-    border: 2px solid transparent;
-
-    border-radius: 13px;
-
-    background: #fff;
-
-    font-size: 25px;
-
-    cursor: pointer;
-
-}
-
-
-.emoji-choice.selected {
-
-    border-color: #111;
-
-    background: #e9eaec;
-
-}
-
-
-.card-emoji {
-
-    height: 230px;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    font-size: 130px;
-
-    background: #f4f5f7;
-
-}
-
-
-/* =========================================
-   СОЗДАНИЕ КАРТОЧКИ
-========================================= */
-
-.new-card {
-
-    padding: 16px;
-
-    margin-bottom: 14px;
-
-    border-radius: 18px;
-
-    background: #fff;
-
-    box-shadow:
-        0 4px 15px rgba(0,0,0,0.06);
-
-    animation:
-        cardIn
-        0.3s
-        ease;
-
-}
-
-
-@keyframes cardIn {
-
-    from {
-
-        opacity: 0;
-
-        transform:
-            translateY(-10px)
-            scale(0.98);
-
-    }
-
-    to {
-
-        opacity: 1;
-
-        transform:
-            translateY(0)
-            scale(1);
-
-    }
-
-}
-
-
-.card-number {
-
-    font-weight: 700;
-
-    margin-bottom: 14px;
-
-}
-
-
-.card-emoji-select {
-
-    display: flex;
-
-    align-items: center;
-
-    gap: 10px;
-
-    margin-bottom: 15px;
-
-}
-
-
-.selected-card-emoji {
-
-    width: 55px;
-
-    height: 55px;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    border-radius: 15px;
-
-    background: #f2f3f5;
-
-    font-size: 32px;
-
-}
-
-
-.card-emoji-buttons {
-
-    display: flex;
-
-    flex-wrap: wrap;
-
-    gap: 5px;
-
-}
-
-
-.card-emoji-button {
-
-    width: 36px;
-
-    height: 36px;
-
-    border: none;
-
-    border-radius: 9px;
-
-    background: #f2f3f5;
-
-    font-size: 20px;
-
-    cursor: pointer;
-
-}
-
-
-.remove-card {
-
-    width: 100%;
-
+.deck-item-count {
     margin-top: 4px;
-
-    padding: 10px;
-
-    border: none;
-
-    background: transparent;
-
-    color: #d93030;
-
-    font-size: 14px;
-
-    cursor: pointer;
-
+    color: #6b7280;
+    font-size: 13px;
 }
 
 
-/* =========================================
-   КНОПКИ
-========================================= */
+/* ==================== BUTTONS ==================== */
 
-.primary-button,
-.secondary-button {
-
+.primary-btn,
+.secondary-btn,
+.danger-btn {
     width: 100%;
-
-    min-height: 56px;
-
-    margin-top: 14px;
-
-    border: none;
-
-    border-radius: 16px;
-
-    font-size: 16px;
-
-    font-weight: 600;
-
-    cursor: pointer;
-
+    border-radius: 14px;
+    padding: 15px 16px;
+    margin-top: 12px;
+    font-weight: 700;
     transition:
         transform 0.15s ease,
         opacity 0.15s ease;
+}
 
+.primary-btn {
+    background: #111827;
+    color: white;
+}
+
+.secondary-btn {
+    background: white;
+    color: #111827;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+}
+
+.danger-btn {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+
+.primary-btn:active,
+.secondary-btn:active,
+.danger-btn:active {
+    transform: scale(0.98);
+}
+
+.study-main-btn {
+    margin-top: 0;
+    font-size: 17px;
 }
 
 
-.primary-button {
+/* ==================== FORM ==================== */
 
-    background: #111;
-
-    color: #fff;
-
+.form-card {
+    background: white;
+    border-radius: 18px;
+    padding: 18px;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.05);
 }
 
-
-.secondary-button {
-
-    background: #fff;
-
-    color: #111;
-
-    box-shadow:
-        0 3px 12px rgba(0,0,0,0.06);
-
-}
-
-
-.primary-button:active,
-.secondary-button:active,
-.btn:active,
-.next:active {
-
-    transform:
-        scale(0.98);
-
-}
-
-
-.danger {
-
-    color: #d93030;
-
-}
-
-
-/* =========================================
-   СОДЕРЖАНИЕ
-========================================= */
-
-.deck-cards-list {
-
-    margin-top: 16px;
-
-    animation:
-        contentIn
-        0.25s
-        ease;
-
-}
-
-
-@keyframes contentIn {
-
-    from {
-
-        opacity: 0;
-
-        transform:
-            translateY(-6px);
-
-    }
-
-    to {
-
-        opacity: 1;
-
-        transform:
-            translateY(0);
-
-    }
-
-}
-
-
-.deck-card-row {
-
-    display: flex;
-
-    gap: 12px;
-
-    padding: 15px;
-
-    margin-bottom: 10px;
-
-    border-radius: 16px;
-
-    background: #fff;
-
-}
-
-
-.deck-card-number {
-
-    flex-shrink: 0;
-
-    width: 28px;
-
-    height: 28px;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    border-radius: 9px;
-
-    background: #f2f3f5;
-
-    font-size: 13px;
-
-    font-weight: 700;
-
-}
-
-
-.deck-card-content {
-
-    min-width: 0;
-
-}
-
-
-.deck-card-front {
-
-    font-size: 16px;
-
-    font-weight: 600;
-
-    margin-bottom: 6px;
-
-}
-
-
-.deck-card-back {
-
+.form-card label {
+    display: block;
     font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
 
-    color: #777;
+.form-card input {
+    width: 100%;
+    padding: 14px;
+    border: 1px solid #dbe0e6;
+    border-radius: 12px;
+    outline: none;
+    margin-bottom: 20px;
+    background: #fafafa;
+}
 
+.form-card input:focus {
+    border-color: #111827;
 }
 
 
-/* =========================================
-   КАРТОЧКА ОБУЧЕНИЯ
-========================================= */
+/* ==================== EMOJI ==================== */
 
-.card-container {
+.emoji-selector {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
 
-    width: 100%;
+.emoji-option {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: #f3f4f6;
+    font-size: 25px;
+}
 
-    height: 470px;
-
-    perspective: 1200px;
-
+.emoji-option.selected {
+    background: #111827;
+    color: white;
 }
 
 
-.card {
+/* ==================== NEW CARD ==================== */
 
-    width: 100%;
-
-    height: 100%;
-
-    position: relative;
-
-    cursor: pointer;
-
-    transform-style: preserve-3d;
-
+.new-card {
+    background: white;
+    border-radius: 18px;
+    padding: 16px;
+    margin-bottom: 12px;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.05);
+    animation: itemIn 0.25s ease;
     transition:
-        transform 0.6s
-        cubic-bezier(
-            0.4,
-            0.2,
-            0.2,
-            1
-        );
-
+        opacity 0.2s ease,
+        transform 0.2s ease,
+        max-height 0.2s ease;
 }
 
-
-.card.flipped {
-
-    transform:
-        rotateY(180deg);
-
+.new-card.removing {
+    opacity: 0;
+    transform: translateX(30px);
 }
 
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
 
-.card-side {
+.card-number {
+    font-weight: 750;
+}
 
-    position: absolute;
+.remove-card-btn {
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    background: #fee2e2;
+    color: #b91c1c;
+}
 
-    inset: 0;
+.card-field {
+    margin-bottom: 12px;
+}
 
+.card-field label {
+    display: block;
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 6px;
+    color: #4b5563;
+}
+
+.card-field textarea {
     width: 100%;
+    min-height: 80px;
+    resize: vertical;
+    border: 1px solid #dbe0e6;
+    border-radius: 12px;
+    padding: 12px;
+    outline: none;
+    background: #fafafa;
+}
 
-    height: 100%;
+.card-field textarea:focus {
+    border-color: #111827;
+}
 
+
+/* ==================== PHOTO UPLOAD ==================== */
+
+.photo-upload {
+    margin-top: 8px;
+}
+
+.photo-input {
+    display: none;
+}
+
+.photo-button {
+    width: 100%;
+    padding: 13px;
+    border-radius: 12px;
+    background: #f1f5f9;
+    color: #111827;
+    font-weight: 700;
+    text-align: center;
+}
+
+.photo-preview-wrapper {
+    display: none;
+    position: relative;
+    margin-top: 10px;
+}
+
+.photo-preview-wrapper.visible {
+    display: block;
+}
+
+.photo-preview {
+    width: 100%;
+    max-height: 240px;
+    object-fit: contain;
+    border-radius: 14px;
+    background: #f3f4f6;
+}
+
+.remove-photo-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+}
+
+
+/* ==================== CONTENT ==================== */
+
+.content-container {
+    margin-top: 15px;
+}
+
+.content-container.hidden {
+    display: none;
+}
+
+.content-card {
+    background: white;
+    border-radius: 16px;
+    padding: 15px;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.content-card-top {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.content-card-emoji {
+    font-size: 26px;
+}
+
+.content-card-number {
+    color: #6b7280;
+    font-size: 13px;
+}
+
+.content-front {
+    font-weight: 700;
+    margin-top: 10px;
+}
+
+.content-back {
+    color: #6b7280;
+    margin-top: 5px;
+}
+
+
+/* ==================== STUDY ==================== */
+
+.study-heading {
+    font-size: 18px;
+    font-weight: 750;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.progress-container {
+    margin-bottom: 15px;
+}
+
+.progress-text {
+    text-align: center;
+    font-size: 14px;
+    color: #6b7280;
+    margin-bottom: 7px;
+}
+
+.progress-bar {
+    height: 7px;
+    background: #e5e7eb;
+    border-radius: 10px;
     overflow: hidden;
+}
 
-    border-radius: 24px;
+#progressFill {
+    height: 100%;
+    width: 0;
+    background: #111827;
+    transition: width 0.25s ease;
+}
 
-    background: #fff;
 
-    box-shadow:
-        0 10px 30px rgba(0,0,0,0.12);
+/* ==================== FLASHCARD ==================== */
 
+.flashcard {
+    width: 100%;
+    height: 430px;
+    perspective: 1200px;
+    margin-top: 15px;
+}
+
+.flashcard-inner {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transition: transform 0.55s ease;
+    transform-style: preserve-3d;
+}
+
+.flashcard.flipped .flashcard-inner {
+    transform: rotateY(180deg);
+}
+
+.flashcard-face {
+    position: absolute;
+    inset: 0;
     backface-visibility: hidden;
-
     -webkit-backface-visibility: hidden;
 
-}
+    background: white;
+    border-radius: 24px;
 
-
-.card-back {
-
-    transform:
-        rotateY(180deg);
-
-}
-
-
-.card-content {
+    padding: 24px;
 
     display: flex;
-
     flex-direction: column;
-
     align-items: center;
-
     justify-content: center;
 
-    text-align: center;
-
-    height: 200px;
-
-    padding: 15px 20px;
-
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
 }
 
-
-.label {
-
-    font-size: 14px;
-
-    color: #888;
-
-    margin-bottom: 8px;
-
+.flashcard-back {
+    transform: rotateY(180deg);
 }
 
+.side-label {
+    position: absolute;
+    top: 18px;
+    left: 18px;
 
-.phrase {
-
-    font-size: 28px;
-
-    line-height: 1.2;
-
+    font-size: 12px;
     font-weight: 700;
-
-    word-break: normal;
-
+    color: #9ca3af;
+    text-transform: uppercase;
 }
 
+.study-emoji {
+    font-size: 72px;
+    margin-bottom: 20px;
+}
+
+.study-image {
+    display: none;
+    width: 100%;
+    max-height: 230px;
+    object-fit: contain;
+    border-radius: 16px;
+    margin-bottom: 18px;
+}
+
+.study-image.visible {
+    display: block;
+}
+
+.card-text {
+    text-align: center;
+    font-size: 28px;
+    line-height: 1.25;
+    font-weight: 750;
+    word-break: break-word;
+}
 
 .hint {
-
-    margin-top: 12px;
-
+    text-align: center;
+    color: #9ca3af;
     font-size: 13px;
+    margin: 12px 0;
+}
 
-    color: #999;
+.study-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
 
+.study-btn {
+    border-radius: 14px;
+    padding: 14px;
+    font-weight: 750;
+}
+
+.dont-know {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+
+.know {
+    background: #dcfce7;
+    color: #15803d;
+}
+
+.next-btn {
+    margin-top: 10px;
 }
 
 
-/* =========================================
-   КНОПКИ ОТВЕТА
-========================================= */
-
-.buttons {
-
-    display: flex;
-
-    gap: 12px;
-
-    margin-top: 20px;
-
-}
-
-
-.btn {
-
-    flex: 1;
-
-    min-height: 58px;
-
-    border: none;
-
-    border-radius: 16px;
-
-    font-size: 16px;
-
-    font-weight: 600;
-
-    cursor: pointer;
-
-}
-
-
-.no {
-
-    background: #ffe8e8;
-
-    color: #d93030;
-
-}
-
-
-.yes {
-
-    background: #e4f7eb;
-
-    color: #198754;
-
-}
-
-
-.next {
-
-    width: 100%;
-
-    min-height: 58px;
-
-    margin-top: 12px;
-
-    border: none;
-
-    border-radius: 16px;
-
-    background: #111;
-
-    color: #fff;
-
-    font-size: 16px;
-
-    font-weight: 600;
-
-    cursor: pointer;
-
-}
-
-
-/* =========================================
-   TOAST — УВЕДОМЛЕНИЕ
-========================================= */
+/* ==================== TOAST ==================== */
 
 .toast {
-
     position: fixed;
-
     left: 50%;
-
     bottom: 25px;
+
+    transform: translate(-50%, 100px);
+
+    background: #111827;
+    color: white;
+
+    padding: 13px 18px;
+
+    border-radius: 14px;
+
+    font-size: 14px;
+    font-weight: 650;
 
     z-index: 1000;
 
-    display: flex;
-
-    align-items: center;
-
-    gap: 10px;
-
-    min-width: 220px;
-
-    max-width: calc(100% - 30px);
-
-    padding: 13px 17px;
-
-    border-radius: 15px;
-
-    background: #111;
-
-    color: #fff;
-
-    box-shadow:
-        0 10px 30px rgba(0,0,0,0.2);
-
     opacity: 0;
 
-    pointer-events: none;
-
-    transform:
-        translate(-50%, 20px);
-
     transition:
-        opacity 0.25s ease,
-        transform 0.25s ease;
+        transform 0.25s ease,
+        opacity 0.25s ease;
 
+    max-width: calc(100% - 30px);
+    text-align: center;
 }
-
 
 .toast.show {
-
+    transform: translate(-50%, 0);
     opacity: 1;
-
-    transform:
-        translate(-50%, 0);
-
 }
 
 
-.toast-icon {
+/* ==================== CONFIRM ==================== */
 
-    width: 28px;
-
-    height: 28px;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    border-radius: 50%;
-
-    background: #fff;
-
-    color: #111;
-
-    font-weight: 700;
-
-}
-
-
-.toast-text {
-
-    font-size: 15px;
-
-    font-weight: 600;
-
-}
-
-
-/* =========================================
-   ПОДТВЕРЖДЕНИЕ
-========================================= */
-
-.overlay {
-
+.confirm-overlay {
     position: fixed;
-
     inset: 0;
 
-    z-index: 900;
+    background: rgba(0, 0, 0, 0.45);
 
     display: flex;
-
     align-items: center;
-
     justify-content: center;
 
     padding: 20px;
 
-    background:
-        rgba(0,0,0,0.35);
-
-    animation:
-        overlayIn
-        0.2s
-        ease;
-
+    z-index: 900;
 }
 
-
-@keyframes overlayIn {
-
-    from {
-
-        opacity: 0;
-
-    }
-
-    to {
-
-        opacity: 1;
-
-    }
-
+.confirm-overlay.hidden {
+    display: none;
 }
-
 
 .confirm-box {
-
     width: 100%;
-
     max-width: 380px;
 
-    padding: 22px;
-
+    background: white;
     border-radius: 22px;
 
-    background: #fff;
+    padding: 25px;
 
-    box-shadow:
-        0 20px 50px rgba(0,0,0,0.2);
+    text-align: center;
 
-    animation:
-        dialogIn
-        0.25s
-        ease;
-
+    animation: confirmIn 0.2s ease;
 }
 
-
-@keyframes dialogIn {
-
+@keyframes confirmIn {
     from {
-
         opacity: 0;
-
-        transform:
-            scale(0.95)
-            translateY(10px);
-
+        transform: scale(0.95);
     }
 
     to {
-
         opacity: 1;
-
-        transform:
-            scale(1)
-            translateY(0);
-
+        transform: scale(1);
     }
-
 }
 
-
-.confirm-title {
-
-    font-size: 21px;
-
-    font-weight: 700;
-
-    margin-bottom: 8px;
-
+.confirm-icon {
+    font-size: 42px;
 }
 
-
-.confirm-text {
-
-    font-size: 15px;
-
-    line-height: 1.4;
-
-    color: #777;
-
-    margin-bottom: 15px;
-
+.confirm-box h3 {
+    margin: 10px 0 5px;
 }
 
+.confirm-box p {
+    color: #6b7280;
+    margin: 0 0 20px;
+}
 
 .confirm-buttons {
-
-    display: flex;
-
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     gap: 10px;
-
 }
 
-
-.confirm-buttons .secondary-button {
-
+.confirm-buttons .secondary-btn,
+.confirm-buttons .danger-btn {
     margin-top: 0;
-
 }
 
 
-.delete-confirm-button {
+/* ==================== MOBILE ==================== */
 
-    flex: 1;
+@media (max-width: 480px) {
 
-    min-height: 56px;
-
-    border: none;
-
-    border-radius: 16px;
-
-    background: #d93030;
-
-    color: #fff;
-
-    font-size: 16px;
-
-    font-weight: 600;
-
-}
-
-
-/* =========================================
-   МОБИЛЬНАЯ ВЕРСИЯ
-========================================= */
-
-@media (max-width: 500px) {
-
-    .app {
-
+    .screen {
         padding: 14px;
-
     }
 
-
-    .card-container {
-
-        height: 440px;
-
+    .app-title {
+        font-size: 27px;
     }
 
-
-    .card-emoji {
-
-        height: 250px;
-
-        font-size: 120px;
-
+    .flashcard {
+        height: 400px;
     }
 
-
-    .card-content {
-
-        height: 190px;
-
-    }
-
-
-    .phrase {
-
+    .card-text {
         font-size: 25px;
-
     }
 
-}
-
-
-@media (max-height: 700px) {
-
-    .card-container {
-
-        height: 390px;
-
-    }
-
-
-    .card-emoji {
-
-        height: 210px;
-
-    }
-
-
-    .card-content {
-
-        height: 180px;
-
+    .study-emoji {
+        font-size: 64px;
     }
 
 }
