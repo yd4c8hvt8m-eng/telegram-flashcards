@@ -1,3 +1,7 @@
+// ==========================================
+// TELEGRAM
+// ==========================================
+
 const tg = window.Telegram.WebApp;
 
 tg.ready();
@@ -5,7 +9,7 @@ tg.expand();
 
 
 // ==========================================
-// ВСТРОЕННЫЕ ИЛЛЮСТРАЦИИ
+// ИЛЛЮСТРАЦИИ
 // ==========================================
 
 function makeImage(emoji, title) {
@@ -16,21 +20,24 @@ function makeImage(emoji, title) {
          height="500"
          viewBox="0 0 800 500">
 
-        <rect width="800"
-              height="500"
-              fill="#f4f5f7"/>
+        <rect
+            width="800"
+            height="500"
+            fill="#f4f5f7"
+        />
 
         <circle
             cx="400"
             cy="210"
-            r="150"
-            fill="#ffffff"/>
+            r="155"
+            fill="#ffffff"
+        />
 
         <text
             x="400"
             y="245"
             text-anchor="middle"
-            font-size="150">
+            font-size="140">
             ${emoji}
         </text>
 
@@ -38,7 +45,7 @@ function makeImage(emoji, title) {
             x="400"
             y="410"
             text-anchor="middle"
-            font-family="Arial, sans-serif"
+            font-family="Arial"
             font-size="30"
             font-weight="600"
             fill="#555">
@@ -54,601 +61,240 @@ function makeImage(emoji, title) {
 
 
 // ==========================================
-// ГОТОВАЯ КОЛОДА
+// НАША КОЛОДА
 // ==========================================
 
-const defaultDeck = {
+const cards = [
 
-    id: "actions-20",
+    {
+        id: 1,
+        front: "Pick up the phone.",
+        back: "Подними / возьми телефон.",
+        image: makeImage("📱", "Pick up")
+    },
 
-    name: "20 главных действий с предметами",
+    {
+        id: 2,
+        front: "Put the cup down on the table.",
+        back: "Поставь чашку на стол.",
+        image: makeImage("☕", "Put down")
+    },
 
-    cards: [
+    {
+        id: 3,
+        front: "Move the book aside.",
+        back: "Отодвинь книгу в сторону.",
+        image: makeImage("📖", "Move aside")
+    },
 
-        {
-            id: "action-01",
-            front: "Pick up the phone.",
-            back: "Подними / возьми телефон.",
-            image: makeImage("📱", "Pick up")
-        },
+    {
+        id: 4,
+        front: "Move the box over here.",
+        back: "Передвинь / переставь коробку сюда.",
+        image: makeImage("📦", "Move here")
+    },
 
-        {
-            id: "action-02",
-            front: "Put the cup down on the table.",
-            back: "Поставь чашку на стол.",
-            image: makeImage("☕", "Put down")
-        },
+    {
+        id: 5,
+        front: "Put the key in your pocket.",
+        back: "Положи ключ в карман.",
+        image: makeImage("🔑", "Put inside")
+    },
 
-        {
-            id: "action-03",
-            front: "Move the book aside.",
-            back: "Отодвинь книгу в сторону.",
-            image: makeImage("📖", "Move aside")
-        },
+    {
+        id: 6,
+        front: "Take the key out of your pocket.",
+        back: "Достань ключ из кармана.",
+        image: makeImage("🔑", "Take out")
+    },
 
-        {
-            id: "action-04",
-            front: "Move the box over here.",
-            back: "Передвинь / переставь коробку сюда.",
-            image: makeImage("📦", "Move here")
-        },
+    {
+        id: 7,
+        front: "Give me the pen.",
+        back: "Дай мне ручку.",
+        image: makeImage("🖊️", "Give me")
+    },
 
-        {
-            id: "action-05",
-            front: "Put the key in your pocket.",
-            back: "Положи ключ в карман.",
-            image: makeImage("🔑", "Put inside")
-        },
+    {
+        id: 8,
+        front: "Lift the box up.",
+        back: "Подними коробку вверх.",
+        image: makeImage("📦", "Lift up")
+    },
 
-        {
-            id: "action-06",
-            front: "Take the key out of your pocket.",
-            back: "Достань ключ из кармана.",
-            image: makeImage("🔑", "Take out")
-        },
+    {
+        id: 9,
+        front: "Lower the box slowly.",
+        back: "Медленно опусти коробку.",
+        image: makeImage("📦", "Lower")
+    },
 
-        {
-            id: "action-07",
-            front: "Give me the pen.",
-            back: "Дай мне ручку.",
-            image: makeImage("🖊️", "Give me")
-        },
+    {
+        id: 10,
+        front: "Tilt the bottle slightly.",
+        back: "Слегка наклони бутылку.",
+        image: makeImage("🍾", "Tilt")
+    },
 
-        {
-            id: "action-08",
-            front: "Lift the box up.",
-            back: "Подними коробку вверх.",
-            image: makeImage("📦", "Lift up")
-        },
+    {
+        id: 11,
+        front: "Keep the bottle upright.",
+        back: "Держи бутылку вертикально.",
+        image: makeImage("🧴", "Keep upright")
+    },
 
-        {
-            id: "action-09",
-            front: "Lower the box slowly.",
-            back: "Медленно опусти коробку.",
-            image: makeImage("📦", "Lower")
-        },
+    {
+        id: 12,
+        front: "Bring the phone closer.",
+        back: "Поднеси телефон ближе.",
+        image: makeImage("📱", "Bring closer")
+    },
 
-        {
-            id: "action-10",
-            front: "Tilt the bottle slightly.",
-            back: "Слегка наклони бутылку.",
-            image: makeImage("🍾", "Tilt")
-        },
+    {
+        id: 13,
+        front: "Move the phone farther away.",
+        back: "Отодвинь / отнеси телефон подальше.",
+        image: makeImage("📱", "Move away")
+    },
 
-        {
-            id: "action-11",
-            front: "Keep the bottle upright.",
-            back: "Держи бутылку вертикально.",
-            image: makeImage("🧴", "Keep upright")
-        },
+    {
+        id: 14,
+        front: "Give the bottle a good shake.",
+        back: "Хорошенько встряхни бутылку.",
+        image: makeImage("🧴", "Shake")
+    },
 
-        {
-            id: "action-12",
-            front: "Bring the phone closer.",
-            back: "Поднеси телефон ближе.",
-            image: makeImage("📱", "Bring closer")
-        },
+    {
+        id: 15,
+        front: "Be careful! Don't drop the glass.",
+        back: "Осторожно! Не урони стакан.",
+        image: makeImage("🥛", "Don't drop")
+    },
 
-        {
-            id: "action-13",
-            front: "Move the phone farther away.",
-            back: "Отодвинь / отнеси телефон подальше.",
-            image: makeImage("📱", "Move away")
-        },
+    {
+        id: 16,
+        front: "Carry the laptop carefully.",
+        back: "Неси ноутбук осторожно.",
+        image: makeImage("💻", "Carry")
+    },
 
-        {
-            id: "action-14",
-            front: "Give the bottle a good shake.",
-            back: "Хорошенько встряхни бутылку.",
-            image: makeImage("🧴", "Shake")
-        },
+    {
+        id: 17,
+        front: "Set the plate down gently.",
+        back: "Аккуратно поставь тарелку.",
+        image: makeImage("🍽️", "Set down")
+    },
 
-        {
-            id: "action-15",
-            front: "Be careful! Don't drop the glass.",
-            back: "Осторожно! Не урони стакан.",
-            image: makeImage("🥛", "Don't drop")
-        },
+    {
+        id: 18,
+        front: "Turn the phone around.",
+        back: "Разверни телефон.",
+        image: makeImage("📱", "Turn around")
+    },
 
-        {
-            id: "action-16",
-            front: "Carry the laptop carefully.",
-            back: "Неси ноутбук осторожно.",
-            image: makeImage("💻", "Carry")
-        },
+    {
+        id: 19,
+        front: "Turn the cup upside down.",
+        back: "Переверни чашку вверх дном.",
+        image: makeImage("☕", "Upside down")
+    },
 
-        {
-            id: "action-17",
-            front: "Set the plate down gently.",
-            back: "Аккуратно поставь тарелку.",
-            image: makeImage("🍽️", "Set down")
-        },
+    {
+        id: 20,
+        front: "Leave the keys there.",
+        back: "Оставь ключи там.",
+        image: makeImage("🔑", "Leave there")
+    }
 
-        {
-            id: "action-18",
-            front: "Turn the phone around.",
-            back: "Разверни телефон.",
-            image: makeImage("📱", "Turn around")
-        },
-
-        {
-            id: "action-19",
-            front: "Turn the cup upside down.",
-            back: "Переверни чашку вверх дном.",
-            image: makeImage("☕", "Turn upside down")
-        },
-
-        {
-            id: "action-20",
-            front: "Leave the keys there.",
-            back: "Оставь ключи там.",
-            image: makeImage("🔑", "Leave there")
-        }
-
-    ]
-
-};
+];
 
 
 // ==========================================
-// ЗАГРУЗКА КОЛОД
+// СОСТОЯНИЕ
 // ==========================================
 
-let decks = [];
+let currentCard = 0;
 
-let currentDeckId = null;
-
-let currentStudyCards = [];
-
-let currentCardIndex = 0;
+let studyCards = [...cards];
 
 let knownCards = [];
 
 
 // ==========================================
-// ХРАНИЛИЩЕ TELEGRAM
+// ЭЛЕМЕНТЫ
 // ==========================================
 
-const STORAGE_KEY = "flashcards_decks";
+const card =
+    document.getElementById("card");
 
+const frontText =
+    document.getElementById("frontText");
 
-// ==========================================
-// ЗАГРУЗКА ДАННЫХ
-// ==========================================
+const backText =
+    document.getElementById("backText");
 
-function loadData() {
+const cardImage =
+    document.getElementById("cardImage");
 
-    tg.CloudStorage.getItem(
-        STORAGE_KEY,
-        function(error, value) {
+const cardImageBack =
+    document.getElementById("cardImageBack");
 
-            if (error) {
-
-                decks = [];
-
-                addDefaultDeck();
-
-                return;
-            }
-
-
-            if (value) {
-
-                try {
-
-                    decks = JSON.parse(value);
-
-                } catch {
-
-                    decks = [];
-
-                }
-
-            } else {
-
-                decks = [];
-
-            }
-
-
-            // Добавляем нашу готовую колоду,
-            // если её ещё нет
-
-            const exists =
-                decks.some(
-                    deck =>
-                        deck.id === defaultDeck.id
-                );
-
-
-            if (!exists) {
-
-                decks.unshift(defaultDeck);
-
-                saveData(function() {
-
-                    showHome();
-
-                });
-
-            } else {
-
-                showHome();
-
-            }
-
-        }
-    );
-}
-
-
-// ==========================================
-// ДОБАВЛЕНИЕ ГОТОВОЙ КОЛОДЫ
-// ==========================================
-
-function addDefaultDeck() {
-
-    decks = [defaultDeck];
-
-    saveData(function() {
-
-        showHome();
-
-    });
-
-}
-
-
-// ==========================================
-// СОХРАНЕНИЕ
-// ==========================================
-
-function saveData(callback) {
-
-    tg.CloudStorage.setItem(
-
-        STORAGE_KEY,
-
-        JSON.stringify(decks),
-
-        function(error) {
-
-            if (error) {
-
-                console.log(error);
-
-                alert(
-                    "Ошибка сохранения данных."
-                );
-
-                return;
-
-            }
-
-
-            if (callback) {
-
-                callback();
-
-            }
-
-        }
-
-    );
-
-}
-
-
-// ==========================================
-// ЭКРАНЫ
-// ==========================================
-
-function hideAllScreens() {
-
-    document
-        .querySelectorAll(".screen")
-        .forEach(
-            screen =>
-                screen.classList.add("hidden")
-        );
-
-}
-
-
-function showHome() {
-
-    hideAllScreens();
-
-    document
-        .getElementById("homeScreen")
-        .classList.remove("hidden");
-
-    renderDecks();
-
-}
-
-
-// ==========================================
-// СПИСОК КОЛОД
-// ==========================================
-
-function renderDecks() {
-
-    const container =
-        document.getElementById("decksList");
-
-    container.innerHTML = "";
-
-
-    if (decks.length === 0) {
-
-        const empty =
-            document.createElement("div");
-
-        empty.className = "deck-item";
-
-        empty.innerHTML = `
-            <div class="deck-name">
-                Нет колод
-            </div>
-
-            <div class="deck-count">
-                Создайте первую колоду
-            </div>
-        `;
-
-        container.appendChild(empty);
-
-        return;
-
-    }
-
-
-    decks.forEach(deck => {
-
-        const item =
-            document.createElement("div");
-
-        item.className = "deck-item";
-
-        item.onclick =
-            () => openDeck(deck.id);
-
-
-        item.innerHTML = `
-
-            <div class="deck-name">
-                ${escapeHtml(deck.name)}
-            </div>
-
-            <div class="deck-count">
-                ${deck.cards.length}
-                карточек
-            </div>
-
-        `;
-
-
-        container.appendChild(item);
-
-    });
-
-}
-
-
-// ==========================================
-// ОТКРЫТИЕ КОЛОДЫ
-// ==========================================
-
-function openDeck(id) {
-
-    const deck =
-        decks.find(
-            item => item.id === id
-        );
-
-
-    if (!deck) {
-
-        showHome();
-
-        return;
-
-    }
-
-
-    currentDeckId = id;
-
-
-    hideAllScreens();
-
-
-    document
-        .getElementById("deckScreen")
-        .classList.remove("hidden");
-
-
-    document
-        .getElementById("deckTitle")
-        .textContent =
-            deck.name;
-
-
-    renderDeckCards(deck);
-
-}
-
-
-// ==========================================
-// СПИСОК КАРТОЧЕК
-// ==========================================
-
-function renderDeckCards(deck) {
-
-    const container =
-        document.getElementById("deckCardsList");
-
-    container.innerHTML = "";
-
-
-    deck.cards.forEach(
-        (card, index) => {
-
-            const row =
-                document.createElement("div");
-
-            row.className =
-                "deck-card-row";
-
-
-            row.innerHTML = `
-
-                <div class="deck-card-front">
-                    ${index + 1}.
-                    ${escapeHtml(card.front)}
-                </div>
-
-                <div class="deck-card-back">
-                    ${escapeHtml(card.back)}
-                </div>
-
-            `;
-
-
-            container.appendChild(row);
-
-        }
-    );
-
-}
-
-
-// ==========================================
-// НАЧАЛО ОБУЧЕНИЯ
-// ==========================================
-
-function startCurrentDeck() {
-
-    const deck =
-        decks.find(
-            item =>
-                item.id === currentDeckId
-        );
-
-
-    if (!deck) {
-
-        return;
-
-    }
-
-
-    currentStudyCards =
-        [...deck.cards];
-
-
-    currentCardIndex = 0;
-
-    knownCards = [];
-
-
-    hideAllScreens();
-
-
-    document
-        .getElementById("studyScreen")
-        .classList.remove("hidden");
-
-
-    document
-        .getElementById("studyDeckName")
-        .textContent =
-            deck.name;
-
-
-    showStudyCard();
-
-}
+const progress =
+    document.getElementById("progress");
 
 
 // ==========================================
 // ПОКАЗ КАРТОЧКИ
 // ==========================================
 
-function showStudyCard() {
+function showCard() {
 
-    const item =
-        currentStudyCards[
-            currentCardIndex
-        ];
-
-
-    if (!item) {
+    if (studyCards.length === 0) {
 
         finishLesson();
 
         return;
+    }
+
+
+    if (currentCard >= studyCards.length) {
+
+        currentCard = 0;
 
     }
 
 
-    const card =
-        document.getElementById("card");
+    const item =
+        studyCards[currentCard];
 
 
-    card.classList.remove(
-        "flipped"
-    );
+    // Убираем переворот
+
+    card.classList.remove("flipped");
 
 
-    document
-        .getElementById("frontText")
-        .textContent =
-            item.front;
+    // Текст
+
+    frontText.textContent =
+        item.front;
+
+    backText.textContent =
+        item.back;
 
 
-    document
-        .getElementById("backText")
-        .textContent =
-            item.back;
+    // Картинка
+
+    cardImage.src =
+        item.image;
+
+    cardImageBack.src =
+        item.image;
 
 
-    document
-        .getElementById("progress")
-        .textContent =
-            `${currentCardIndex + 1} / ${currentStudyCards.length}`;
+    // Прогресс
 
-
-    document
-        .getElementById("cardImage")
-        .src =
-            item.image;
-
-
-    document
-        .getElementById("cardImageBack")
-        .src =
-            item.image;
+    progress.textContent =
+        `${currentCard + 1} / ${studyCards.length}`;
 
 }
 
@@ -657,18 +303,16 @@ function showStudyCard() {
 // ПЕРЕВОРОТ
 // ==========================================
 
-document
-    .getElementById("card")
-    .addEventListener(
-        "click",
-        function() {
+card.addEventListener(
+    "click",
+    function() {
 
-            this.classList.toggle(
-                "flipped"
-            );
+        card.classList.toggle(
+            "flipped"
+        );
 
-        }
-    );
+    }
+);
 
 
 // ==========================================
@@ -677,65 +321,90 @@ document
 
 function answer(known) {
 
-    const current =
-        currentStudyCards[
-            currentCardIndex
-        ];
-
-
-    if (!current) {
+    if (
+        !studyCards[currentCard]
+    ) {
 
         return;
 
     }
+
+
+    const item =
+        studyCards[currentCard];
 
 
     if (known) {
 
-        knownCards.push(
-            current.id
-        );
+        // Запоминаем выученную карточку
+
+        knownCards.push(item.id);
 
 
-        currentCardIndex++;
+        // Удаляем её из текущего обучения
 
-
-    } else {
-
-        // Убираем карточку
-        // из текущей позиции
-
-        currentStudyCards.splice(
-            currentCardIndex,
+        studyCards.splice(
+            currentCard,
             1
         );
 
 
-        // И ставим её в конец
+        // Если больше карточек нет
 
-        currentStudyCards.push(
-            current
+        if (
+            studyCards.length === 0
+        ) {
+
+            finishLesson();
+
+            return;
+
+        }
+
+
+        // После удаления индекс
+        // остаётся на текущей позиции
+
+        if (
+            currentCard >=
+            studyCards.length
+        ) {
+
+            currentCard = 0;
+
+        }
+
+
+    } else {
+
+        // Если не знаешь —
+        // отправляем карточку в конец
+
+        const failedCard =
+            studyCards.splice(
+                currentCard,
+                1
+            )[0];
+
+
+        studyCards.push(
+            failedCard
         );
 
 
-        currentCardIndex++;
+        if (
+            currentCard >=
+            studyCards.length
+        ) {
+
+            currentCard = 0;
+
+        }
 
     }
 
 
-    if (
-        currentCardIndex >=
-        currentStudyCards.length
-    ) {
-
-        finishLesson();
-
-        return;
-
-    }
-
-
-    showStudyCard();
+    showCard();
 
 }
 
@@ -746,105 +415,63 @@ function answer(known) {
 
 function nextCard() {
 
-    currentCardIndex++;
+    currentCard++;
 
 
     if (
-        currentCardIndex >=
-        currentStudyCards.length
+        currentCard >=
+        studyCards.length
     ) {
 
-        finishLesson();
-
-        return;
+        currentCard = 0;
 
     }
 
 
-    showStudyCard();
+    showCard();
 
 }
 
 
 // ==========================================
-// ЗАВЕРШЕНИЕ
+// ОКОНЧАНИЕ
 // ==========================================
 
 function finishLesson() {
 
-    const deck =
-        decks.find(
-            item =>
-                item.id === currentDeckId
-        );
+    const total =
+        cards.length;
 
 
-    hideAllScreens();
-
-
-    document
-        .getElementById("deckScreen")
-        .classList.remove("hidden");
-
-
-    if (deck) {
-
-        document
-            .getElementById("deckTitle")
-            .textContent =
-                deck.name;
-
-
-        renderDeckCards(deck);
-
-    }
+    const known =
+        knownCards.length;
 
 
     alert(
+
         "Урок завершён!\n\n" +
-        "Колода: " +
-        (deck
-            ? deck.name
-            : "") +
-        "\nКарточек: " +
-        knownCards.length
+
+        "Колода: 20 главных действий с предметами\n\n" +
+
+        "Выучено: " +
+        known +
+        " из " +
+        total
+
     );
 
-}
+
+    // Начинаем заново
+
+    studyCards =
+        [...cards];
+
+    currentCard = 0;
+
+    knownCards = [];
 
 
-// ==========================================
-// БЕЗОПАСНЫЙ ВЫВОД ТЕКСТА
-// ==========================================
-
-function escapeHtml(text) {
-
-    return String(text)
-
-        .replaceAll(
-            "&",
-            "&amp;"
-        )
-
-        .replaceAll(
-            "<",
-            "&lt;"
-        )
-
-        .replaceAll(
-            ">",
-            "&gt;"
-        )
-
-        .replaceAll(
-            '"',
-            "&quot;"
-        )
-
-        .replaceAll(
-            "'",
-            "&#039;"
-        );
+    showCard();
 
 }
 
@@ -853,4 +480,4 @@ function escapeHtml(text) {
 // ЗАПУСК
 // ==========================================
 
-loadData();
+showCard();
