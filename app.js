@@ -5,6 +5,7 @@
 const tg = window.Telegram.WebApp;
 
 tg.ready();
+
 tg.expand();
 
 
@@ -12,7 +13,9 @@ tg.expand();
 // ХРАНИЛИЩЕ
 // ==========================================
 
-const STORAGE_KEY = "flashcards_decks_v2";
+const STORAGE_KEY =
+    "flashcards_decks_v3";
+
 
 let decks = [];
 
@@ -29,27 +32,32 @@ let knownCards = [];
 // ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ
 // ==========================================
 
-function ru(text) {
-
-    return text;
-
-}
-
-
 function escapeHtml(text) {
 
     return String(text)
 
         .replaceAll("&", "&amp;")
+
         .replaceAll("<", "&lt;")
+
         .replaceAll(">", "&gt;")
+
         .replaceAll('"', "&quot;")
+
         .replaceAll("'", "&#039;");
 
 }
 
 
+// ==========================================
+// КАРТИНКА ПО УМОЛЧАНИЮ
+// ==========================================
+
 function makeDefaultImage(title) {
+
+    const safeTitle =
+        escapeHtml(title);
+
 
     const svg = `
 
@@ -68,17 +76,17 @@ function makeDefaultImage(title) {
 
             <circle
                 cx="400"
-                cy="220"
+                cy="210"
                 r="150"
                 fill="#ffffff"
             />
 
             <text
                 x="400"
-                y="230"
+                y="220"
                 text-anchor="middle"
                 font-family="Arial"
-                font-size="42"
+                font-size="38"
                 font-weight="700"
                 fill="#222"
             >
@@ -87,27 +95,338 @@ function makeDefaultImage(title) {
 
             <text
                 x="400"
-                y="290"
+                y="280"
                 text-anchor="middle"
                 font-family="Arial"
-                font-size="24"
+                font-size="22"
                 fill="#888"
             >
-                ${escapeHtml(title)}
+                ${safeTitle}
             </text>
 
         </svg>
 
     `;
 
-    return "data:image/svg+xml;charset=UTF-8," +
-        encodeURIComponent(svg);
+
+    return (
+        "data:image/svg+xml;charset=UTF-8," +
+        encodeURIComponent(svg)
+    );
 
 }
 
 
 // ==========================================
-// ХРАНИЛИЩЕ TELEGRAM
+// СТАНДАРТНАЯ КОЛОДА
+// ==========================================
+
+function createDefaultDeck() {
+
+    return {
+
+        id:
+            "actions-20",
+
+        name:
+            "20 главных действий с предметами",
+
+        builtIn:
+            true,
+
+        russianFirst:
+            true,
+
+        cards: [
+
+            {
+                id: "a1",
+
+                front:
+                    "Подними / возьми телефон.",
+
+                back:
+                    "Pick up the phone.",
+
+                image:
+                    "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=800&q=80"
+            },
+
+
+            {
+                id: "a2",
+
+                front:
+                    "Поставь чашку на стол.",
+
+                back:
+                    "Put the cup down on the table.",
+
+                image:
+                    "https://images.unsplash.com/photo-1514228742587-6b1558fcca3d?auto=format&fit=crop&w=800&q=80"
+            },
+
+
+            {
+                id: "a3",
+
+                front:
+                    "Отодвинь книгу в сторону.",
+
+                back:
+                    "Move the book aside.",
+
+                image:
+                    "https://images.unsplash.com/photo-1544947950-fa07a98d237f?auto=format&fit=crop&w=800&q=80"
+            },
+
+
+            {
+                id: "a4",
+
+                front:
+                    "Передвинь / переставь коробку сюда.",
+
+                back:
+                    "Move the box over here.",
+
+                image:
+                    "https://images.unsplash.com/photo-1607166452427-7e4477079cb9?auto=format&fit=crop&w=800&q=80"
+            },
+
+
+            {
+                id: "a5",
+
+                front:
+                    "Положи ключ в карман.",
+
+                back:
+                    "Put the key in your pocket.",
+
+                image:
+                    "https://images.unsplash.com/photo-1558486012-817176f84c6d?auto=format&fit=crop&w=800&q=80"
+            },
+
+
+            {
+                id: "a6",
+
+                front:
+                    "Достань ключ из кармана.",
+
+                back:
+                    "Take the key out of your pocket.",
+
+                image:
+                    "https://images.unsplash.com/photo-1582139329536-e7284fece509?auto=format&fit=crop&w=800&q=80"
+            },
+
+
+            {
+                id: "a7",
+
+                front:
+                    "Дай мне ручку.",
+
+                back:
+                    "Give me the pen.",
+
+                image:
+                    "https://images.unsplash.com/photo-1583485088034-697b5bc54ccd?auto=format&fit=crop&w=800&q=80"
+            },
+
+
+            {
+                id: "a8",
+
+                front:
+                    "Подними коробку вверх.",
+
+                back:
+                    "Lift the box up.",
+
+                image:
+                    "https://images.unsplash.com/photo-1586528116493-da8b2e6b1f4d?auto=format&fit=crop&w=800&q=80"
+            },
+
+
+            {
+                id: "a9",
+
+                front:
+                    "Медленно опусти коробку.",
+
+                back:
+                    "Lower the box slowly.",
+
+                image:
+                    "https://images.unsplash.com/photo-1601758123927-19640b8c2b5f?auto=format&fit=crop&w=800&q=80"
+            },
+
+
+            {
+                id: "a10",
+
+                front:
+                    "Слегка наклони бутылку.",
+
+                back:
+                    "Tilt the bottle slightly.",
+
+                image:
+                    "https://images.unsplash.com/photo-1602143407151-7111542de6e8?auto=format&fit=crop&w=800&q=80"
+            },
+
+
+            {
+                id: "a11",
+
+                front:
+                    "Держи бутылку вертикально.",
+
+                back:
+                    "Keep the bottle upright.",
+
+                image:
+                    "https://images.unsplash.com/photo-1602143407151-7111542de6e8?auto=format&fit=crop&w=800&q=80"
+            },
+
+
+            {
+                id: "a12",
+
+                front:
+                    "Поднеси телефон ближе.",
+
+                back:
+                    "Bring the phone closer.",
+
+                image:
+                    "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=800&q=80"
+            },
+
+
+            {
+                id: "a13",
+
+                front:
+                    "Отодвинь / отнеси телефон подальше.",
+
+                back:
+                    "Move the phone farther away.",
+
+                image:
+                    "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=800&q=80"
+            },
+
+
+            {
+                id: "a14",
+
+                front:
+                    "Хорошенько встряхни бутылку.",
+
+                back:
+                    "Give the bottle a good shake.",
+
+                image:
+                    "https://images.unsplash.com/photo-1602143407151-7111542de6e8?auto=format&fit=crop&w=800&q=80"
+            },
+
+
+            {
+                id: "a15",
+
+                front:
+                    "Осторожно! Не урони стакан.",
+
+                back:
+                    "Be careful! Don't drop the glass.",
+
+                image:
+                    "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=800&q=80"
+            },
+
+
+            {
+                id: "a16",
+
+                front:
+                    "Неси ноутбук осторожно.",
+
+                back:
+                    "Carry the laptop carefully.",
+
+                image:
+                    "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?auto=format&fit=crop&w=800&q=80"
+            },
+
+
+            {
+                id: "a17",
+
+                front:
+                    "Аккуратно поставь тарелку.",
+
+                back:
+                    "Set the plate down gently.",
+
+                image:
+                    "https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=800&q=80"
+            },
+
+
+            {
+                id: "a18",
+
+                front:
+                    "Разверни телефон.",
+
+                back:
+                    "Turn the phone around.",
+
+                image:
+                    "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=800&q=80"
+            },
+
+
+            {
+                id: "a19",
+
+                front:
+                    "Переверни чашку вверх дном.",
+
+                back:
+                    "Turn the cup upside down.",
+
+                image:
+                    "https://images.unsplash.com/photo-1514228742587-6b1558fcca3d?auto=format&fit=crop&w=800&q=80"
+            },
+
+
+            {
+                id: "a20",
+
+                front:
+                    "Оставь ключи там.",
+
+                back:
+                    "Leave the keys there.",
+
+                image:
+                    "https://images.unsplash.com/photo-1558486012-817176f84c6d?auto=format&fit=crop&w=800&q=80"
+            }
+
+        ]
+
+    };
+
+}
+
+
+// ==========================================
+// ЗАГРУЗКА ДАННЫХ
 // ==========================================
 
 function loadData() {
@@ -121,7 +440,10 @@ function loadData() {
             STORAGE_KEY,
             function(error, value) {
 
-                if (!error && value) {
+                if (
+                    !error &&
+                    value
+                ) {
 
                     try {
 
@@ -140,6 +462,7 @@ function loadData() {
                         loadLocalData();
 
                 }
+
 
                 ensureDefaultDeck();
 
@@ -162,6 +485,10 @@ function loadData() {
 }
 
 
+// ==========================================
+// LOCAL STORAGE
+// ==========================================
+
 function loadLocalData() {
 
     try {
@@ -171,9 +498,15 @@ function loadLocalData() {
                 STORAGE_KEY
             );
 
-        return value
-            ? JSON.parse(value)
-            : [];
+
+        if (!value) {
+
+            return [];
+
+        }
+
+
+        return JSON.parse(value);
 
     } catch {
 
@@ -184,10 +517,16 @@ function loadLocalData() {
 }
 
 
+// ==========================================
+// СОХРАНЕНИЕ
+// ==========================================
+
 function saveData(callback) {
 
     const data =
-        JSON.stringify(decks);
+        JSON.stringify(
+            decks
+        );
 
 
     try {
@@ -225,6 +564,7 @@ function saveData(callback) {
 
                 }
 
+
                 if (callback) {
 
                     callback();
@@ -248,241 +588,67 @@ function saveData(callback) {
 
 
 // ==========================================
-// ГОТОВАЯ КОЛОДА
+// ПРОВЕРКА СТАНДАРТНОЙ КОЛОДЫ
 // ==========================================
-
-function createDefaultDeck() {
-
-    return {
-
-        id: "actions-20",
-
-        name:
-            "20 главных действий с предметами",
-
-        builtIn: true,
-
-        cards: [
-
-            {
-                id: "a1",
-                front: "Pick up the phone.",
-                back: "Подними / возьми телефон.",
-                image:
-                    "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=800&q=80"
-            },
-
-            {
-                id: "a2",
-                front:
-                    "Put the cup down on the table.",
-                back:
-                    "Поставь чашку на стол.",
-                image:
-                    "https://images.unsplash.com/photo-1514228742587-6b1558fcca3d?auto=format&fit=crop&w=800&q=80"
-            },
-
-            {
-                id: "a3",
-                front:
-                    "Move the book aside.",
-                back:
-                    "Отодвинь книгу в сторону.",
-                image:
-                    "https://images.unsplash.com/photo-1544947950-fa07a98d237f?auto=format&fit=crop&w=800&q=80"
-            },
-
-            {
-                id: "a4",
-                front:
-                    "Move the box over here.",
-                back:
-                    "Передвинь / переставь коробку сюда.",
-                image:
-                    "https://images.unsplash.com/photo-1607166452427-7e4477079cb9?auto=format&fit=crop&w=800&q=80"
-            },
-
-            {
-                id: "a5",
-                front:
-                    "Put the key in your pocket.",
-                back:
-                    "Положи ключ в карман.",
-                image:
-                    "https://images.unsplash.com/photo-1558486012-817176f84c6d?auto=format&fit=crop&w=800&q=80"
-            },
-
-            {
-                id: "a6",
-                front:
-                    "Take the key out of your pocket.",
-                back:
-                    "Достань ключ из кармана.",
-                image:
-                    "https://images.unsplash.com/photo-1582139329536-e7284fece509?auto=format&fit=crop&w=800&q=80"
-            },
-
-            {
-                id: "a7",
-                front:
-                    "Give me the pen.",
-                back:
-                    "Дай мне ручку.",
-                image:
-                    "https://images.unsplash.com/photo-1583485088034-697b5bc54ccd?auto=format&fit=crop&w=800&q=80"
-            },
-
-            {
-                id: "a8",
-                front:
-                    "Lift the box up.",
-                back:
-                    "Подними коробку вверх.",
-                image:
-                    "https://images.unsplash.com/photo-1586528116493-da8b2e6b1f4d?auto=format&fit=crop&w=800&q=80"
-            },
-
-            {
-                id: "a9",
-                front:
-                    "Lower the box slowly.",
-                back:
-                    "Медленно опусти коробку.",
-                image:
-                    "https://images.unsplash.com/photo-1601758123927-19640b8c2b5f?auto=format&fit=crop&w=800&q=80"
-            },
-
-            {
-                id: "a10",
-                front:
-                    "Tilt the bottle slightly.",
-                back:
-                    "Слегка наклони бутылку.",
-                image:
-                    "https://images.unsplash.com/photo-1602143407151-7111542de6e8?auto=format&fit=crop&w=800&q=80"
-            },
-
-            {
-                id: "a11",
-                front:
-                    "Keep the bottle upright.",
-                back:
-                    "Держи бутылку вертикально.",
-                image:
-                    "https://images.unsplash.com/photo-1602143407151-7111542de6e8?auto=format&fit=crop&w=800&q=80"
-            },
-
-            {
-                id: "a12",
-                front:
-                    "Bring the phone closer.",
-                back:
-                    "Поднеси телефон ближе.",
-                image:
-                    "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=800&q=80"
-            },
-
-            {
-                id: "a13",
-                front:
-                    "Move the phone farther away.",
-                back:
-                    "Отодвинь / отнеси телефон подальше.",
-                image:
-                    "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=800&q=80"
-            },
-
-            {
-                id: "a14",
-                front:
-                    "Give the bottle a good shake.",
-                back:
-                    "Хорошенько встряхни бутылку.",
-                image:
-                    "https://images.unsplash.com/photo-1602143407151-7111542de6e8?auto=format&fit=crop&w=800&q=80"
-            },
-
-            {
-                id: "a15",
-                front:
-                    "Be careful! Don't drop the glass.",
-                back:
-                    "Осторожно! Не урони стакан.",
-                image:
-                    "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=800&q=80"
-            },
-
-            {
-                id: "a16",
-                front:
-                    "Carry the laptop carefully.",
-                back:
-                    "Неси ноутбук осторожно.",
-                image:
-                    "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?auto=format&fit=crop&w=800&q=80"
-            },
-
-            {
-                id: "a17",
-                front:
-                    "Set the plate down gently.",
-                back:
-                    "Аккуратно поставь тарелку.",
-                image:
-                    "https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=800&q=80"
-            },
-
-            {
-                id: "a18",
-                front:
-                    "Turn the phone around.",
-                back:
-                    "Разверни телефон.",
-                image:
-                    "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=800&q=80"
-            },
-
-            {
-                id: "a19",
-                front:
-                    "Turn the cup upside down.",
-                back:
-                    "Переверни чашку вверх дном.",
-                image:
-                    "https://images.unsplash.com/photo-1514228742587-6b1558fcca3d?auto=format&fit=crop&w=800&q=80"
-            },
-
-            {
-                id: "a20",
-                front:
-                    "Leave the keys there.",
-                back:
-                    "Оставь ключи там.",
-                image:
-                    "https://images.unsplash.com/photo-1558486012-817176f84c6d?auto=format&fit=crop&w=800&q=80"
-            }
-
-        ]
-
-    };
-
-}
-
 
 function ensureDefaultDeck() {
 
-    const exists =
-        decks.some(
+    const existingDeck =
+        decks.find(
             deck =>
-                deck.id === "actions-20"
+                deck.id ===
+                "actions-20"
         );
 
 
-    if (!exists) {
+    if (!existingDeck) {
 
         decks.unshift(
             createDefaultDeck()
         );
+
+
+        saveData();
+
+
+        return;
+
+    }
+
+
+    /*
+        Если пользователь открыл приложение
+        после старой версии, где английский
+        был первым, исправляем порядок.
+    */
+
+    if (
+        !existingDeck.russianFirst
+    ) {
+
+        existingDeck.cards =
+            existingDeck.cards.map(
+                card => {
+
+                    return {
+
+                        ...card,
+
+                        front:
+                            card.back,
+
+                        back:
+                            card.front
+
+                    };
+
+                }
+            );
+
+
+        existingDeck.russianFirst =
+            true;
+
 
         saveData();
 
@@ -492,7 +658,7 @@ function ensureDefaultDeck() {
 
 
 // ==========================================
-// ЭКРАНЫ
+// ПОКАЗ ЭКРАНА
 // ==========================================
 
 function showScreen(id) {
@@ -501,13 +667,17 @@ function showScreen(id) {
         .querySelectorAll(".screen")
         .forEach(
             screen =>
-                screen.classList.add("hidden")
+                screen.classList.add(
+                    "hidden"
+                )
         );
 
 
     document
         .getElementById(id)
-        .classList.remove("hidden");
+        .classList.remove(
+            "hidden"
+        );
 
 }
 
@@ -532,10 +702,14 @@ function renderHome() {
     list.innerHTML = "";
 
 
-    if (decks.length === 0) {
+    if (
+        decks.length === 0
+    ) {
 
         list.innerHTML = `
+
             <div class="deck-item">
+
                 <div class="deck-name">
                     Пока нет колод
                 </div>
@@ -543,52 +717,64 @@ function renderHome() {
                 <div class="deck-count">
                     Создайте первую колоду
                 </div>
+
             </div>
+
         `;
+
 
         return;
 
     }
 
 
-    decks.forEach(deck => {
+    decks.forEach(
+        deck => {
 
-        const item =
-            document.createElement(
-                "div"
+            const item =
+                document.createElement(
+                    "div"
+                );
+
+
+            item.className =
+                "deck-item";
+
+
+            item.innerHTML = `
+
+                <div class="deck-name">
+                    ${escapeHtml(
+                        deck.name
+                    )}
+                </div>
+
+                <div class="deck-count">
+                    ${deck.cards.length}
+                    карточек
+                </div>
+
+            `;
+
+
+            item.addEventListener(
+                "click",
+                function() {
+
+                    openDeck(
+                        deck.id
+                    );
+
+                }
             );
 
 
-        item.className =
-            "deck-item";
+            list.appendChild(
+                item
+            );
 
-
-        item.innerHTML = `
-
-            <div class="deck-name">
-                ${escapeHtml(deck.name)}
-            </div>
-
-            <div class="deck-count">
-                ${deck.cards.length} карточек
-            </div>
-
-        `;
-
-
-        item.addEventListener(
-            "click",
-            function() {
-
-                openDeck(deck.id);
-
-            }
-        );
-
-
-        list.appendChild(item);
-
-    });
+        }
+    );
 
 }
 
@@ -605,12 +791,16 @@ function openCreateDeck() {
 
 
     document
-        .getElementById("deckName")
+        .getElementById(
+            "deckName"
+        )
         .value = "";
 
 
     document
-        .getElementById("newCardsList")
+        .getElementById(
+            "newCardsList"
+        )
         .innerHTML = "";
 
 
@@ -618,6 +808,10 @@ function openCreateDeck() {
 
 }
 
+
+// ==========================================
+// ДОБАВЛЕНИЕ КАРТОЧКИ
+// ==========================================
 
 function addNewCard() {
 
@@ -651,12 +845,12 @@ function addNewCard() {
         <div class="field">
 
             <label>
-                Фраза
+                Русский
             </label>
 
             <textarea
                 class="new-front"
-                placeholder="Например: I need some help"
+                placeholder="Например: Мне нужна помощь"
             ></textarea>
 
         </div>
@@ -665,12 +859,12 @@ function addNewCard() {
         <div class="field">
 
             <label>
-                Перевод
+                English
             </label>
 
             <textarea
                 class="new-back"
-                placeholder="Мне нужна помощь"
+                placeholder="For example: I need some help"
             ></textarea>
 
         </div>
@@ -717,10 +911,16 @@ function addNewCard() {
         );
 
 
-    list.appendChild(block);
+    list.appendChild(
+        block
+    );
 
 }
 
+
+// ==========================================
+// НУМЕРАЦИЯ КАРТОЧЕК
+// ==========================================
 
 function renumberCards() {
 
@@ -744,6 +944,10 @@ function renumberCards() {
 }
 
 
+// ==========================================
+// СОХРАНЕНИЕ НОВОЙ КОЛОДЫ
+// ==========================================
+
 function saveNewDeck() {
 
     const name =
@@ -761,6 +965,7 @@ function saveNewDeck() {
             "Введите название колоды."
         );
 
+
         return;
 
     }
@@ -775,71 +980,79 @@ function saveNewDeck() {
     const newCards = [];
 
 
-    blocks.forEach(block => {
+    blocks.forEach(
+        block => {
 
-        const front =
-            block
-                .querySelector(
-                    ".new-front"
-                )
-                .value
-                .trim();
-
-
-        const back =
-            block
-                .querySelector(
-                    ".new-back"
-                )
-                .value
-                .trim();
-
-
-        const image =
-            block
-                .querySelector(
-                    ".new-image"
-                )
-                .value
-                .trim();
-
-
-        if (front && back) {
-
-            newCards.push({
-
-                id:
-                    "card-" +
-                    Date.now() +
-                    "-" +
-                    Math.random()
-                        .toString(36)
-                        .slice(2),
-
-                front:
-                    front,
-
-                back:
-                    back,
-
-                image:
-                    image ||
-                    makeDefaultImage(
-                        front
+            const front =
+                block
+                    .querySelector(
+                        ".new-front"
                     )
+                    .value
+                    .trim();
 
-            });
+
+            const back =
+                block
+                    .querySelector(
+                        ".new-back"
+                    )
+                    .value
+                    .trim();
+
+
+            const image =
+                block
+                    .querySelector(
+                        ".new-image"
+                    )
+                    .value
+                    .trim();
+
+
+            if (
+                front &&
+                back
+            ) {
+
+                newCards.push({
+
+                    id:
+                        "card-" +
+                        Date.now() +
+                        "-" +
+                        Math.random()
+                            .toString(36)
+                            .slice(2),
+
+                    front:
+                        front,
+
+                    back:
+                        back,
+
+                    image:
+                        image ||
+                        makeDefaultImage(
+                            front
+                        )
+
+                });
+
+            }
 
         }
+    );
 
-    });
 
-
-    if (newCards.length === 0) {
+    if (
+        newCards.length === 0
+    ) {
 
         alert(
             "Добавьте хотя бы одну карточку."
         );
+
 
         return;
 
@@ -861,6 +1074,9 @@ function saveNewDeck() {
 
         builtIn:
             false,
+
+        russianFirst:
+            true,
 
         cards:
             newCards
@@ -899,7 +1115,8 @@ function openDeck(id) {
     const deck =
         decks.find(
             item =>
-                item.id === id
+                item.id ===
+                id
         );
 
 
@@ -929,12 +1146,40 @@ function openDeck(id) {
             deck.name;
 
 
+    /*
+        Каждый раз при открытии колоды
+        содержание скрыто.
+    */
+
+    const content =
+        document.getElementById(
+            "deckCardsContainer"
+        );
+
+
+    content.classList.add(
+        "hidden"
+    );
+
+
+    document
+        .getElementById(
+            "contentButton"
+        )
+        .textContent =
+            "☰ Содержание колоды";
+
+
     renderDeckCards(
         deck
     );
 
 }
 
+
+// ==========================================
+// СОДЕРЖАНИЕ КОЛОДЫ
+// ==========================================
 
 function renderDeckCards(deck) {
 
@@ -964,20 +1209,75 @@ function renderDeckCards(deck) {
 
                 <div class="deck-card-front">
                     ${index + 1}.
-                    ${escapeHtml(card.front)}
+                    ${escapeHtml(
+                        card.front
+                    )}
                 </div>
 
                 <div class="deck-card-back">
-                    ${escapeHtml(card.back)}
+                    ${escapeHtml(
+                        card.back
+                    )}
                 </div>
 
             `;
 
 
-            list.appendChild(row);
+            list.appendChild(
+                row
+            );
 
         }
     );
+
+}
+
+
+// ==========================================
+// ПОКАЗ / СКРЫТИЕ СОДЕРЖАНИЯ
+// ==========================================
+
+function toggleDeckContent() {
+
+    const container =
+        document.getElementById(
+            "deckCardsContainer"
+        );
+
+
+    const button =
+        document.getElementById(
+            "contentButton"
+        );
+
+
+    const hidden =
+        container.classList.contains(
+            "hidden"
+        );
+
+
+    if (hidden) {
+
+        container.classList.remove(
+            "hidden"
+        );
+
+
+        button.textContent =
+            "⌃ Скрыть содержание";
+
+    } else {
+
+        container.classList.add(
+            "hidden"
+        );
+
+
+        button.textContent =
+            "☰ Содержание колоды";
+
+    }
 
 }
 
@@ -991,7 +1291,8 @@ function deleteCurrentDeck() {
     const deck =
         decks.find(
             item =>
-                item.id === currentDeckId
+                item.id ===
+                currentDeckId
         );
 
 
@@ -1002,22 +1303,27 @@ function deleteCurrentDeck() {
     }
 
 
-    if (deck.builtIn) {
+    if (
+        deck.builtIn
+    ) {
 
         alert(
             "Стандартную колоду удалить нельзя."
         );
+
 
         return;
 
     }
 
 
-    if (
-        !confirm(
+    const confirmed =
+        confirm(
             "Удалить эту колоду?"
-        )
-    ) {
+        );
+
+
+    if (!confirmed) {
 
         return;
 
@@ -1048,7 +1354,7 @@ function deleteCurrentDeck() {
 
 
 // ==========================================
-// ОБУЧЕНИЕ
+// НАЧАЛО ОБУЧЕНИЯ
 // ==========================================
 
 function startCurrentDeck() {
@@ -1065,6 +1371,11 @@ function startCurrentDeck() {
         !deck ||
         deck.cards.length === 0
     ) {
+
+        alert(
+            "В этой колоде нет карточек."
+        );
+
 
         return;
 
@@ -1101,6 +1412,10 @@ function startCurrentDeck() {
 }
 
 
+// ==========================================
+// ПОКАЗ КАРТОЧКИ
+// ==========================================
+
 function showStudyCard() {
 
     if (
@@ -1131,15 +1446,21 @@ function showStudyCard() {
         ];
 
 
-    document
-        .getElementById(
+    const card =
+        document.getElementById(
             "card"
-        )
-        .classList
-        .remove(
-            "flipped"
         );
 
+
+    card.classList.remove(
+        "flipped"
+    );
+
+
+    /*
+        ПЕРЕДНЯЯ СТОРОНА:
+        РУССКИЙ
+    */
 
     document
         .getElementById(
@@ -1149,6 +1470,11 @@ function showStudyCard() {
             item.front;
 
 
+    /*
+        ОБРАТНАЯ СТОРОНА:
+        АНГЛИЙСКИЙ
+    */
+
     document
         .getElementById(
             "backText"
@@ -1157,13 +1483,9 @@ function showStudyCard() {
             item.back;
 
 
-    document
-        .getElementById(
-            "progress"
-        )
-        .textContent =
-            `${currentCard + 1} / ${studyCards.length}`;
-
+    /*
+        КАРТИНКА
+    */
 
     document
         .getElementById(
@@ -1180,11 +1502,41 @@ function showStudyCard() {
         .src =
             item.image;
 
+
+    /*
+        ПРОГРЕСС
+    */
+
+    document
+        .getElementById(
+            "progress"
+        )
+        .textContent =
+            `${currentCard + 1} / ${studyCards.length}`;
+
 }
 
 
 // ==========================================
-// ОТВЕТ
+// ПЕРЕВОРОТ
+// ==========================================
+
+function flipCard() {
+
+    document
+        .getElementById(
+            "card"
+        )
+        .classList
+        .toggle(
+            "flipped"
+        );
+
+}
+
+
+// ==========================================
+// ЗНАЮ / НЕ ЗНАЮ
 // ==========================================
 
 function answer(known) {
@@ -1203,6 +1555,12 @@ function answer(known) {
 
 
     if (known) {
+
+        /*
+            ЗНАЮ:
+            удаляем карточку
+            из текущего круга
+        */
 
         knownCards.push(
             item.id
@@ -1238,6 +1596,12 @@ function answer(known) {
 
     } else {
 
+        /*
+            НЕ ЗНАЮ:
+            переносим карточку
+            в конец списка
+        */
+
         studyCards.splice(
             currentCard,
             1
@@ -1268,7 +1632,7 @@ function answer(known) {
 
 
 // ==========================================
-// СЛЕДУЮЩАЯ
+// СЛЕДУЮЩАЯ КАРТОЧКА
 // ==========================================
 
 function nextCard() {
@@ -1293,7 +1657,7 @@ function nextCard() {
 
 
 // ==========================================
-// ЗАВЕРШЕНИЕ
+// ЗАВЕРШЕНИЕ УРОКА
 // ==========================================
 
 function finishLesson() {
@@ -1311,6 +1675,7 @@ function finishLesson() {
         "Урок завершён!\n\n" +
 
         "Колода: " +
+
         (
             deck
                 ? deck.name
@@ -1318,6 +1683,7 @@ function finishLesson() {
         ) +
 
         "\n\nВыучено: " +
+
         knownCards.length
 
     );
@@ -1339,7 +1705,7 @@ function finishLesson() {
 
 
 // ==========================================
-// ОБРАБОТЧИКИ КНОПОК
+// КНОПКИ
 // ==========================================
 
 document
@@ -1389,6 +1755,16 @@ document
     .addEventListener(
         "click",
         saveNewDeck
+    );
+
+
+document
+    .getElementById(
+        "contentButton"
+    )
+    .addEventListener(
+        "click",
+        toggleDeckContent
     );
 
 
@@ -1456,13 +1832,7 @@ document
     )
     .addEventListener(
         "click",
-        function() {
-
-            this.classList.toggle(
-                "flipped"
-            );
-
-        }
+        flipCard
     );
 
 
