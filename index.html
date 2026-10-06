@@ -10,13 +10,19 @@
         content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
     >
 
-    <meta name="theme-color" content="#f2f3f5">
+    <meta
+        name="theme-color"
+        content="#f2f3f5"
+    >
 
     <title>Flash Cards</title>
 
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
-    <link rel="stylesheet" href="style.css">
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
 
 </head>
 
@@ -26,11 +32,14 @@
 <div class="app">
 
 
-    <!-- ========================= -->
+    <!-- ================================= -->
     <!-- ГЛАВНЫЙ ЭКРАН -->
-    <!-- ========================= -->
+    <!-- ================================= -->
 
-    <section id="homeScreen" class="screen">
+    <section
+        id="homeScreen"
+        class="screen"
+    >
 
         <header>
 
@@ -60,9 +69,9 @@
 
 
 
-    <!-- ========================= -->
+    <!-- ================================= -->
     <!-- СОЗДАНИЕ КОЛОДЫ -->
-    <!-- ========================= -->
+    <!-- ================================= -->
 
     <section
         id="createScreen"
@@ -128,9 +137,9 @@
 
 
 
-    <!-- ========================= -->
+    <!-- ================================= -->
     <!-- ПРОСМОТР КОЛОДЫ -->
-    <!-- ========================= -->
+    <!-- ================================= -->
 
     <section
         id="deckScreen"
@@ -156,11 +165,7 @@
         </div>
 
 
-        <div
-            id="deckCardsList"
-            class="deck-cards-list"
-        ></div>
-
+        <!-- УЧИТЬ КОЛОДУ — ВВЕРХУ -->
 
         <button
             id="startDeckButton"
@@ -169,6 +174,31 @@
             ▶ Учить колоду
         </button>
 
+
+        <!-- СОДЕРЖАНИЕ -->
+
+        <button
+            id="contentButton"
+            class="secondary-button"
+        >
+            ☰ Содержание колоды
+        </button>
+
+
+        <div
+            id="deckCardsContainer"
+            class="hidden"
+        >
+
+            <div
+                id="deckCardsList"
+                class="deck-cards-list"
+            ></div>
+
+        </div>
+
+
+        <!-- УДАЛЕНИЕ -->
 
         <button
             id="deleteDeckButton"
@@ -181,9 +211,9 @@
 
 
 
-    <!-- ========================= -->
+    <!-- ================================= -->
     <!-- ОБУЧЕНИЕ -->
-    <!-- ========================= -->
+    <!-- ================================= -->
 
     <section
         id="studyScreen"
@@ -193,10 +223,13 @@
         <header>
 
             <div class="title">
+
                 <span id="studyDeckName">
                     Flash Cards
                 </span>
+
             </div>
+
 
             <div
                 id="progress"
@@ -208,6 +241,8 @@
         </header>
 
 
+        <!-- КАРТОЧКА -->
+
         <div class="card-container">
 
             <div
@@ -216,26 +251,33 @@
             >
 
 
-                <!-- ЛИЦЕВАЯ СТОРОНА -->
+                <!-- ========================= -->
+                <!-- ПЕРЕДНЯЯ СТОРОНА -->
+                <!-- ========================= -->
 
-                <div class="card-side card-front">
+                <div
+                    class="card-side card-front"
+                >
 
                     <img
                         id="cardImage"
                         src=""
-                        alt=""
+                        alt="Изображение"
                     >
+
 
                     <div class="card-content">
 
                         <div class="label">
-                            Фраза
+                            Русский
                         </div>
+
 
                         <div
                             id="frontText"
                             class="phrase"
                         ></div>
+
 
                         <div class="hint">
                             Нажмите на карточку
@@ -246,21 +288,28 @@
                 </div>
 
 
-                <!-- ОБРАТНАЯ СТОРОНА -->
 
-                <div class="card-side card-back">
+                <!-- ========================= -->
+                <!-- ОБРАТНАЯ СТОРОНА -->
+                <!-- ========================= -->
+
+                <div
+                    class="card-side card-back"
+                >
 
                     <img
                         id="cardImageBack"
                         src=""
-                        alt=""
+                        alt="Изображение"
                     >
+
 
                     <div class="card-content">
 
                         <div class="label">
-                            Перевод
+                            English
                         </div>
+
 
                         <div
                             id="backText"
@@ -275,6 +324,9 @@
 
         </div>
 
+
+
+        <!-- КНОПКИ -->
 
         <div class="buttons">
 
