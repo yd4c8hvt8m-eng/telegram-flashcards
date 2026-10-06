@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
+
     <meta charset="UTF-8">
 
     <meta
@@ -8,11 +10,14 @@
         content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
     >
 
-    <title>FlashCards</title>
+    <meta name="theme-color" content="#f2f3f5">
+
+    <title>Flash Cards</title>
 
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
     <link rel="stylesheet" href="style.css">
+
 </head>
 
 <body>
@@ -20,9 +25,17 @@
 <div class="app">
 
     <header>
-        <div class="title">FlashCards</div>
-        <div class="progress" id="progress">1 / 10</div>
+
+        <div class="title">
+            Flash Cards
+        </div>
+
+        <div class="progress" id="progress">
+            1 / 10
+        </div>
+
     </header>
+
 
     <main>
 
@@ -30,33 +43,66 @@
 
             <div class="card" id="card">
 
+
+                <!-- ЛИЦЕВАЯ СТОРОНА -->
+
                 <div class="card-side card-front">
 
-                    <img id="cardImage"
-                         src="https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=800&q=80">
+                    <img
+                        id="cardImage"
+                        src=""
+                        alt="Изображение"
+                    >
 
-                    <div class="label">�������</div>
+                    <div class="card-content">
 
-                    <div class="phrase" id="frontText">
-                        � ��� �����
-                    </div>
+                        <div class="label">
+                            Русский
+                        </div>
 
-                    <div class="hint">
-                        ������� �� ��������
+                        <div
+                            class="phrase"
+                            id="frontText"
+                        >
+                            Я иду домой
+                        </div>
+
+                        <div class="hint">
+                            Нажмите на карточку
+                        </div>
+
                     </div>
 
                 </div>
 
 
+                <!-- ОБРАТНАЯ СТОРОНА -->
+
                 <div class="card-side card-back">
 
-                    <img id="cardImageBack"
-                         src="https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=800&q=80">
+                    <img
+                        id="cardImageBack"
+                        src=""
+                        alt="Изображение"
+                    >
 
-                    <div class="label">English</div>
+                    <div class="card-content">
 
-                    <div class="phrase" id="backText">
-                        I'm going home
+                        <div class="label">
+                            English
+                        </div>
+
+                        <div
+                            class="phrase"
+                            id="backText"
+                        >
+                            I'm going home
+                        </div>
+
+                        <div class="hint">
+                            Перевод
+                        </div>
+
                     </div>
 
                 </div>
@@ -66,27 +112,42 @@
         </div>
 
 
-        <div class="buttons" id="buttons">
+        <!-- КНОПКИ -->
 
-            <button class="btn no" onclick="answer(false)">
-                ? �� ����
+        <div class="buttons">
+
+            <button
+                class="btn no"
+                onclick="answer(false)"
+            >
+                ✕ Не знаю
             </button>
 
-            <button class="btn yes" onclick="answer(true)">
-                ? ����
+
+            <button
+                class="btn yes"
+                onclick="answer(true)"
+            >
+                ✓ Знаю
             </button>
 
         </div>
 
-        <button class="next" onclick="nextCard()">
-            ��������� ?
+
+        <button
+            class="next"
+            onclick="nextCard()"
+        >
+            Следующая →
         </button>
 
     </main>
 
 </div>
 
+
 <script src="app.js"></script>
 
 </body>
+
 </html>
