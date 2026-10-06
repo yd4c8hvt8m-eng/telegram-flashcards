@@ -20,28 +20,200 @@
 
 </head>
 
+
 <body>
 
 <div class="app">
 
-    <header>
 
-        <div class="title">
-            Flash Cards
+    <!-- ========================= -->
+    <!-- ГЛАВНЫЙ ЭКРАН -->
+    <!-- ========================= -->
+
+    <section id="homeScreen" class="screen">
+
+        <header>
+
+            <div class="title">
+                Flash Cards
+            </div>
+
+        </header>
+
+
+        <div class="section-title">
+            Мои колоды
         </div>
 
-        <div class="progress" id="progress">
-            1 / 10
+
+        <div id="decksList"></div>
+
+
+        <button
+            id="createDeckButton"
+            class="primary-button"
+        >
+            ＋ Создать колоду
+        </button>
+
+    </section>
+
+
+
+    <!-- ========================= -->
+    <!-- СОЗДАНИЕ КОЛОДЫ -->
+    <!-- ========================= -->
+
+    <section
+        id="createScreen"
+        class="screen hidden"
+    >
+
+        <div class="screen-header">
+
+            <button
+                id="backToHomeButton"
+                class="back-button"
+            >
+                ←
+            </button>
+
+            <div class="screen-title">
+                Новая колода
+            </div>
+
         </div>
 
-    </header>
+
+        <div class="field">
+
+            <label>
+                Название колоды
+            </label>
+
+            <input
+                id="deckName"
+                type="text"
+                maxlength="60"
+                placeholder="Например: Английский для работы"
+            >
+
+        </div>
 
 
-    <main>
+        <div class="section-title small">
+            Карточки
+        </div>
 
-        <div class="card-container" id="cardContainer">
 
-            <div class="card" id="card">
+        <div id="newCardsList"></div>
+
+
+        <button
+            id="addCardButton"
+            class="secondary-button"
+        >
+            ＋ Добавить карточку
+        </button>
+
+
+        <button
+            id="saveDeckButton"
+            class="primary-button"
+        >
+            Сохранить колоду
+        </button>
+
+    </section>
+
+
+
+    <!-- ========================= -->
+    <!-- ПРОСМОТР КОЛОДЫ -->
+    <!-- ========================= -->
+
+    <section
+        id="deckScreen"
+        class="screen hidden"
+    >
+
+        <div class="screen-header">
+
+            <button
+                id="deckBackButton"
+                class="back-button"
+            >
+                ←
+            </button>
+
+            <div
+                id="deckTitle"
+                class="screen-title"
+            >
+                Колода
+            </div>
+
+        </div>
+
+
+        <div
+            id="deckCardsList"
+            class="deck-cards-list"
+        ></div>
+
+
+        <button
+            id="startDeckButton"
+            class="primary-button"
+        >
+            ▶ Учить колоду
+        </button>
+
+
+        <button
+            id="deleteDeckButton"
+            class="secondary-button danger"
+        >
+            Удалить колоду
+        </button>
+
+    </section>
+
+
+
+    <!-- ========================= -->
+    <!-- ОБУЧЕНИЕ -->
+    <!-- ========================= -->
+
+    <section
+        id="studyScreen"
+        class="screen hidden"
+    >
+
+        <header>
+
+            <div class="title">
+                <span id="studyDeckName">
+                    Flash Cards
+                </span>
+            </div>
+
+            <div
+                id="progress"
+                class="progress"
+            >
+                1 / 1
+            </div>
+
+        </header>
+
+
+        <div class="card-container">
+
+            <div
+                id="card"
+                class="card"
+            >
 
 
                 <!-- ЛИЦЕВАЯ СТОРОНА -->
@@ -51,21 +223,19 @@
                     <img
                         id="cardImage"
                         src=""
-                        alt="Изображение"
+                        alt=""
                     >
 
                     <div class="card-content">
 
                         <div class="label">
-                            Русский
+                            Фраза
                         </div>
 
                         <div
-                            class="phrase"
                             id="frontText"
-                        >
-                            Я иду домой
-                        </div>
+                            class="phrase"
+                        ></div>
 
                         <div class="hint">
                             Нажмите на карточку
@@ -83,25 +253,19 @@
                     <img
                         id="cardImageBack"
                         src=""
-                        alt="Изображение"
+                        alt=""
                     >
 
                     <div class="card-content">
 
                         <div class="label">
-                            English
+                            Перевод
                         </div>
 
                         <div
-                            class="phrase"
                             id="backText"
-                        >
-                            I'm going home
-                        </div>
-
-                        <div class="hint">
-                            Перевод
-                        </div>
+                            class="phrase"
+                        ></div>
 
                     </div>
 
@@ -112,21 +276,19 @@
         </div>
 
 
-        <!-- КНОПКИ -->
-
         <div class="buttons">
 
             <button
+                id="dontKnowButton"
                 class="btn no"
-                onclick="answer(false)"
             >
                 ✕ Не знаю
             </button>
 
 
             <button
+                id="knowButton"
                 class="btn yes"
-                onclick="answer(true)"
             >
                 ✓ Знаю
             </button>
@@ -135,13 +297,14 @@
 
 
         <button
+            id="nextButton"
             class="next"
-            onclick="nextCard()"
         >
             Следующая →
         </button>
 
-    </main>
+    </section>
+
 
 </div>
 
