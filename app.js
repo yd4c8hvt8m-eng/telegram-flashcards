@@ -1,42 +1,130 @@
 /* =========================================================
    FLASH CARDS
-   VERSION 1.2.0
+   VERSION 1.2.1
 ========================================================= */
 
-const APP_VERSION = "3.0.1";
+const APP_VERSION = "3.0.2";
 
 
 /* =========================================================
    TELEGRAM
 ========================================================= */
 
-const tg = window.Telegram.WebApp;
+const tg =
+  window.Telegram?.WebApp || null;
 
-tg.ready();
-tg.expand();
+if (tg) {
+  try {
+    tg.ready();
+    tg.expand();
+  } catch (error) {
+    console.warn(
+      "Telegram WebApp недоступен:",
+      error
+    );
+  }
+}
 
 
 /* =========================================================
    SUPABASE
 ========================================================= */
 
-const SUPABASE_URL = "https://arnsfecpnwyjiuvmsoen.supabase.co";
-const SUPABASE_KEY = "sb_publishable_sj2rVuSxhsUtB3xKft2dDw_8-KwPsFM";
+/*
+  ВАЖНО:
 
-const supabaseClient =
-  window.supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_KEY
-  );
+  Сюда вставь свои СТАРЫЕ рабочие значения
+  из предыдущего app.js.
+
+  НЕ вставляй Secret / service_role key.
+*/
+
+const SUPABASE_URL =
+  "https://arnsfecpnwyjiuvmsoen.supabase.co";
+
+const SUPABASE_KEY =
+  "sb_publishable_sj2rVuSxhsUtB3xKft2dDw_8-KwPsFM";
+
+
+const IMAGE_BUCKET =
+  "card-images";
+
+
+/*
+  Создаём Supabase только если библиотека
+  действительно загрузилась и ключи указаны.
+*/
+
+let supabaseClient = null;
+
+function initSupabase() {
+
+  try {
+
+    if (
+      !window.supabase ||
+      typeof window.supabase.createClient !==
+        "function"
+    ) {
+
+      console.warn(
+        "Supabase JS не загрузился."
+      );
+
+      return null;
+
+    }
+
+
+    if (
+      !SUPABASE_URL ||
+      !SUPABASE_KEY ||
+      SUPABASE_URL.includes(
+        "ВСТАВЬ_СЮДА"
+      ) ||
+      SUPABASE_KEY.includes(
+        "ВСТАВЬ_СЮДА"
+      )
+    ) {
+
+      console.warn(
+        "Supabase ключи не указаны."
+      );
+
+      return null;
+
+    }
+
+
+    return window.supabase.createClient(
+      SUPABASE_URL,
+      SUPABASE_KEY
+    );
+
+  } catch (error) {
+
+    console.error(
+      "Ошибка подключения Supabase:",
+      error
+    );
+
+    return null;
+
+  }
+
+}
+
+
+supabaseClient =
+  initSupabase();
 
 
 /* =========================================================
-   STORAGE
+   LOCAL STORAGE
 ========================================================= */
 
-const STORAGE_KEY = "flashcards_universal_v5";
-
-const IMAGE_BUCKET = "card-images";
+const STORAGE_KEY =
+  "flashcards_universal_v5";
 
 
 /* =========================================================
@@ -65,20 +153,28 @@ let toastTimer = null;
 ========================================================= */
 
 const homeScreen =
-  document.getElementById("homeScreen");
+  document.getElementById(
+    "homeScreen"
+  );
 
 const createScreen =
-  document.getElementById("createScreen");
+  document.getElementById(
+    "createScreen"
+  );
 
 const deckScreen =
-  document.getElementById("deckScreen");
+  document.getElementById(
+    "deckScreen"
+  );
 
 const studyScreen =
-  document.getElementById("studyScreen");
+  document.getElementById(
+    "studyScreen"
+  );
 
 
 /* =========================================================
-   INIT
+   APP INIT
 ========================================================= */
 
 document.addEventListener(
@@ -93,13 +189,44 @@ document.addEventListener(
 
 function initApp() {
 
-  setVersion();
+  try {
 
-  loadDecks();
+    setVersion();
 
-  setupEvents();
+    loadDecks();
 
-  renderHome();
+    setupEvents();
+
+    renderHome();
+
+  } catch (error) {
+
+    console.error(
+      "Ошибка запуска приложения:",
+      error
+    );
+
+    /*
+      Даже если что-то неожиданное
+      произошло при запуске, пытаемся
+      показать главный экран.
+    */
+
+    try {
+
+      showScreen(
+        "homeScreen"
+      );
+
+    } catch (screenError) {
+
+      console.error(
+        screenError
+      );
+
+    }
+
+  }
 
 }
 
@@ -111,10 +238,15 @@ function initApp() {
 function setVersion() {
 
   document
-    .querySelectorAll(".version-value")
+    .querySelectorAll(
+      ".version-value"
+    )
     .forEach(
       element => {
-        element.textContent = APP_VERSION;
+
+        element.textContent =
+          APP_VERSION;
+
       }
     );
 
@@ -127,136 +259,274 @@ function setVersion() {
 
 function setupEvents() {
 
-  document
-    .getElementById("createDeckButton")
-    .addEventListener(
+  const createDeckButton =
+    document.getElementById(
+      "createDeckButton"
+    );
+
+  if (createDeckButton) {
+
+    createDeckButton.addEventListener(
       "click",
       openCreateScreen
     );
 
+  }
 
-  document
-    .getElementById("backFromCreate")
-    .addEventListener(
-      "click",
-      () => showScreen("homeScreen")
+
+  const backFromCreate =
+    document.getElementById(
+      "backFromCreate"
     );
 
+  if (backFromCreate) {
 
-  document
-    .getElementById("backFromDeck")
-    .addEventListener(
+    backFromCreate.addEventListener(
       "click",
-      () => showScreen("homeScreen")
+      () => showScreen(
+        "homeScreen"
+      )
     );
 
+  }
 
-  document
-    .getElementById("backFromStudy")
-    .addEventListener(
-      "click",
-      () => showScreen("deckScreen")
+
+  const backFromDeck =
+    document.getElementById(
+      "backFromDeck"
     );
 
+  if (backFromDeck) {
 
-  document
-    .getElementById("addCardButton")
-    .addEventListener(
+    backFromDeck.addEventListener(
+      "click",
+      () => showScreen(
+        "homeScreen"
+      )
+    );
+
+  }
+
+
+  const backFromStudy =
+    document.getElementById(
+      "backFromStudy"
+    );
+
+  if (backFromStudy) {
+
+    backFromStudy.addEventListener(
+      "click",
+      () => showScreen(
+        "deckScreen"
+      )
+    );
+
+  }
+
+
+  const addCardButton =
+    document.getElementById(
+      "addCardButton"
+    );
+
+  if (addCardButton) {
+
+    addCardButton.addEventListener(
       "click",
       () => addNewCardBlock()
     );
 
+  }
 
-  document
-    .getElementById("saveDeckButton")
-    .addEventListener(
+
+  const saveDeckButton =
+    document.getElementById(
+      "saveDeckButton"
+    );
+
+  if (saveDeckButton) {
+
+    saveDeckButton.addEventListener(
       "click",
       saveDeckFromEditor
     );
 
+  }
 
-  document
-    .getElementById("studyDeckButton")
-    .addEventListener(
+
+  const studyDeckButton =
+    document.getElementById(
+      "studyDeckButton"
+    );
+
+  if (studyDeckButton) {
+
+    studyDeckButton.addEventListener(
       "click",
       startStudy
     );
 
+  }
 
-  document
-    .getElementById("contentDeckButton")
-    .addEventListener(
+
+  const contentDeckButton =
+    document.getElementById(
+      "contentDeckButton"
+    );
+
+  if (contentDeckButton) {
+
+    contentDeckButton.addEventListener(
       "click",
       toggleDeckContent
     );
 
+  }
 
-  document
-    .getElementById("editDeckButton")
-    .addEventListener(
+
+  const editDeckButton =
+    document.getElementById(
+      "editDeckButton"
+    );
+
+  if (editDeckButton) {
+
+    editDeckButton.addEventListener(
       "click",
       editCurrentDeck
     );
 
+  }
 
-  document
-    .getElementById("deleteDeckButton")
-    .addEventListener(
+
+  const deleteDeckButton =
+    document.getElementById(
+      "deleteDeckButton"
+    );
+
+  if (deleteDeckButton) {
+
+    deleteDeckButton.addEventListener(
       "click",
       deleteCurrentDeck
     );
 
+  }
 
-  document
-    .getElementById("cancelDeleteButton")
-    .addEventListener(
+
+  const cancelDeleteButton =
+    document.getElementById(
+      "cancelDeleteButton"
+    );
+
+  if (cancelDeleteButton) {
+
+    cancelDeleteButton.addEventListener(
       "click",
       closeDeleteModal
     );
 
+  }
 
-  document
-    .getElementById("confirmDeleteButton")
-    .addEventListener(
+
+  const confirmDeleteButton =
+    document.getElementById(
+      "confirmDeleteButton"
+    );
+
+  if (confirmDeleteButton) {
+
+    confirmDeleteButton.addEventListener(
       "click",
       confirmDeleteDeck
     );
 
+  }
 
-  document
-    .getElementById("flashcard")
-    .addEventListener(
+
+  const flashcard =
+    document.getElementById(
+      "flashcard"
+    );
+
+  if (flashcard) {
+
+    flashcard.addEventListener(
       "click",
       flipCard
     );
 
+  }
 
-  document
-    .getElementById("dontKnowButton")
-    .addEventListener(
-      "click",
-      () => answerCard(false)
+
+  const dontKnowButton =
+    document.getElementById(
+      "dontKnowButton"
     );
 
+  if (dontKnowButton) {
 
-  document
-    .getElementById("knowButton")
-    .addEventListener(
+    dontKnowButton.addEventListener(
       "click",
-      () => answerCard(true)
+      event => {
+
+        event.stopPropagation();
+
+        answerCard(false);
+
+      }
     );
 
+  }
 
-  document
-    .getElementById("nextButton")
-    .addEventListener(
-      "click",
-      nextCard
+
+  const knowButton =
+    document.getElementById(
+      "knowButton"
     );
 
+  if (knowButton) {
+
+    knowButton.addEventListener(
+      "click",
+      event => {
+
+        event.stopPropagation();
+
+        answerCard(true);
+
+      }
+    );
+
+  }
+
+
+  const nextButton =
+    document.getElementById(
+      "nextButton"
+    );
+
+  if (nextButton) {
+
+    nextButton.addEventListener(
+      "click",
+      event => {
+
+        event.stopPropagation();
+
+        nextCard();
+
+      }
+    );
+
+  }
+
 
   document
-    .querySelectorAll(".deck-icon-option")
+    .querySelectorAll(
+      ".deck-icon-option"
+    )
     .forEach(
       button => {
 
@@ -295,19 +565,34 @@ function setupEvents() {
    SCREEN NAVIGATION
 ========================================================= */
 
-function showScreen(screenId) {
+function showScreen(
+  screenId
+) {
 
   document
-    .querySelectorAll(".screen")
+    .querySelectorAll(
+      ".screen"
+    )
     .forEach(
       screen =>
-        screen.classList.remove("active")
+        screen.classList.remove(
+          "active"
+        )
     );
 
 
-  document
-    .getElementById(screenId)
-    .classList.add("active");
+  const screen =
+    document.getElementById(
+      screenId
+    );
+
+
+  if (!screen) return;
+
+
+  screen.classList.add(
+    "active"
+  );
 
 
   window.scrollTo({
@@ -319,7 +604,7 @@ function showScreen(screenId) {
 
 
 /* =========================================================
-   LOCAL STORAGE
+   LOAD DECKS
 ========================================================= */
 
 function loadDecks() {
@@ -334,12 +619,27 @@ function loadDecks() {
 
     try {
 
-      decks = JSON.parse(saved);
+      const parsed =
+        JSON.parse(saved);
+
+
+      if (
+        Array.isArray(parsed)
+      ) {
+
+        decks =
+          parsed;
+
+      } else {
+
+        decks = [];
+
+      }
 
     } catch (error) {
 
       console.error(
-        "Ошибка чтения данных:",
+        "Ошибка чтения localStorage:",
         error
       );
 
@@ -347,8 +647,17 @@ function loadDecks() {
 
     }
 
+  } else {
+
+    decks = [];
+
   }
 
+
+  /*
+    Всегда проверяем наличие
+    стандартной демо-колоды.
+  */
 
   ensureDemoDeck();
 
@@ -357,12 +666,31 @@ function loadDecks() {
 }
 
 
+/* =========================================================
+   SAVE DECKS
+========================================================= */
+
 function saveDecks() {
 
-  localStorage.setItem(
-    STORAGE_KEY,
-    JSON.stringify(decks)
-  );
+  try {
+
+    localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify(decks)
+    );
+
+  } catch (error) {
+
+    console.error(
+      "Ошибка сохранения колод:",
+      error
+    );
+
+    showToast(
+      "Не удалось сохранить данные"
+    );
+
+  }
 
 }
 
@@ -376,114 +704,173 @@ function ensureDemoDeck() {
   const demoId =
     "memory-demo-deck";
 
-  const existing =
-    decks.find(
-      deck => deck.id === demoId
-    );
-
 
   const demoDeck = {
 
-    id: demoId,
+    id:
+      demoId,
 
-    name: "Проверь свою память",
+    name:
+      "Проверь свою память",
 
-    icon: "🧠",
+    icon:
+      "🧠",
 
-    builtIn: true,
+    builtIn:
+      true,
 
-    universal: true,
+    universal:
+      true,
 
     cards: [
 
       {
-        id: "memory-demo-1",
+        id:
+          "memory-demo-1",
+
         front:
           "Что помогает лучше запоминать информацию?",
+
         back:
           "Повторение через интервалы времени.",
-        imageUrl: ""
+
+        imageUrl:
+          ""
       },
 
+
       {
-        id: "memory-demo-2",
+        id:
+          "memory-demo-2",
+
         front:
           "Что такое ассоциация?",
+
         back:
           "Связь новой информации с уже знакомой.",
-        imageUrl: ""
+
+        imageUrl:
+          ""
       },
 
+
       {
-        id: "memory-demo-3",
+        id:
+          "memory-demo-3",
+
         front:
           "Какой сон важен для закрепления воспоминаний?",
+
         back:
           "Полноценный ночной сон.",
-        imageUrl: ""
+
+        imageUrl:
+          ""
       },
 
+
       {
-        id: "memory-demo-4",
+        id:
+          "memory-demo-4",
+
         front:
           "Что часто запоминается лучше: текст или образ?",
+
         back:
           "Образ, особенно вместе с текстом.",
-        imageUrl: ""
+
+        imageUrl:
+          ""
       },
 
+
       {
-        id: "memory-demo-5",
+        id:
+          "memory-demo-5",
+
         front:
           "Зачем большой материал делить на части?",
+
         back:
           "Так его легче удерживать и вспоминать.",
-        imageUrl: ""
+
+        imageUrl:
+          ""
       },
 
+
       {
-        id: "memory-demo-6",
+        id:
+          "memory-demo-6",
+
         front:
           "Что такое активное вспоминание?",
+
         back:
           "Попытка вспомнить ответ без подсказки.",
-        imageUrl: ""
+
+        imageUrl:
+          ""
       },
 
+
       {
-        id: "memory-demo-7",
+        id:
+          "memory-demo-7",
+
         front:
           "Что мешает хорошему запоминанию?",
+
         back:
           "Постоянное переключение внимания.",
-        imageUrl: ""
+
+        imageUrl:
+          ""
       },
 
+
       {
-        id: "memory-demo-8",
+        id:
+          "memory-demo-8",
+
         front:
           "Зачем использовать яркие ассоциации?",
+
         back:
           "Они создают дополнительные связи в памяти.",
-        imageUrl: ""
+
+        imageUrl:
+          ""
       },
 
+
       {
-        id: "memory-demo-9",
+        id:
+          "memory-demo-9",
+
         front:
           "Что полезнее: учить один раз или повторять?",
+
         back:
           "Короткие повторения через интервалы.",
-        imageUrl: ""
+
+          imageUrl:
+          ""
       },
 
+
       {
-        id: "memory-demo-10",
+        id:
+          "memory-demo-10",
+
         front:
           "Главный принцип хорошего запоминания?",
+
         back:
           "Вспомнить самому, повторить и связать с известным.",
-        imageUrl: ""
+
+        imageUrl:
+          ""
       }
 
     ]
@@ -491,7 +878,21 @@ function ensureDemoDeck() {
   };
 
 
-  if (!existing) {
+  const existingIndex =
+    decks.findIndex(
+      deck =>
+        deck.id === demoId
+    );
+
+
+  /*
+    Если демо-колоды нет —
+    создаём её.
+  */
+
+  if (
+    existingIndex === -1
+  ) {
 
     decks.unshift(
       demoDeck
@@ -503,22 +904,17 @@ function ensureDemoDeck() {
 
 
   /*
-    Если демо-колода уже существует,
-    но старая версия была создана ранее,
-    обновляем её до новой версии.
+    Если старая демо-колода есть —
+    обновляем её.
+
+    Это нужно, чтобы после новой
+    версии у тебя гарантированно
+    была правильная демонстрационная
+    колода.
   */
 
-  const index =
-    decks.findIndex(
-      deck => deck.id === demoId
-    );
-
-
-  if (index !== -1) {
-
-    decks[index] = demoDeck;
-
-  }
+  decks[existingIndex] =
+    demoDeck;
 
 }
 
@@ -535,6 +931,9 @@ function renderHome() {
     );
 
 
+  if (!deckList) return;
+
+
   deckList.innerHTML = "";
 
 
@@ -542,7 +941,9 @@ function renderHome() {
     deck => {
 
       const item =
-        document.createElement("div");
+        document.createElement(
+          "div"
+        );
 
       item.className =
         "deck-item";
@@ -550,29 +951,39 @@ function renderHome() {
 
       item.addEventListener(
         "click",
-        () => openDeck(deck.id)
+        () =>
+          openDeck(
+            deck.id
+          )
       );
 
 
       const icon =
-        document.createElement("div");
+        document.createElement(
+          "div"
+        );
 
       icon.className =
         "deck-item-icon";
 
       icon.textContent =
-        deck.icon || "📚";
+        deck.icon ||
+        "📚";
 
 
       const info =
-        document.createElement("div");
+        document.createElement(
+          "div"
+        );
 
       info.className =
         "deck-item-info";
 
 
       const name =
-        document.createElement("div");
+        document.createElement(
+          "div"
+        );
 
       name.className =
         "deck-item-name";
@@ -582,23 +993,34 @@ function renderHome() {
 
 
       const count =
-        document.createElement("div");
+        document.createElement(
+          "div"
+        );
 
       count.className =
         "deck-item-count";
 
       count.textContent =
         getCardCountText(
-          deck.cards.length
+          Array.isArray(deck.cards)
+            ? deck.cards.length
+            : 0
         );
 
 
-      info.appendChild(name);
-      info.appendChild(count);
+      info.appendChild(
+        name
+      );
+
+      info.appendChild(
+        count
+      );
 
 
       const arrow =
-        document.createElement("div");
+        document.createElement(
+          "div"
+        );
 
       arrow.className =
         "deck-item-arrow";
@@ -607,12 +1029,22 @@ function renderHome() {
         "›";
 
 
-      item.appendChild(icon);
-      item.appendChild(info);
-      item.appendChild(arrow);
+      item.appendChild(
+        icon
+      );
+
+      item.appendChild(
+        info
+      );
+
+      item.appendChild(
+        arrow
+      );
 
 
-      deckList.appendChild(item);
+      deckList.appendChild(
+        item
+      );
 
     }
   );
@@ -624,7 +1056,9 @@ function renderHome() {
    CARD COUNT
 ========================================================= */
 
-function getCardCountText(count) {
+function getCardCountText(
+  count
+) {
 
   if (
     count % 10 === 1 &&
@@ -657,24 +1091,33 @@ function getCardCountText(count) {
 
 function openCreateScreen() {
 
-  editingDeckId = null;
+  editingDeckId =
+    null;
 
-  selectedDeckIcon = "📚";
+  selectedDeckIcon =
+    "📚";
 
 
   document
-    .getElementById("createTitle")
+    .getElementById(
+      "createTitle"
+    )
     .textContent =
       "Новая колода";
 
 
   document
-    .getElementById("deckNameInput")
-    .value = "";
+    .getElementById(
+      "deckNameInput"
+    )
+    .value =
+      "";
 
 
   document
-    .querySelectorAll(".deck-icon-option")
+    .querySelectorAll(
+      ".deck-icon-option"
+    )
     .forEach(
       button => {
 
@@ -689,14 +1132,19 @@ function openCreateScreen() {
 
 
   document
-    .getElementById("newCardsList")
-    .innerHTML = "";
+    .getElementById(
+      "newCardsList"
+    )
+    .innerHTML =
+      "";
 
 
   addNewCardBlock();
 
 
-  showScreen("createScreen");
+  showScreen(
+    "createScreen"
+  );
 
 }
 
@@ -709,7 +1157,9 @@ function editCurrentDeck() {
 
   const deck =
     decks.find(
-      item => item.id === currentDeckId
+      item =>
+        item.id ===
+        currentDeckId
     );
 
 
@@ -732,23 +1182,30 @@ function editCurrentDeck() {
 
 
   selectedDeckIcon =
-    deck.icon || "📚";
+    deck.icon ||
+    "📚";
 
 
   document
-    .getElementById("createTitle")
+    .getElementById(
+      "createTitle"
+    )
     .textContent =
       "Редактировать колоду";
 
 
   document
-    .getElementById("deckNameInput")
+    .getElementById(
+      "deckNameInput"
+    )
     .value =
       deck.name;
 
 
   document
-    .querySelectorAll(".deck-icon-option")
+    .querySelectorAll(
+      ".deck-icon-option"
+    )
     .forEach(
       button => {
 
@@ -767,16 +1224,22 @@ function editCurrentDeck() {
       "newCardsList"
     );
 
-  cardsList.innerHTML = "";
+
+  cardsList.innerHTML =
+    "";
 
 
   deck.cards.forEach(
     card =>
-      addNewCardBlock(card)
+      addNewCardBlock(
+        card
+      )
   );
 
 
-  showScreen("createScreen");
+  showScreen(
+    "createScreen"
+  );
 
 }
 
@@ -785,11 +1248,15 @@ function editCurrentDeck() {
    EDIT CARD
 ========================================================= */
 
-function editCard(cardId) {
+function editCard(
+  cardId
+) {
 
   const deck =
     decks.find(
-      item => item.id === currentDeckId
+      item =>
+        item.id ===
+        currentDeckId
     );
 
 
@@ -822,8 +1289,11 @@ function editCard(cardId) {
       if (card) {
 
         card.scrollIntoView({
-          behavior: "smooth",
-          block: "center"
+          behavior:
+            "smooth",
+
+          block:
+            "center"
         });
 
       }
@@ -850,7 +1320,9 @@ function addNewCardBlock(
 
 
   const block =
-    document.createElement("div");
+    document.createElement(
+      "div"
+    );
 
   block.className =
     "new-card";
@@ -862,13 +1334,16 @@ function addNewCardBlock(
       existingCard.id;
 
     block.dataset.imageUrl =
-      existingCard.imageUrl || "";
+      existingCard.imageUrl ||
+      "";
 
   }
 
 
   const cardNumber =
-    document.createElement("div");
+    document.createElement(
+      "div"
+    );
 
   cardNumber.className =
     "card-number";
@@ -880,7 +1355,9 @@ function addNewCardBlock(
 
 
   const removeButton =
-    document.createElement("button");
+    document.createElement(
+      "button"
+    );
 
   removeButton.className =
     "remove-card-button";
@@ -917,7 +1394,9 @@ function addNewCardBlock(
 
 
   const frontLabel =
-    document.createElement("div");
+    document.createElement(
+      "div"
+    );
 
   frontLabel.className =
     "card-editor-label";
@@ -927,7 +1406,9 @@ function addNewCardBlock(
 
 
   const frontInput =
-    document.createElement("textarea");
+    document.createElement(
+      "textarea"
+    );
 
   frontInput.className =
     "card-textarea front-input";
@@ -936,11 +1417,14 @@ function addNewCardBlock(
     "Например: Что такое столица Франции?";
 
   frontInput.value =
-    existingCard?.front || "";
+    existingCard?.front ||
+    "";
 
 
   const backLabel =
-    document.createElement("div");
+    document.createElement(
+      "div"
+    );
 
   backLabel.className =
     "card-editor-label";
@@ -950,7 +1434,9 @@ function addNewCardBlock(
 
 
   const backInput =
-    document.createElement("textarea");
+    document.createElement(
+      "textarea"
+    );
 
   backInput.className =
     "card-textarea back-input";
@@ -959,18 +1445,23 @@ function addNewCardBlock(
     "Например: Париж";
 
   backInput.value =
-    existingCard?.back || "";
+    existingCard?.back ||
+    "";
 
 
   const photoSection =
-    document.createElement("div");
+    document.createElement(
+      "div"
+    );
 
   photoSection.className =
     "photo-section";
 
 
   const photoLabel =
-    document.createElement("div");
+    document.createElement(
+      "div"
+    );
 
   photoLabel.className =
     "card-editor-label";
@@ -980,7 +1471,9 @@ function addNewCardBlock(
 
 
   const uploadLabel =
-    document.createElement("label");
+    document.createElement(
+      "label"
+    );
 
   uploadLabel.className =
     "photo-upload-label";
@@ -990,7 +1483,9 @@ function addNewCardBlock(
 
 
   const fileInput =
-    document.createElement("input");
+    document.createElement(
+      "input"
+    );
 
   fileInput.type =
     "file";
@@ -1008,7 +1503,9 @@ function addNewCardBlock(
 
 
   const previewContainer =
-    document.createElement("div");
+    document.createElement(
+      "div"
+    );
 
   previewContainer.className =
     "photo-preview-wrapper";
@@ -1020,7 +1517,9 @@ function addNewCardBlock(
 
 
   const preview =
-    document.createElement("img");
+    document.createElement(
+      "img"
+    );
 
   preview.className =
     "photo-preview";
@@ -1029,7 +1528,9 @@ function addNewCardBlock(
     "Фото карточки";
 
 
-  if (existingCard?.imageUrl) {
+  if (
+    existingCard?.imageUrl
+  ) {
 
     preview.src =
       existingCard.imageUrl;
@@ -1038,7 +1539,9 @@ function addNewCardBlock(
 
 
   const removePhoto =
-    document.createElement("button");
+    document.createElement(
+      "button"
+    );
 
   removePhoto.type =
     "button";
@@ -1087,6 +1590,25 @@ function addNewCardBlock(
       if (!file) return;
 
 
+      /*
+        Если Supabase не подключён,
+        приложение НЕ падает.
+      */
+
+      if (!supabaseClient) {
+
+        showToast(
+          "Supabase не подключён. Проверь ключи."
+        );
+
+        fileInput.value =
+          "";
+
+        return;
+
+      }
+
+
       try {
 
         showToast(
@@ -1095,7 +1617,9 @@ function addNewCardBlock(
 
 
         const imageUrl =
-          await uploadImage(file);
+          await uploadImage(
+            file
+          );
 
 
         block.dataset.imageUrl =
@@ -1117,7 +1641,11 @@ function addNewCardBlock(
 
       } catch (error) {
 
-        console.error(error);
+        console.error(
+          "Ошибка загрузки фотографии:",
+          error
+        );
+
 
         showToast(
           "Не удалось загрузить фотографию"
@@ -1196,10 +1724,13 @@ function updateCardNumbers() {
             ".card-number"
           );
 
+
         if (number) {
 
           number.textContent =
-            `КАРТОЧКА ${index + 1}`;
+            `КАРТОЧКА ${
+              index + 1
+            }`;
 
         }
 
@@ -1213,7 +1744,7 @@ function updateCardNumbers() {
    SAVE DECK
 ========================================================= */
 
-async function saveDeckFromEditor() {
+function saveDeckFromEditor() {
 
   const name =
     document
@@ -1269,14 +1800,18 @@ async function saveDeckFromEditor() {
 
     const front =
       block
-        .querySelector(".front-input")
+        .querySelector(
+          ".front-input"
+        )
         .value
         .trim();
 
 
     const back =
       block
-        .querySelector(".back-input")
+        .querySelector(
+          ".back-input"
+        )
         .value
         .trim();
 
@@ -1284,7 +1819,9 @@ async function saveDeckFromEditor() {
     if (!front || !back) {
 
       showToast(
-        `Заполните карточку ${i + 1}`
+        `Заполните карточку ${
+          i + 1
+        }`
       );
 
       return;
@@ -1303,12 +1840,17 @@ async function saveDeckFromEditor() {
       back,
 
       imageUrl:
-        block.dataset.imageUrl || ""
+        block.dataset.imageUrl ||
+        ""
 
     });
 
   }
 
+
+  /*
+    РЕДАКТИРОВАНИЕ
+  */
 
   if (editingDeckId) {
 
@@ -1352,23 +1894,32 @@ async function saveDeckFromEditor() {
 
     renderHome();
 
-    openDeck(deck.id);
+    openDeck(
+      deck.id
+    );
+
 
     showToast(
       "Колода обновлена"
     );
+
 
     return;
 
   }
 
 
+  /*
+    НОВАЯ КОЛОДА
+  */
+
   const newDeck = {
 
     id:
       generateId(),
 
-    name,
+    name:
+      name,
 
     icon:
       selectedDeckIcon,
@@ -1379,7 +1930,8 @@ async function saveDeckFromEditor() {
     universal:
       true,
 
-    cards
+    cards:
+      cards
 
   };
 
@@ -1401,6 +1953,7 @@ async function saveDeckFromEditor() {
     newDeck.id
   );
 
+
   showToast(
     "Колода создана"
   );
@@ -1412,11 +1965,15 @@ async function saveDeckFromEditor() {
    OPEN DECK
 ========================================================= */
 
-function openDeck(deckId) {
+function openDeck(
+  deckId
+) {
 
   const deck =
     decks.find(
-      item => item.id === deckId
+      item =>
+        item.id ===
+        deckId
     );
 
 
@@ -1432,7 +1989,8 @@ function openDeck(deckId) {
       "deckHeadingIcon"
     )
     .textContent =
-      deck.icon || "📚";
+      deck.icon ||
+      "📚";
 
 
   document
@@ -1506,7 +2064,7 @@ function openDeck(deckId) {
 
 
 /* =========================================================
-   CONTENT
+   DECK CONTENT
 ========================================================= */
 
 function toggleDeckContent() {
@@ -1534,27 +2092,34 @@ function renderDeckContent(
     );
 
 
-  container.innerHTML = "";
+  container.innerHTML =
+    "";
 
 
   deck.cards.forEach(
     (card, index) => {
 
       const cardElement =
-        document.createElement("div");
+        document.createElement(
+          "div"
+        );
 
       cardElement.className =
         "content-card";
 
 
       const number =
-        document.createElement("div");
+        document.createElement(
+          "div"
+        );
 
       number.className =
         "content-card-number";
 
       number.textContent =
-        `КАРТОЧКА ${index + 1}`;
+        `КАРТОЧКА ${
+          index + 1
+        }`;
 
 
       cardElement.appendChild(
@@ -1565,7 +2130,9 @@ function renderDeckContent(
       if (card.imageUrl) {
 
         const image =
-          document.createElement("img");
+          document.createElement(
+            "img"
+          );
 
         image.className =
           "content-card-image";
@@ -1576,6 +2143,16 @@ function renderDeckContent(
         image.alt =
           "Фото карточки";
 
+
+        image.onerror =
+          () => {
+
+            image.style.display =
+              "none";
+
+          };
+
+
         cardElement.appendChild(
           image
         );
@@ -1583,13 +2160,16 @@ function renderDeckContent(
       } else {
 
         const placeholder =
-          document.createElement("div");
+          document.createElement(
+            "div"
+          );
 
         placeholder.className =
           "content-card-image-placeholder";
 
         placeholder.textContent =
           "📷";
+
 
         cardElement.appendChild(
           placeholder
@@ -1599,21 +2179,29 @@ function renderDeckContent(
 
 
       const front =
-        document.createElement("div");
+        document.createElement(
+          "div"
+        );
 
       front.className =
         "content-card-front";
 
       front.innerHTML =
-        `<span class="content-label">
+        `
+        <span class="content-label">
           ЛИЦЕВАЯ СТОРОНА
-        </span>`;
+        </span>
+        `;
+
 
       const frontText =
-        document.createElement("div");
+        document.createElement(
+          "div"
+        );
 
       frontText.textContent =
         card.front;
+
 
       front.appendChild(
         frontText
@@ -1621,21 +2209,29 @@ function renderDeckContent(
 
 
       const back =
-        document.createElement("div");
+        document.createElement(
+          "div"
+        );
 
       back.className =
         "content-card-back";
 
       back.innerHTML =
-        `<span class="content-label">
+        `
+        <span class="content-label">
           ОБРАТНАЯ СТОРОНА
-        </span>`;
+        </span>
+        `;
+
 
       const backText =
-        document.createElement("div");
+        document.createElement(
+          "div"
+        );
 
       backText.textContent =
         card.back;
+
 
       back.appendChild(
         backText
@@ -1654,13 +2250,16 @@ function renderDeckContent(
       if (!deck.builtIn) {
 
         const editButton =
-          document.createElement("button");
+          document.createElement(
+            "button"
+          );
 
         editButton.className =
           "content-edit-button";
 
         editButton.textContent =
           "✏️ Редактировать";
+
 
         editButton.addEventListener(
           "click",
@@ -1701,7 +2300,9 @@ function deleteCurrentDeck() {
 
   const deck =
     decks.find(
-      item => item.id === currentDeckId
+      item =>
+        item.id ===
+        currentDeckId
     );
 
 
@@ -1747,11 +2348,16 @@ function confirmDeleteDeck() {
 
   const deck =
     decks.find(
-      item => item.id === currentDeckId
+      item =>
+        item.id ===
+        currentDeckId
     );
 
 
-  if (!deck || deck.builtIn) {
+  if (
+    !deck ||
+    deck.builtIn
+  ) {
 
     closeDeleteModal();
 
@@ -1762,7 +2368,9 @@ function confirmDeleteDeck() {
 
   decks =
     decks.filter(
-      item => item.id !== currentDeckId
+      item =>
+        item.id !==
+        currentDeckId
     );
 
 
@@ -1785,21 +2393,26 @@ function confirmDeleteDeck() {
 
 
 /* =========================================================
-   STUDY
+   START STUDY
 ========================================================= */
 
 function startStudy() {
 
   const deck =
     decks.find(
-      item => item.id === currentDeckId
+      item =>
+        item.id ===
+        currentDeckId
     );
 
 
   if (!deck) return;
 
 
-  if (!deck.cards.length) {
+  if (
+    !deck.cards ||
+    !deck.cards.length
+  ) {
 
     showToast(
       "В колоде нет карточек"
@@ -1944,7 +2557,10 @@ function setupStudyImage(
     );
 
 
-  if (imageUrl) {
+  if (
+    imageUrl &&
+    imageUrl.trim()
+  ) {
 
     image.src =
       imageUrl;
@@ -1954,6 +2570,18 @@ function setupStudyImage(
 
     placeholder.style.display =
       "none";
+
+
+    image.onerror =
+      () => {
+
+        image.style.display =
+          "none";
+
+        placeholder.style.display =
+          "flex";
+
+      };
 
   } else {
 
@@ -1972,18 +2600,20 @@ function setupStudyImage(
 
 
 /* =========================================================
-   FLIP
+   FLIP CARD
 ========================================================= */
 
 function flipCard() {
 
-  document
-    .getElementById(
+  const flashcard =
+    document.getElementById(
       "flashcard"
-    )
-    .classList.toggle(
-      "flipped"
     );
+
+
+  flashcard.classList.toggle(
+    "flipped"
+  );
 
 }
 
@@ -2070,6 +2700,71 @@ async function uploadImage(
   file
 ) {
 
+  /*
+    Дополнительная защита:
+    если Supabase не подключён,
+    выбрасываем нормальную ошибку,
+    а приложение продолжает работать.
+  */
+
+  if (!supabaseClient) {
+
+    throw new Error(
+      "Supabase не подключён"
+    );
+
+  }
+
+
+  if (!file) {
+
+    throw new Error(
+      "Файл не выбран"
+    );
+
+  }
+
+
+  /*
+    Проверяем, что это действительно
+    изображение.
+  */
+
+  if (
+    !file.type ||
+    !file.type.startsWith(
+      "image/"
+    )
+  ) {
+
+    throw new Error(
+      "Можно загружать только изображения"
+    );
+
+  }
+
+
+  /*
+    Ограничение размера:
+    10 МБ.
+  */
+
+  const maxSize =
+    10 * 1024 * 1024;
+
+
+  if (
+    file.size >
+    maxSize
+  ) {
+
+    throw new Error(
+      "Фотография больше 10 МБ"
+    );
+
+  }
+
+
   const extension =
     getFileExtension(
       file.name
@@ -2082,15 +2777,15 @@ async function uploadImage(
     "_" +
     Math.random()
       .toString(36)
-      .substring(2, 10) +
+      .substring(
+        2,
+        10
+      ) +
     "." +
     extension;
 
 
-  const {
-    data,
-    error
-  } =
+  const result =
     await supabaseClient
       .storage
       .from(
@@ -2112,16 +2807,14 @@ async function uploadImage(
       );
 
 
-  if (error) {
+  if (result.error) {
 
-    throw error;
+    throw result.error;
 
   }
 
 
-  const {
-    data: publicData
-  } =
+  const publicResult =
     supabaseClient
       .storage
       .from(
@@ -2132,7 +2825,20 @@ async function uploadImage(
       );
 
 
-  return publicData.publicUrl;
+  if (
+    !publicResult ||
+    !publicResult.data ||
+    !publicResult.data.publicUrl
+  ) {
+
+    throw new Error(
+      "Не удалось получить URL фотографии"
+    );
+
+  }
+
+
+  return publicResult.data.publicUrl;
 
 }
 
@@ -2149,31 +2855,67 @@ function getFileExtension(
     fileName.split(".");
 
 
-  if (parts.length < 2) {
+  if (
+    parts.length < 2
+  ) {
 
     return "jpg";
 
   }
 
 
-  return parts
-    .pop()
-    .toLowerCase();
+  const extension =
+    parts
+      .pop()
+      .toLowerCase();
+
+
+  /*
+    Не даём загрузить странное
+    расширение.
+  */
+
+  const allowed = [
+    "jpg",
+    "jpeg",
+    "png",
+    "webp",
+    "gif"
+  ];
+
+
+  if (
+    !allowed.includes(
+      extension
+    )
+  ) {
+
+    return "jpg";
+
+  }
+
+
+  return extension;
 
 }
 
 
 /* =========================================================
-   ID
+   GENERATE ID
 ========================================================= */
 
 function generateId() {
 
   return (
-    Date.now().toString(36) +
+    Date.now()
+      .toString(36) +
+
     Math.random()
       .toString(36)
-      .substring(2, 10)
+      .substring(
+        2,
+        10
+      )
   );
 
 }
@@ -2196,6 +2938,16 @@ function showToast(
     document.getElementById(
       "toastText"
     );
+
+
+  if (
+    !toast ||
+    !text
+  ) {
+
+    return;
+
+  }
 
 
   text.textContent =
