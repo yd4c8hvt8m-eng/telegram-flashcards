@@ -1,3 +1,7 @@
+/* =========================================
+   ОСНОВНЫЕ НАСТРОЙКИ
+========================================= */
+
 * {
     box-sizing: border-box;
 }
@@ -7,9 +11,11 @@ html,
 body {
 
     margin: 0;
+
     padding: 0;
 
     width: 100%;
+
     min-height: 100%;
 
     font-family:
@@ -29,9 +35,15 @@ body {
 
 
 body {
+
     min-height: 100vh;
+
 }
 
+
+/* =========================================
+   ПРИЛОЖЕНИЕ
+========================================= */
 
 .app {
 
@@ -42,17 +54,20 @@ body {
     margin: 0 auto;
 
     padding: 16px;
+
 }
 
 
 .hidden {
+
     display: none !important;
+
 }
 
 
-/* =========================
+/* =========================================
    HEADER
-========================= */
+========================================= */
 
 header {
 
@@ -63,6 +78,7 @@ header {
     justify-content: space-between;
 
     margin-bottom: 24px;
+
 }
 
 
@@ -71,6 +87,7 @@ header {
     font-size: 25px;
 
     font-weight: 700;
+
 }
 
 
@@ -79,12 +96,13 @@ header {
     font-size: 15px;
 
     color: #777;
+
 }
 
 
-/* =========================
+/* =========================================
    ЗАГОЛОВКИ
-========================= */
+========================================= */
 
 .section-title {
 
@@ -93,6 +111,7 @@ header {
     font-weight: 700;
 
     margin-bottom: 14px;
+
 }
 
 
@@ -101,6 +120,7 @@ header {
     margin-top: 24px;
 
     font-size: 18px;
+
 }
 
 
@@ -113,6 +133,7 @@ header {
     gap: 12px;
 
     margin-bottom: 24px;
+
 }
 
 
@@ -127,6 +148,7 @@ header {
     text-overflow: ellipsis;
 
     white-space: nowrap;
+
 }
 
 
@@ -147,12 +169,13 @@ header {
     font-size: 25px;
 
     cursor: pointer;
+
 }
 
 
-/* =========================
+/* =========================================
    КОЛОДЫ
-========================= */
+========================================= */
 
 .deck-item {
 
@@ -170,12 +193,17 @@ header {
         0 4px 15px rgba(0,0,0,0.06);
 
     cursor: pointer;
+
+    transition:
+        transform 0.15s ease;
+
 }
 
 
 .deck-item:active {
 
     transform: scale(0.98);
+
 }
 
 
@@ -186,6 +214,7 @@ header {
     font-weight: 700;
 
     margin-bottom: 6px;
+
 }
 
 
@@ -194,16 +223,18 @@ header {
     font-size: 14px;
 
     color: #888;
+
 }
 
 
-/* =========================
+/* =========================================
    ПОЛЯ
-========================= */
+========================================= */
 
 .field {
 
     margin-bottom: 15px;
+
 }
 
 
@@ -216,6 +247,7 @@ header {
     font-size: 14px;
 
     color: #777;
+
 }
 
 
@@ -239,6 +271,7 @@ textarea {
     font-size: 16px;
 
     color: #111;
+
 }
 
 
@@ -247,6 +280,7 @@ textarea {
     min-height: 80px;
 
     resize: vertical;
+
 }
 
 
@@ -255,12 +289,13 @@ textarea:focus {
 
     box-shadow:
         0 0 0 2px rgba(0,0,0,0.08);
+
 }
 
 
-/* =========================
-   КАРТОЧКА ПРИ СОЗДАНИИ
-========================= */
+/* =========================================
+   СОЗДАНИЕ КАРТОЧКИ
+========================================= */
 
 .new-card {
 
@@ -274,6 +309,7 @@ textarea:focus {
 
     box-shadow:
         0 4px 15px rgba(0,0,0,0.06);
+
 }
 
 
@@ -282,6 +318,7 @@ textarea:focus {
     font-weight: 700;
 
     margin-bottom: 14px;
+
 }
 
 
@@ -302,12 +339,13 @@ textarea:focus {
     font-size: 14px;
 
     cursor: pointer;
+
 }
 
 
-/* =========================
+/* =========================================
    КНОПКИ
-========================= */
+========================================= */
 
 .primary-button,
 .secondary-button {
@@ -327,6 +365,7 @@ textarea:focus {
     font-weight: 600;
 
     cursor: pointer;
+
 }
 
 
@@ -335,6 +374,7 @@ textarea:focus {
     background: #111;
 
     color: #fff;
+
 }
 
 
@@ -346,18 +386,27 @@ textarea:focus {
 
     box-shadow:
         0 3px 12px rgba(0,0,0,0.06);
+
 }
 
 
 .danger {
 
     color: #d93030;
+
 }
 
 
-/* =========================
-   КАРТОЧКИ КОЛОДЫ
-========================= */
+/* =========================================
+   СОДЕРЖАНИЕ КОЛОДЫ
+========================================= */
+
+.deck-cards-list {
+
+    margin-top: 16px;
+
+}
+
 
 .deck-card-row {
 
@@ -368,6 +417,7 @@ textarea:focus {
     border-radius: 16px;
 
     background: #fff;
+
 }
 
 
@@ -378,6 +428,7 @@ textarea:focus {
     font-weight: 600;
 
     margin-bottom: 6px;
+
 }
 
 
@@ -386,12 +437,13 @@ textarea:focus {
     font-size: 14px;
 
     color: #777;
+
 }
 
 
-/* =========================
-   ОБУЧЕНИЕ
-========================= */
+/* =========================================
+   КАРТОЧКА ОБУЧЕНИЯ
+========================================= */
 
 .card-container {
 
@@ -400,6 +452,7 @@ textarea:focus {
     height: 470px;
 
     perspective: 1200px;
+
 }
 
 
@@ -418,12 +471,14 @@ textarea:focus {
     transition:
         transform 0.6s
         cubic-bezier(0.4, 0.2, 0.2, 1);
+
 }
 
 
 .card.flipped {
 
     transform: rotateY(180deg);
+
 }
 
 
@@ -449,12 +504,14 @@ textarea:focus {
     backface-visibility: hidden;
 
     -webkit-backface-visibility: hidden;
+
 }
 
 
 .card-back {
 
     transform: rotateY(180deg);
+
 }
 
 
@@ -469,6 +526,7 @@ textarea:focus {
     object-fit: cover;
 
     background: #f0f0f0;
+
 }
 
 
@@ -487,6 +545,7 @@ textarea:focus {
     height: 200px;
 
     padding: 15px 20px;
+
 }
 
 
@@ -497,6 +556,7 @@ textarea:focus {
     color: #888;
 
     margin-bottom: 8px;
+
 }
 
 
@@ -509,6 +569,7 @@ textarea:focus {
     font-weight: 700;
 
     word-break: normal;
+
 }
 
 
@@ -519,12 +580,13 @@ textarea:focus {
     font-size: 13px;
 
     color: #999;
+
 }
 
 
-/* =========================
-   ОТВЕТЫ
-========================= */
+/* =========================================
+   КНОПКИ ОТВЕТА
+========================================= */
 
 .buttons {
 
@@ -533,6 +595,7 @@ textarea:focus {
     gap: 12px;
 
     margin-top: 20px;
+
 }
 
 
@@ -551,6 +614,7 @@ textarea:focus {
     font-weight: 600;
 
     cursor: pointer;
+
 }
 
 
@@ -559,6 +623,7 @@ textarea:focus {
     background: #ffe8e8;
 
     color: #d93030;
+
 }
 
 
@@ -567,6 +632,7 @@ textarea:focus {
     background: #e4f7eb;
 
     color: #198754;
+
 }
 
 
@@ -591,38 +657,48 @@ textarea:focus {
     font-weight: 600;
 
     cursor: pointer;
+
 }
 
+
+/* =========================================
+   МОБИЛЬНАЯ ВЕРСИЯ
+========================================= */
 
 @media (max-width: 500px) {
 
     .app {
 
         padding: 14px;
+
     }
 
 
     .card-container {
 
         height: 440px;
+
     }
 
 
     .card-side img {
 
         height: 250px;
+
     }
 
 
     .card-content {
 
         height: 190px;
+
     }
 
 
     .phrase {
 
         font-size: 25px;
+
     }
 
 }
@@ -633,18 +709,21 @@ textarea:focus {
     .card-container {
 
         height: 390px;
+
     }
 
 
     .card-side img {
 
         height: 210px;
+
     }
 
 
     .card-content {
 
         height: 180px;
+
     }
 
 }
