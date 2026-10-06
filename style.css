@@ -5,6 +5,7 @@
 
 html,
 body {
+
     margin: 0;
     padding: 0;
 
@@ -41,9 +42,17 @@ body {
     margin: 0 auto;
 
     padding: 16px;
-
 }
 
+
+.hidden {
+    display: none !important;
+}
+
+
+/* =========================
+   HEADER
+========================= */
 
 header {
 
@@ -53,17 +62,15 @@ header {
 
     justify-content: space-between;
 
-    margin-bottom: 20px;
-
+    margin-bottom: 24px;
 }
 
 
 .title {
 
-    font-size: 24px;
+    font-size: 25px;
 
     font-weight: 700;
-
 }
 
 
@@ -72,14 +79,319 @@ header {
     font-size: 15px;
 
     color: #777;
-
 }
 
 
 /* =========================
-   КАРТОЧКА
+   ЗАГОЛОВКИ
 ========================= */
 
+.section-title {
+
+    font-size: 21px;
+
+    font-weight: 700;
+
+    margin-bottom: 14px;
+}
+
+
+.section-title.small {
+
+    margin-top: 24px;
+
+    font-size: 18px;
+}
+
+
+.screen-header {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    margin-bottom: 24px;
+}
+
+
+.screen-title {
+
+    font-size: 22px;
+
+    font-weight: 700;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+}
+
+
+.back-button {
+
+    flex-shrink: 0;
+
+    width: 44px;
+
+    height: 44px;
+
+    border: none;
+
+    border-radius: 13px;
+
+    background: #fff;
+
+    font-size: 25px;
+
+    cursor: pointer;
+}
+
+
+/* =========================
+   КОЛОДЫ
+========================= */
+
+.deck-item {
+
+    width: 100%;
+
+    padding: 18px;
+
+    margin-bottom: 12px;
+
+    border-radius: 18px;
+
+    background: #fff;
+
+    box-shadow:
+        0 4px 15px rgba(0,0,0,0.06);
+
+    cursor: pointer;
+}
+
+
+.deck-item:active {
+
+    transform: scale(0.98);
+}
+
+
+.deck-name {
+
+    font-size: 19px;
+
+    font-weight: 700;
+
+    margin-bottom: 6px;
+}
+
+
+.deck-count {
+
+    font-size: 14px;
+
+    color: #888;
+}
+
+
+/* =========================
+   ПОЛЯ
+========================= */
+
+.field {
+
+    margin-bottom: 15px;
+}
+
+
+.field label {
+
+    display: block;
+
+    margin-bottom: 7px;
+
+    font-size: 14px;
+
+    color: #777;
+}
+
+
+input,
+textarea {
+
+    width: 100%;
+
+    border: none;
+
+    outline: none;
+
+    border-radius: 14px;
+
+    padding: 15px;
+
+    background: #fff;
+
+    font-family: inherit;
+
+    font-size: 16px;
+
+    color: #111;
+}
+
+
+textarea {
+
+    min-height: 80px;
+
+    resize: vertical;
+}
+
+
+input:focus,
+textarea:focus {
+
+    box-shadow:
+        0 0 0 2px rgba(0,0,0,0.08);
+}
+
+
+/* =========================
+   КАРТОЧКА ПРИ СОЗДАНИИ
+========================= */
+
+.new-card {
+
+    padding: 16px;
+
+    margin-bottom: 14px;
+
+    border-radius: 18px;
+
+    background: #fff;
+
+    box-shadow:
+        0 4px 15px rgba(0,0,0,0.06);
+}
+
+
+.card-number {
+
+    font-weight: 700;
+
+    margin-bottom: 14px;
+}
+
+
+.remove-card {
+
+    width: 100%;
+
+    margin-top: 4px;
+
+    padding: 10px;
+
+    border: none;
+
+    background: transparent;
+
+    color: #d93030;
+
+    font-size: 14px;
+
+    cursor: pointer;
+}
+
+
+/* =========================
+   КНОПКИ
+========================= */
+
+.primary-button,
+.secondary-button {
+
+    width: 100%;
+
+    min-height: 56px;
+
+    margin-top: 14px;
+
+    border: none;
+
+    border-radius: 16px;
+
+    font-size: 16px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+
+.primary-button {
+
+    background: #111;
+
+    color: #fff;
+}
+
+
+.secondary-button {
+
+    background: #fff;
+
+    color: #111;
+
+    box-shadow:
+        0 3px 12px rgba(0,0,0,0.06);
+}
+
+
+.danger {
+
+    color: #d93030;
+}
+
+
+/* =========================
+   КАРТОЧКИ КОЛОДЫ
+========================= */
+
+.deck-card-row {
+
+    padding: 15px;
+
+    margin-bottom: 10px;
+
+    border-radius: 16px;
+
+    background: #fff;
+}
+
+
+.deck-card-front {
+
+    font-size: 16px;
+
+    font-weight: 600;
+
+    margin-bottom: 6px;
+}
+
+
+.deck-card-back {
+
+    font-size: 14px;
+
+    color: #777;
+}
+
+
+/* =========================
+   ОБУЧЕНИЕ
+========================= */
 
 .card-container {
 
@@ -88,7 +400,6 @@ header {
     height: 470px;
 
     perspective: 1200px;
-
 }
 
 
@@ -107,14 +418,12 @@ header {
     transition:
         transform 0.6s
         cubic-bezier(0.4, 0.2, 0.2, 1);
-
 }
 
 
 .card.flipped {
 
     transform: rotateY(180deg);
-
 }
 
 
@@ -132,35 +441,21 @@ header {
 
     border-radius: 24px;
 
-    background: #ffffff;
+    background: #fff;
 
     box-shadow:
-        0 10px 30px rgba(0, 0, 0, 0.12);
+        0 10px 30px rgba(0,0,0,0.12);
 
     backface-visibility: hidden;
 
     -webkit-backface-visibility: hidden;
-
-}
-
-
-.card-front {
-
-    transform: rotateY(0deg);
-
 }
 
 
 .card-back {
 
     transform: rotateY(180deg);
-
 }
-
-
-/* =========================
-   КАРТИНКА
-========================= */
 
 
 .card-side img {
@@ -173,12 +468,8 @@ header {
 
     object-fit: cover;
 
+    background: #f0f0f0;
 }
-
-
-/* =========================
-   ТЕКСТ КАРТОЧКИ
-========================= */
 
 
 .card-content {
@@ -196,7 +487,6 @@ header {
     height: 200px;
 
     padding: 15px 20px;
-
 }
 
 
@@ -207,7 +497,6 @@ header {
     color: #888;
 
     margin-bottom: 8px;
-
 }
 
 
@@ -219,10 +508,7 @@ header {
 
     font-weight: 700;
 
-    color: #111;
-
     word-break: normal;
-
 }
 
 
@@ -233,14 +519,12 @@ header {
     font-size: 13px;
 
     color: #999;
-
 }
 
 
 /* =========================
-   КНОПКИ
+   ОТВЕТЫ
 ========================= */
-
 
 .buttons {
 
@@ -249,7 +533,6 @@ header {
     gap: 12px;
 
     margin-top: 20px;
-
 }
 
 
@@ -268,16 +551,6 @@ header {
     font-weight: 600;
 
     cursor: pointer;
-
-    transition: transform 0.15s;
-
-}
-
-
-.btn:active {
-
-    transform: scale(0.97);
-
 }
 
 
@@ -286,7 +559,6 @@ header {
     background: #ffe8e8;
 
     color: #d93030;
-
 }
 
 
@@ -295,13 +567,7 @@ header {
     background: #e4f7eb;
 
     color: #198754;
-
 }
-
-
-/* =========================
-   КНОПКА СЛЕДУЮЩАЯ
-========================= */
 
 
 .next {
@@ -325,20 +591,7 @@ header {
     font-weight: 600;
 
     cursor: pointer;
-
 }
-
-
-.next:active {
-
-    transform: scale(0.98);
-
-}
-
-
-/* =========================
-   ТЕЛЕФОН
-========================= */
 
 
 @media (max-width: 500px) {
@@ -346,50 +599,33 @@ header {
     .app {
 
         padding: 14px;
-
-    }
-
-
-    .title {
-
-        font-size: 22px;
-
     }
 
 
     .card-container {
 
         height: 440px;
-
     }
 
 
     .card-side img {
 
         height: 250px;
-
     }
 
 
     .card-content {
 
         height: 190px;
-
     }
 
 
     .phrase {
 
         font-size: 25px;
-
     }
 
 }
-
-
-/* =========================
-   МАЛЕНЬКИЙ ЭКРАН
-========================= */
 
 
 @media (max-height: 700px) {
@@ -397,28 +633,18 @@ header {
     .card-container {
 
         height: 390px;
-
     }
 
 
     .card-side img {
 
         height: 210px;
-
     }
 
 
     .card-content {
 
         height: 180px;
-
-    }
-
-
-    .phrase {
-
-        font-size: 23px;
-
     }
 
 }
