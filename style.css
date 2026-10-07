@@ -1,58 +1,61 @@
 :root {
+
   --bg: #07110d;
+
   --surface: #101f18;
+
   --surface-2: #15271f;
 
   --primary: #36a269;
+
   --primary-light: #55c487;
+
   --primary-dark: #277a4f;
 
   --text: #f3f7f4;
+
   --muted: #91a59a;
 
-  --border: rgba(255, 255, 255, 0.08);
+  --border: rgba(255,255,255,0.08);
 
   --danger: #e25d5d;
-  --danger-dark: #b94444;
 
-  --radius: 18px;
 }
 
 
-/* =========================================================
-   GLOBAL RESET — ВАЖНО ДЛЯ iOS / TELEGRAM
-========================================================= */
-
-* {
-  box-sizing: border-box;
-
-  -webkit-tap-highlight-color: transparent;
-
-  -webkit-text-size-adjust: 100%;
-  text-size-adjust: 100%;
-}
-
+/* =====================================================
+   IOS RESET
+===================================================== */
 
 html {
+
   margin: 0;
+
   padding: 0;
 
   width: 100%;
+
   min-height: 100%;
 
   background: var(--bg);
 
   -webkit-text-size-adjust: 100%;
+
   text-size-adjust: 100%;
+
 }
 
 
 body {
+
   margin: 0;
+
   padding: 0;
 
   width: 100%;
+
   min-width: 0;
+
   min-height: 100vh;
 
   overflow-x: hidden;
@@ -71,81 +74,119 @@ body {
     sans-serif;
 
   font-size: 16px;
+
   line-height: 1.4;
 
   -webkit-text-size-adjust: 100%;
+
   text-size-adjust: 100%;
+
 }
 
 
-/* =========================================================
-   ELEMENT RESET
-========================================================= */
+* {
 
-button,
-input,
-textarea,
-select {
-  font-family: inherit;
-  font-size: inherit;
-  line-height: inherit;
+  box-sizing: border-box;
+
+  -webkit-tap-highlight-color: transparent;
+
 }
 
+
+/* =====================================================
+   КРИТИЧЕСКИ ВАЖНО ДЛЯ IPHONE
+
+   iOS любит самостоятельно красить BUTTON
+   в синий цвет и менять внешний вид.
+
+===================================================== */
 
 button {
-  -webkit-appearance: none;
-  appearance: none;
 
-  margin: 0;
-  padding: 0;
+  -webkit-appearance: none !important;
 
-  border: 0;
-  outline: none;
+  appearance: none !important;
 
-  background: none;
+  -webkit-text-fill-color: currentColor !important;
+
+  font-family: inherit !important;
+
+  font-size: inherit;
+
+  line-height: inherit;
+
+  font-weight: inherit;
 
   color: inherit;
 
-  font-family: inherit;
+  background: none;
 
-  text-align: center;
+  border: 0;
 
-  -webkit-text-size-adjust: 100%;
-  text-size-adjust: 100%;
+  margin: 0;
+
+  padding: 0;
+
+  outline: none;
+
+  text-decoration: none;
+
+  text-shadow: none;
+
+  cursor: pointer;
+
+}
+
+
+button:focus,
+button:active,
+button:hover {
+
+  -webkit-text-fill-color: currentColor !important;
+
+  outline: none;
+
 }
 
 
 input,
 textarea {
-  -webkit-appearance: none;
-  appearance: none;
 
   font-family: inherit;
 
   -webkit-text-size-adjust: 100%;
+
   text-size-adjust: 100%;
+
 }
 
 
 img {
+
   max-width: 100%;
+
 }
 
 
 .hidden {
+
   display: none !important;
+
 }
 
 
-/* =========================================================
+/* =====================================================
    SCREEN
-========================================================= */
+===================================================== */
 
 .screen {
+
   display: none;
 
   width: 100%;
+
   min-width: 0;
+
   min-height: 100vh;
 
   padding-top:
@@ -160,189 +201,219 @@ img {
   padding-left:
     max(16px, env(safe-area-inset-left));
 
-  overflow-x: hidden;
 }
 
 
 .screen.active {
+
   display: block;
+
 }
 
 
-/* =========================================================
+/* =====================================================
    HOME HEADER
-========================================================= */
+===================================================== */
 
 .home-header {
+
   display: flex;
+
   align-items: center;
 
   width: 100%;
+
   min-width: 0;
 
   gap: 14px;
 
   padding: 12px 4px 28px;
+
 }
 
 
 .app-logo {
-  width: 48px;
-  min-width: 48px;
-  height: 48px;
 
-  flex: 0 0 48px;
+  width: 50px;
+
+  min-width: 50px;
+
+  height: 50px;
+
+  flex: 0 0 50px;
 
   display: flex;
+
   align-items: center;
+
   justify-content: center;
 
-  border-radius: 14px;
+  border-radius: 15px;
 
   background: var(--primary);
 
-  color: #ffffff;
+  color: #ffffff !important;
 
-  font-size: 24px;
+  -webkit-text-fill-color: #ffffff !important;
+
+  font-size: 27px;
+
   line-height: 1;
 
-  font-weight: 900;
-
-  text-align: center;
 }
 
 
-.home-header > div:last-child {
+.home-title-block {
+
   min-width: 0;
+
+  flex: 1;
+
 }
 
 
 .home-header h1 {
+
+  display: block;
+
+  width: 100%;
+
   margin: 0;
 
-  color: var(--text);
+  padding: 0;
+
+  color: var(--text) !important;
+
+  -webkit-text-fill-color: var(--text) !important;
 
   font-size: 22px;
+
   line-height: 1.15;
 
   font-weight: 800;
 
-  letter-spacing: 0.5px;
+  letter-spacing: 0.3px;
 
   white-space: nowrap;
+
 }
 
 
 .home-header p {
+
   margin: 5px 0 0;
 
   color: var(--muted);
 
   font-size: 13px;
+
   line-height: 1.3;
 
   white-space: nowrap;
+
 }
 
 
-/* =========================================================
-   SECTION TITLE
-========================================================= */
+/* =====================================================
+   SECTION
+===================================================== */
 
 .section-title-row {
+
   width: 100%;
 
   margin-bottom: 12px;
+
 }
 
 
 .section-title-row h2 {
+
   margin: 0;
 
   color: var(--text);
 
   font-size: 18px;
+
   line-height: 1.25;
 
   font-weight: 800;
+
 }
 
 
-/* =========================================================
+/* =====================================================
    DECK LIST
-========================================================= */
+===================================================== */
 
 .deck-list {
+
   display: flex;
+
   flex-direction: column;
 
   width: 100%;
 
-  gap: 10px;
+  gap: 12px;
 
-  margin-bottom: 16px;
+  margin: 0 0 16px;
+
 }
 
 
 /*
-  ВАЖНО:
-  deck-item — это BUTTON.
-  iOS иначе может самостоятельно красить текст
-  синим и менять его размеры.
+  УБИРАЕМ системное поведение iOS BUTTON
 */
 
 .deck-item {
+
+  display: flex;
+
+  align-items: center;
+
   width: 100%;
+
   min-width: 0;
 
   min-height: 82px;
 
-  display: flex;
-  align-items: center;
-
-  flex: 0 0 auto;
+  margin: 0;
 
   padding: 15px;
 
   border: 1px solid var(--border);
-  border-radius: var(--radius);
 
-  background: var(--surface);
+  border-radius: 18px;
 
-  color: var(--text);
+  background: var(--surface) !important;
+
+  color: var(--text) !important;
+
+  -webkit-text-fill-color: var(--text) !important;
 
   text-align: left;
 
-  -webkit-appearance: none;
-  appearance: none;
-
   overflow: hidden;
 
-  transition:
-    transform 0.15s ease,
-    border-color 0.15s ease;
-}
+  position: relative;
 
-
-.deck-item:active {
-  transform: scale(0.985);
-}
-
-
-.deck-item:hover {
-  border-color: rgba(85, 196, 135, 0.25);
 }
 
 
 .deck-item-icon {
+
   width: 48px;
+
   min-width: 48px;
+
   height: 48px;
 
   flex: 0 0 48px;
 
   display: flex;
+
   align-items: center;
+
   justify-content: center;
 
   border-radius: 14px;
@@ -350,13 +421,14 @@ img {
   background: var(--surface-2);
 
   font-size: 24px;
+
   line-height: 1;
 
-  text-align: center;
 }
 
 
 .deck-item-info {
+
   min-width: 0;
 
   flex: 1 1 auto;
@@ -364,17 +436,28 @@ img {
   margin-left: 13px;
 
   overflow: hidden;
+
 }
 
 
 .deck-item-title {
+
+  display: block;
+
   width: 100%;
+
+  min-width: 0;
 
   margin: 0 0 5px;
 
+  padding: 0;
+
   color: var(--text) !important;
 
+  -webkit-text-fill-color: var(--text) !important;
+
   font-size: 16px;
+
   line-height: 1.25;
 
   font-weight: 800;
@@ -386,40 +469,50 @@ img {
   text-overflow: ellipsis;
 
   white-space: nowrap;
+
 }
 
 
 .deck-item-count {
-  color: var(--muted);
+
+  display: block;
+
+  color: var(--muted) !important;
+
+  -webkit-text-fill-color: var(--muted) !important;
 
   font-size: 13px;
+
   line-height: 1.25;
 
-  text-align: left;
 }
 
 
-/* =========================================================
-   EMPTY STATE
-========================================================= */
+/* =====================================================
+   EMPTY
+===================================================== */
 
 .empty-state {
-  width: 100%;
 
   padding: 48px 20px;
 
   text-align: center;
+
 }
 
 
 .empty-icon {
+
   width: 60px;
+
   height: 60px;
 
   margin: 0 auto 16px;
 
   display: flex;
+
   align-items: center;
+
   justify-content: center;
 
   border-radius: 20px;
@@ -429,201 +522,237 @@ img {
   color: var(--primary-light);
 
   font-size: 30px;
-  line-height: 1;
+
 }
 
 
 .empty-state h3 {
+
   margin: 0 0 7px;
 
   color: var(--text);
 
   font-size: 18px;
-  line-height: 1.25;
+
 }
 
 
 .empty-state p {
+
   margin: 0;
 
   color: var(--muted);
 
   font-size: 14px;
-  line-height: 1.4;
+
 }
 
 
-/* =========================================================
-   BUTTONS
-========================================================= */
+/* =====================================================
+   ВСЕ ОСНОВНЫЕ КНОПКИ
+===================================================== */
 
 .primary-button,
 .secondary-button,
 .danger-button {
-  width: 100%;
-  min-width: 0;
 
-  min-height: 52px;
+  display: flex !important;
 
-  flex: 0 0 auto;
+  align-items: center !important;
+
+  justify-content: center !important;
+
+  width: 100% !important;
+
+  min-width: 0 !important;
+
+  min-height: 54px !important;
+
+  height: auto !important;
+
+  margin: 0 !important;
+
+  padding: 12px 16px !important;
+
+  flex: 0 0 auto !important;
+
+  position: relative !important;
+
+  z-index: 1;
+
+  border-radius: 15px !important;
+
+  font-family: inherit !important;
+
+  font-size: 15px !important;
+
+  line-height: 1.25 !important;
+
+  font-weight: 800 !important;
+
+  text-align: center !important;
+
+  white-space: normal !important;
+
+  overflow: visible !important;
+
+  -webkit-appearance: none !important;
+
+  appearance: none !important;
+
+}
+
+
+.primary-button {
+
+  background: var(--primary) !important;
+
+  border: 1px solid var(--primary) !important;
+
+  color: #ffffff !important;
+
+  -webkit-text-fill-color: #ffffff !important;
+
+}
+
+
+.secondary-button {
+
+  background: var(--surface) !important;
+
+  border: 1px solid var(--border) !important;
+
+  color: var(--text) !important;
+
+  -webkit-text-fill-color: var(--text) !important;
+
+}
+
+
+.danger-button {
+
+  background: rgba(226,93,93,0.08) !important;
+
+  border: 1px solid rgba(226,93,93,0.35) !important;
+
+  color: #ff8888 !important;
+
+  -webkit-text-fill-color: #ff8888 !important;
+
+}
+
+
+/* =====================================================
+   TOP BAR
+===================================================== */
+
+.top-bar {
 
   display: flex;
+
   align-items: center;
-  justify-content: center;
 
-  padding: 12px 16px;
+  width: 100%;
 
-  border-radius: 15px;
+  min-width: 0;
 
-  font-family: inherit;
+  min-height: 48px;
 
-  font-size: 15px;
+  margin: 0 0 16px;
+
+}
+
+
+.top-bar h2 {
+
+  min-width: 0;
+
+  flex: 1;
+
+  margin: 0;
+
+  color: var(--text);
+
+  font-size: 18px;
+
   line-height: 1.25;
 
   font-weight: 800;
 
   text-align: center;
 
-  white-space: normal;
-
-  overflow: hidden;
-
-  -webkit-appearance: none;
-  appearance: none;
-
-  transition:
-    transform 0.15s ease,
-    opacity 0.15s ease,
-    background 0.15s ease;
-}
-
-
-.primary-button:active,
-.secondary-button:active,
-.danger-button:active {
-  transform: scale(0.985);
-}
-
-
-.primary-button {
-  border: none;
-
-  background: var(--primary);
-
-  color: #ffffff !important;
-}
-
-
-.primary-button:hover {
-  background: var(--primary-light);
-}
-
-
-.secondary-button {
-  border: 1px solid var(--border);
-
-  background: var(--surface);
-
-  color: var(--text) !important;
-}
-
-
-.secondary-button:hover {
-  border-color: rgba(85, 196, 135, 0.3);
-}
-
-
-.danger-button {
-  border: 1px solid rgba(226, 93, 93, 0.25);
-
-  background: rgba(226, 93, 93, 0.08);
-
-  color: #ff8888 !important;
-}
-
-
-.danger-button:hover {
-  background: rgba(226, 93, 93, 0.14);
-}
-
-
-/* =========================================================
-   TOP BAR
-========================================================= */
-
-.top-bar {
-  display: flex;
-  align-items: center;
-
-  width: 100%;
-  min-width: 0;
-  min-height: 48px;
-
-  margin-bottom: 16px;
-}
-
-
-.top-bar h2 {
-  min-width: 0;
-
-  margin: 0;
-
-  color: var(--text);
-
-  font-size: 18px;
-  line-height: 1.25;
-
-  font-weight: 800;
 }
 
 
 .top-bar-spacer {
+
   width: 42px;
+
   min-width: 42px;
+
+  flex: 0 0 42px;
+
 }
 
 
 .icon-button {
-  width: 42px;
-  min-width: 42px;
-  height: 42px;
 
-  flex: 0 0 42px;
+  width: 42px !important;
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  min-width: 42px !important;
 
-  padding: 0;
+  max-width: 42px !important;
 
-  border: 1px solid var(--border);
+  height: 42px !important;
 
-  border-radius: 13px;
+  min-height: 42px !important;
 
-  background: var(--surface);
+  max-height: 42px !important;
+
+  flex: 0 0 42px !important;
+
+  display: flex !important;
+
+  align-items: center !important;
+
+  justify-content: center !important;
+
+  margin: 0 !important;
+
+  padding: 0 !important;
+
+  border: 1px solid var(--border) !important;
+
+  border-radius: 13px !important;
+
+  background: var(--surface) !important;
 
   color: var(--text) !important;
 
-  font-size: 21px;
-  line-height: 1;
+  -webkit-text-fill-color: var(--text) !important;
 
-  -webkit-appearance: none;
-  appearance: none;
+  font-size: 21px !important;
+
+  line-height: 1 !important;
+
 }
 
 
-/* =========================================================
+/* =====================================================
    FORMS
-========================================================= */
+===================================================== */
 
 .form-group {
+
   width: 100%;
 
   margin-bottom: 20px;
+
 }
 
 
 .form-group label {
+
   display: block;
 
   margin-bottom: 8px;
@@ -631,19 +760,25 @@ img {
   color: var(--muted);
 
   font-size: 13px;
-  line-height: 1.3;
 
   font-weight: 700;
+
 }
 
 
 .form-group input {
+
   display: block;
 
   width: 100%;
+
   min-width: 0;
 
+  height: 52px;
+
   min-height: 52px;
+
+  margin: 0;
 
   padding: 0 15px;
 
@@ -658,177 +793,198 @@ img {
   color: var(--text);
 
   font-size: 16px;
+
   line-height: 1.3;
 
-  -webkit-appearance: none;
-  appearance: none;
 }
 
 
-.form-group input:focus {
-  border-color: rgba(85, 196, 135, 0.55);
-}
-
-
-.form-group input::placeholder {
-  color: #62756b;
-
-  opacity: 1;
-}
-
-
-/* =========================================================
+/* =====================================================
    ICON SELECTOR
-========================================================= */
+===================================================== */
 
 .icon-selector {
+
   display: grid;
 
   width: 100%;
 
   grid-template-columns:
-    repeat(8, minmax(0, 1fr));
+    repeat(4, minmax(0, 1fr));
 
-  gap: 7px;
+  gap: 8px;
+
 }
 
 
 .icon-option {
-  width: 100%;
-  min-width: 0;
-  min-height: 42px;
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  width: 100% !important;
 
-  padding: 0;
+  min-width: 0 !important;
 
-  border: 1px solid var(--border);
+  min-height: 46px !important;
 
-  border-radius: 12px;
+  height: 46px !important;
 
-  background: var(--surface);
+  margin: 0 !important;
 
-  color: var(--text);
+  padding: 0 !important;
 
-  font-size: 21px;
-  line-height: 1;
+  display: flex !important;
 
-  -webkit-appearance: none;
-  appearance: none;
+  align-items: center !important;
+
+  justify-content: center !important;
+
+  border: 1px solid var(--border) !important;
+
+  border-radius: 12px !important;
+
+  background: var(--surface) !important;
+
+  color: var(--text) !important;
+
+  -webkit-text-fill-color: var(--text) !important;
+
+  font-size: 21px !important;
+
+  line-height: 1 !important;
+
 }
 
 
 .icon-option.selected {
-  border-color: var(--primary);
 
-  background: rgba(54, 162, 105, 0.15);
+  border-color: var(--primary) !important;
+
+  background: rgba(54,162,105,0.15) !important;
+
 }
 
 
-/* =========================================================
+/* =====================================================
    CARD EDITOR
-========================================================= */
+===================================================== */
 
 .cards-editor-header {
-  width: 100%;
 
-  margin-top: 26px;
-  margin-bottom: 12px;
+  margin: 26px 0 12px;
+
 }
 
 
 .cards-editor-header h3 {
+
   margin: 0 0 4px;
 
   color: var(--text);
 
   font-size: 17px;
-  line-height: 1.25;
 
-  font-weight: 800;
 }
 
 
 .cards-editor-header p {
+
   margin: 0;
 
   color: var(--muted);
 
   font-size: 13px;
-  line-height: 1.35;
+
 }
 
 
 .new-cards-list {
+
   display: flex;
+
   flex-direction: column;
 
   width: 100%;
 
   gap: 12px;
 
-  margin-bottom: 12px;
+  margin-bottom: 14px;
+
 }
 
 
 .editor-card {
+
   width: 100%;
+
   min-width: 0;
 
   padding: 14px;
 
   border: 1px solid var(--border);
 
-  border-radius: var(--radius);
+  border-radius: 18px;
 
   background: var(--surface);
 
   overflow: hidden;
+
 }
 
 
 .editor-card-header {
+
   display: flex;
+
   align-items: center;
+
   justify-content: space-between;
 
   width: 100%;
 
   margin-bottom: 12px;
+
 }
 
 
 .editor-card-number {
+
   color: var(--muted);
 
   font-size: 13px;
-  line-height: 1.3;
 
   font-weight: 800;
+
 }
 
 
 .remove-card-button {
-  flex: 0 0 auto;
 
-  padding: 6px 0;
+  width: auto !important;
 
-  border: none;
+  min-width: auto !important;
 
-  background: transparent;
+  min-height: auto !important;
+
+  height: auto !important;
+
+  margin: 0 !important;
+
+  padding: 6px 0 !important;
+
+  background: transparent !important;
+
+  border: 0 !important;
 
   color: #ff7777 !important;
 
-  font-size: 13px;
-  line-height: 1.25;
+  -webkit-text-fill-color: #ff7777 !important;
 
-  font-weight: 700;
+  font-size: 13px !important;
+
 }
 
 
 .editor-label {
+
   display: block;
 
   margin-bottom: 6px;
@@ -836,23 +992,25 @@ img {
   color: var(--muted);
 
   font-size: 12px;
-  line-height: 1.3;
 
   font-weight: 700;
+
 }
 
 
 .editor-card textarea {
+
   display: block;
 
   width: 100%;
+
   min-width: 0;
 
   min-height: 74px;
 
-  padding: 11px;
-
   margin: 0 0 12px;
+
+  padding: 11px;
 
   resize: vertical;
 
@@ -867,30 +1025,18 @@ img {
   color: var(--text);
 
   font-size: 14px;
+
   line-height: 1.4;
 
-  -webkit-appearance: none;
-  appearance: none;
 }
 
 
-.editor-card textarea:focus {
-  border-color: rgba(85, 196, 135, 0.45);
-}
-
-
-/* =========================================================
-   IMAGE EDITOR
-========================================================= */
-
-.image-editor {
-  width: 100%;
-
-  margin-top: 6px;
-}
-
+/* =====================================================
+   IMAGE
+===================================================== */
 
 .image-preview-wrap {
+
   position: relative;
 
   width: 100%;
@@ -899,121 +1045,150 @@ img {
 
   overflow: hidden;
 
-  border-radius: 14px;
+  margin-bottom: 9px;
 
   border: 1px solid var(--border);
 
+  border-radius: 14px;
+
   background: var(--surface-2);
 
-  margin-bottom: 9px;
 }
 
 
 .image-preview {
-  width: 100%;
-  height: 100%;
 
   display: block;
 
+  width: 100%;
+
+  height: 100%;
+
   object-fit: cover;
+
 }
 
 
 .image-placeholder {
+
   width: 100%;
+
   height: 100%;
 
   display: flex;
+
   align-items: center;
+
   justify-content: center;
 
   color: var(--muted);
 
   font-size: 13px;
-  line-height: 1.3;
+
 }
 
 
 .image-actions {
+
   display: grid;
 
   width: 100%;
 
   grid-template-columns:
-    minmax(0, 1fr)
-    minmax(0, 1fr);
+    minmax(0,1fr)
+    minmax(0,1fr);
 
   gap: 8px;
+
 }
 
 
 .image-upload-button,
 .image-remove-button {
-  width: 100%;
-  min-width: 0;
 
-  min-height: 42px;
+  width: 100% !important;
 
-  padding: 8px;
+  min-width: 0 !important;
 
-  border-radius: 12px;
+  min-height: 44px !important;
 
-  font-family: inherit;
+  height: auto !important;
 
-  font-size: 13px;
-  line-height: 1.25;
+  margin: 0 !important;
 
-  font-weight: 800;
+  padding: 8px !important;
 
-  white-space: normal;
+  border-radius: 12px !important;
+
+  font-size: 13px !important;
+
+  line-height: 1.2 !important;
+
+  font-weight: 800 !important;
+
 }
 
 
 .image-upload-button {
-  border: 1px solid var(--border);
 
-  background: var(--surface-2);
+  background: var(--surface-2) !important;
 
-  color: var(--text);
+  border: 1px solid var(--border) !important;
+
+  color: var(--text) !important;
+
+  -webkit-text-fill-color: var(--text) !important;
+
 }
 
 
 .image-remove-button {
-  border: 1px solid rgba(226, 93, 93, 0.2);
 
-  background: rgba(226, 93, 93, 0.06);
+  background: rgba(226,93,93,0.06) !important;
 
-  color: #ff8585;
+  border: 1px solid rgba(226,93,93,0.2) !important;
+
+  color: #ff8585 !important;
+
+  -webkit-text-fill-color: #ff8585 !important;
+
 }
 
 
 .hidden-file-input {
+
   display: none !important;
+
 }
 
 
-/* =========================================================
+/* =====================================================
    DECK HERO
-========================================================= */
+===================================================== */
 
 .deck-hero {
+
   width: 100%;
 
   padding: 16px 0 24px;
 
   text-align: center;
+
 }
 
 
 .deck-hero-icon {
+
   width: 76px;
-  min-width: 76px;
+
   height: 76px;
 
   margin: 0 auto 13px;
 
   display: flex;
+
   align-items: center;
+
   justify-content: center;
 
   border-radius: 24px;
@@ -1021,65 +1196,147 @@ img {
   background: var(--surface);
 
   font-size: 38px;
+
   line-height: 1;
+
 }
 
 
 .deck-hero h2 {
+
+  width: 100%;
+
   margin: 0 0 6px;
 
-  color: var(--text);
+  color: var(--text) !important;
+
+  -webkit-text-fill-color: var(--text) !important;
 
   font-size: 23px;
+
   line-height: 1.2;
 
   font-weight: 800;
 
   overflow-wrap: anywhere;
+
 }
 
 
 .deck-hero p {
+
   margin: 0;
 
   color: var(--muted);
 
   font-size: 14px;
-  line-height: 1.3;
+
 }
 
 
+/* =====================================================
+   САМО КНОПКИ НА ЭКРАНЕ НАБОРА
+
+   ГЛАВНОЕ ИСПРАВЛЕНИЕ НАЛЕЗАНИЯ
+===================================================== */
+
 .deck-actions {
-  display: flex;
-  flex-direction: column;
+
+  display: flex !important;
+
+  flex-direction: column !important;
+
+  align-items: stretch !important;
+
+  width: 100% !important;
+
+  gap: 14px !important;
+
+  margin: 0 !important;
+
+  padding: 0 !important;
+
+}
+
+
+.deck-action-button {
+
+  display: flex !important;
+
+  position: relative !important;
+
+  width: 100% !important;
+
+  height: 58px !important;
+
+  min-height: 58px !important;
+
+  max-height: 58px !important;
+
+  margin: 0 !important;
+
+  padding: 0 16px !important;
+
+  flex: 0 0 58px !important;
+
+  align-items: center !important;
+
+  justify-content: center !important;
+
+  overflow: hidden !important;
+
+}
+
+
+/*
+  Отдельный блок для удаления.
+  Поэтому удалить набор физически не может
+  залезть на предыдущую кнопку.
+*/
+
+.delete-section {
 
   width: 100%;
 
-  gap: 10px;
+  margin-top: 18px;
+
+  padding-top: 0;
+
 }
 
 
-.deck-actions > button {
-  flex: 0 0 auto;
+.delete-section .danger-button {
+
+  height: 56px !important;
+
+  min-height: 56px !important;
+
+  max-height: 56px !important;
+
 }
 
 
-/* =========================================================
+/* =====================================================
    DECK CONTENT
-========================================================= */
+===================================================== */
 
 .deck-content {
+
   width: 100%;
 
   margin-top: 20px;
+
 }
 
 
 .content-card {
+
   display: flex;
+
   align-items: center;
 
   width: 100%;
+
   min-width: 0;
 
   gap: 12px;
@@ -1088,162 +1345,132 @@ img {
 
   margin-bottom: 9px;
 
-  border-radius: 15px;
-
   border: 1px solid var(--border);
+
+  border-radius: 15px;
 
   background: var(--surface);
 
-  overflow: hidden;
+}
+
+
+.content-card-image,
+.content-card-no-image {
+
+  width: 66px;
+
+  min-width: 66px;
+
+  height: 66px;
+
+  flex: 0 0 66px;
+
+  border-radius: 11px;
+
 }
 
 
 .content-card-image {
-  width: 66px;
-  min-width: 66px;
-  height: 66px;
-
-  flex: 0 0 66px;
 
   object-fit: cover;
 
-  border-radius: 11px;
-
-  background: var(--surface-2);
 }
 
 
 .content-card-no-image {
-  width: 66px;
-  min-width: 66px;
-  height: 66px;
-
-  flex: 0 0 66px;
 
   display: flex;
-  align-items: center;
-  justify-content: center;
 
-  border-radius: 11px;
+  align-items: center;
+
+  justify-content: center;
 
   background: var(--surface-2);
 
   color: var(--muted);
 
   font-size: 11px;
-  line-height: 1.2;
 
-  text-align: center;
 }
 
 
 .content-card-info {
+
   min-width: 0;
 
-  flex: 1 1 auto;
+  flex: 1;
 
-  overflow: hidden;
 }
 
 
 .content-card-front {
-  width: 100%;
 
   margin-bottom: 4px;
 
   color: var(--text);
 
   font-size: 14px;
+
   line-height: 1.3;
 
   font-weight: 800;
 
   overflow-wrap: anywhere;
+
 }
 
 
 .content-card-back {
-  width: 100%;
 
   color: var(--muted);
 
   font-size: 13px;
+
   line-height: 1.3;
 
   overflow-wrap: anywhere;
+
 }
 
 
-.content-card-actions {
-  display: flex;
-
-  flex: 0 0 auto;
-
-  gap: 6px;
-
-  margin-left: auto;
-}
-
-
-.small-button {
-  width: 34px;
-  min-width: 34px;
-  height: 34px;
-
-  flex: 0 0 34px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  padding: 0;
-
-  border: 1px solid var(--border);
-
-  border-radius: 10px;
-
-  background: var(--surface-2);
-
-  color: var(--text);
-}
-
-
-/* =========================================================
-   STUDY HEADER
-========================================================= */
+/* =====================================================
+   STUDY
+===================================================== */
 
 .study-title-wrap {
+
   min-width: 0;
 
-  flex: 1 1 auto;
+  flex: 1;
 
   text-align: center;
 
   overflow: hidden;
+
 }
 
 
 .study-title-wrap h2 {
-  width: 100%;
 
   margin: 0;
 
   color: var(--text);
 
   font-size: 16px;
-  line-height: 1.25;
 
-  font-weight: 800;
+  line-height: 1.25;
 
   overflow: hidden;
 
   text-overflow: ellipsis;
 
   white-space: nowrap;
+
 }
 
 
 .study-title-wrap span {
+
   display: block;
 
   margin-top: 3px;
@@ -1251,16 +1478,14 @@ img {
   color: var(--muted);
 
   font-size: 12px;
-  line-height: 1.25;
+
 }
 
 
-/* =========================================================
-   STUDY PROGRESS
-========================================================= */
-
 .study-progress {
+
   width: 100%;
+
   height: 5px;
 
   margin-bottom: 14px;
@@ -1270,11 +1495,14 @@ img {
   border-radius: 99px;
 
   background: var(--surface-2);
+
 }
 
 
 .study-progress-bar {
+
   width: 0%;
+
   height: 100%;
 
   border-radius: inherit;
@@ -1282,24 +1510,27 @@ img {
   background: var(--primary);
 
   transition: width 0.2s ease;
+
 }
 
 
-/* =========================================================
+/* =====================================================
    FLASHCARD
-========================================================= */
+===================================================== */
 
 .flashcard {
+
   width: 100%;
+
   min-width: 0;
 
   perspective: 1200px;
 
-  cursor: pointer;
 }
 
 
 .flashcard-inner {
+
   position: relative;
 
   width: 100%;
@@ -1309,25 +1540,29 @@ img {
   transform-style: preserve-3d;
 
   transition: transform 0.45s ease;
+
 }
 
 
 .flashcard.flipped .flashcard-inner {
+
   transform: rotateY(180deg);
+
 }
 
 
 .flashcard-side {
+
   position: absolute;
 
   inset: 0;
 
   width: 100%;
-  min-width: 0;
 
   min-height: 470px;
 
   display: flex;
+
   flex-direction: column;
 
   padding: 20px;
@@ -1343,77 +1578,91 @@ img {
   backface-visibility: hidden;
 
   -webkit-backface-visibility: hidden;
+
 }
 
 
 .flashcard-back {
+
   transform: rotateY(180deg);
+
 }
 
 
 .flashcard-label {
+
   margin-bottom: 12px;
 
   color: var(--muted);
 
   font-size: 12px;
-  line-height: 1.3;
 
   font-weight: 800;
 
   text-transform: uppercase;
 
-  letter-spacing: 0.6px;
 }
 
 
 .flashcard-image-wrap {
+
   width: 100%;
 
   aspect-ratio: 1 / 1;
 
   overflow: hidden;
 
+  margin-bottom: 17px;
+
   border-radius: 16px;
 
   background: var(--surface-2);
 
-  margin-bottom: 17px;
 }
 
 
 .study-card-image {
-  width: 100%;
-  height: 100%;
 
   display: block;
 
+  width: 100%;
+
+  height: 100%;
+
   object-fit: cover;
+
 }
 
 
 .study-image-placeholder {
+
   width: 100%;
+
   height: 100%;
 
   display: flex;
+
   align-items: center;
+
   justify-content: center;
 
   color: var(--muted);
 
   font-size: 13px;
-  line-height: 1.3;
+
 }
 
 
 .flashcard-text {
-  flex: 1 1 auto;
+
+  flex: 1;
 
   min-width: 0;
 
   display: flex;
+
   align-items: center;
+
   justify-content: center;
 
   padding: 5px;
@@ -1423,15 +1672,18 @@ img {
   text-align: center;
 
   font-size: 23px;
+
   line-height: 1.35;
 
   font-weight: 800;
 
   overflow-wrap: anywhere;
+
 }
 
 
 .flashcard-hint {
+
   margin-top: 15px;
 
   color: var(--muted);
@@ -1439,86 +1691,81 @@ img {
   text-align: center;
 
   font-size: 11px;
-  line-height: 1.3;
+
 }
 
 
-/* =========================================================
-   STUDY NAVIGATION
-========================================================= */
+/* =====================================================
+   STUDY BUTTONS
+===================================================== */
 
 .study-navigation {
-  display: grid;
 
-  width: 100%;
+  display: grid !important;
+
+  width: 100% !important;
 
   grid-template-columns:
-    minmax(0, 1fr)
-    minmax(0, 1fr);
+    minmax(0,1fr)
+    minmax(0,1fr) !important;
 
-  gap: 10px;
+  gap: 12px !important;
 
-  margin-top: 14px;
+  margin-top: 16px !important;
+
 }
 
 
 .study-nav-button {
-  width: 100%;
-  min-width: 0;
 
-  min-height: 54px;
+  display: flex !important;
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  align-items: center !important;
 
-  padding: 10px;
+  justify-content: center !important;
 
-  border-radius: 15px;
+  width: 100% !important;
 
-  background: var(--surface);
+  height: 56px !important;
 
-  border: 1px solid var(--border);
+  min-height: 56px !important;
+
+  max-height: 56px !important;
+
+  margin: 0 !important;
+
+  padding: 0 10px !important;
+
+  border-radius: 15px !important;
+
+  border: 1px solid var(--border) !important;
+
+  background: var(--surface) !important;
 
   color: var(--text) !important;
 
-  font-family: inherit;
+  -webkit-text-fill-color: var(--text) !important;
 
-  font-size: 14px;
-  line-height: 1.25;
+  font-family: inherit !important;
 
-  font-weight: 800;
+  font-size: 14px !important;
 
-  white-space: normal;
+  line-height: 1.2 !important;
 
-  -webkit-appearance: none;
-  appearance: none;
+  font-weight: 800 !important;
 
-  transition:
-    transform 0.15s ease,
-    opacity 0.15s ease,
-    border-color 0.15s ease;
-}
-
-
-.study-nav-button:active {
-  transform: scale(0.985);
-}
-
-
-.study-nav-button:hover:not(:disabled) {
-  border-color: rgba(85, 196, 135, 0.30);
 }
 
 
 .study-nav-button:disabled {
+
   opacity: 0.28;
 
-  cursor: default;
 }
 
 
 .study-bottom-hint {
+
   margin-top: 12px;
 
   color: var(--muted);
@@ -1526,39 +1773,43 @@ img {
   text-align: center;
 
   font-size: 11px;
-  line-height: 1.3;
+
 }
 
 
-/* =========================================================
+/* =====================================================
    VERSION
-========================================================= */
+===================================================== */
 
 .version {
+
   padding-top: 24px;
 
   color: #50645a;
 
   font-size: 10px;
-  line-height: 1.3;
 
   text-align: center;
+
 }
 
 
-/* =========================================================
+/* =====================================================
    TOAST
-========================================================= */
+===================================================== */
 
 .toast {
+
   position: fixed;
 
   left: 50%;
+
   bottom: 22px;
 
   z-index: 1000;
 
   width: max-content;
+
   max-width: calc(100vw - 32px);
 
   padding: 12px 16px;
@@ -1570,16 +1821,12 @@ img {
   color: #ffffff;
 
   font-size: 13px;
-  line-height: 1.3;
 
   font-weight: 700;
 
   text-align: center;
 
-  box-shadow:
-    0 10px 30px rgba(0, 0, 0, 0.35);
-
-  transform: translate(-50%, 20px);
+  transform: translate(-50%,20px);
 
   opacity: 0;
 
@@ -1588,46 +1835,54 @@ img {
   transition:
     opacity 0.2s ease,
     transform 0.2s ease;
+
 }
 
 
 .toast.show {
+
   opacity: 1;
 
-  transform: translate(-50%, 0);
+  transform: translate(-50%,0);
+
 }
 
 
-/* =========================================================
+/* =====================================================
    MODAL
-========================================================= */
+===================================================== */
 
 .modal {
+
   position: fixed;
 
   inset: 0;
 
   z-index: 900;
+
 }
 
 
 .modal-overlay {
+
   position: absolute;
 
   inset: 0;
 
-  background: rgba(0, 0, 0, 0.65);
+  background: rgba(0,0,0,0.65);
+
 }
 
 
 .modal-box {
+
   position: absolute;
 
   left: 16px;
-  right: 16px;
-  bottom: 20px;
 
-  width: auto;
+  right: 16px;
+
+  bottom: 20px;
 
   padding: 20px;
 
@@ -1636,146 +1891,169 @@ img {
   border: 1px solid var(--border);
 
   background: var(--surface);
+
 }
 
 
 .modal-box h3 {
+
   margin: 0 0 8px;
 
   color: var(--text);
 
   font-size: 19px;
-  line-height: 1.25;
 
-  font-weight: 800;
 }
 
 
 .modal-box p {
+
   margin: 0 0 18px;
 
   color: var(--muted);
 
   font-size: 14px;
+
   line-height: 1.5;
+
 }
 
 
 .modal-actions {
+
   display: grid;
 
   width: 100%;
 
   grid-template-columns:
-    minmax(0, 1fr)
-    minmax(0, 1fr);
+    minmax(0,1fr)
+    minmax(0,1fr);
 
-  gap: 9px;
+  gap: 10px;
+
 }
 
 
-/* =========================================================
-   MOBILE
-========================================================= */
+/* =====================================================
+   IPHONE
+===================================================== */
 
 @media (max-width: 430px) {
 
   .screen {
+
     padding-left: 16px;
+
     padding-right: 16px;
+
   }
 
 
   .home-header h1 {
+
     font-size: 21px;
+
   }
 
 
   .home-header p {
+
     font-size: 12px;
-  }
 
-
-  .icon-selector {
-    grid-template-columns:
-      repeat(4, minmax(0, 1fr));
   }
 
 
   .flashcard-inner,
   .flashcard-side {
+
     min-height: 450px;
+
   }
 
 
   .flashcard-text {
+
     font-size: 21px;
+
   }
+
 }
 
 
-/* =========================================================
-   VERY SMALL PHONES
-========================================================= */
+/* =====================================================
+   VERY SMALL SCREEN
+===================================================== */
 
 @media (max-width: 360px) {
 
   .screen {
+
     padding-left: 12px;
+
     padding-right: 12px;
+
   }
 
 
   .home-header {
+
     gap: 10px;
+
   }
 
 
   .app-logo {
+
     width: 44px;
+
     min-width: 44px;
+
     height: 44px;
 
     flex-basis: 44px;
+
   }
 
 
   .home-header h1 {
-    font-size: 19px;
+
+    font-size: 18px;
+
   }
 
 
   .home-header p {
+
     font-size: 11px;
+
   }
 
 
-  .deck-item {
-    padding: 12px;
-  }
+  .deck-action-button {
 
+    height: 54px !important;
 
-  .deck-item-title {
-    font-size: 15px;
-  }
+    min-height: 54px !important;
 
+    max-height: 54px !important;
 
-  .primary-button,
-  .secondary-button,
-  .danger-button {
-    min-height: 50px;
+    flex-basis: 54px !important;
 
-    font-size: 14px;
   }
 
 
   .flashcard-inner,
   .flashcard-side {
+
     min-height: 420px;
+
   }
 
 
   .flashcard-text {
+
     font-size: 19px;
+
   }
+
 }
