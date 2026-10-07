@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
 
   <meta charset="UTF-8">
@@ -21,14 +22,13 @@
 
   <title>FLASH CARDS</title>
 
-  <!-- ВАЖНО:
-       ?v=1.5.0 заставляет Telegram загрузить новый CSS -->
   <link
     rel="stylesheet"
-    href="style.css?v=1.5.0"
+    href="style.css?v=3.3"
   >
 
 </head>
+
 
 <body>
 
@@ -108,7 +108,7 @@
 
 
     <div class="version">
-      v1.5.0
+      v3.3
     </div>
 
   </section>
@@ -238,17 +238,13 @@
 
     <div class="cards-editor-header">
 
-      <div>
+      <h3>
+        Карточки
+      </h3>
 
-        <h3>
-          Карточки
-        </h3>
-
-        <p>
-          Добавляй текст и фотографию.
-        </p>
-
-      </div>
+      <p>
+        Добавляй текст и фотографию.
+      </p>
 
     </div>
 
@@ -259,26 +255,30 @@
     ></div>
 
 
-    <button
-      type="button"
-      id="addCardButton"
-      class="secondary-button"
-    >
-      ＋ Добавить карточку
-    </button>
+    <div class="editor-actions">
+
+      <button
+        type="button"
+        id="addCardButton"
+        class="secondary-button"
+      >
+        ＋ Добавить карточку
+      </button>
 
 
-    <button
-      type="button"
-      id="saveDeckButton"
-      class="primary-button"
-    >
-      Сохранить набор
-    </button>
+      <button
+        type="button"
+        id="saveDeckButton"
+        class="primary-button"
+      >
+        Сохранить набор
+      </button>
+
+    </div>
 
 
     <div class="version">
-      v1.5.0
+      v3.3
     </div>
 
   </section>
@@ -339,6 +339,7 @@
         ▶ Учить карточки
       </button>
 
+
       <button
         type="button"
         id="contentDeckButton"
@@ -346,6 +347,7 @@
       >
         Карточки
       </button>
+
 
       <button
         type="button"
@@ -378,7 +380,7 @@
 
 
     <div class="version">
-      v1.5.0
+      v3.3
     </div>
 
   </section>
@@ -404,6 +406,7 @@
         ←
       </button>
 
+
       <div class="study-title-wrap">
 
         <h2 id="studyDeckName">
@@ -415,6 +418,7 @@
         </span>
 
       </div>
+
 
       <div class="top-bar-spacer"></div>
 
@@ -439,11 +443,14 @@
       <div class="flashcard-inner">
 
 
+        <!-- FRONT -->
+
         <div class="flashcard-side flashcard-front">
 
           <div class="flashcard-label">
             Лицевая сторона
           </div>
+
 
           <div class="flashcard-image-wrap">
 
@@ -452,6 +459,7 @@
               class="study-card-image hidden"
               alt=""
             >
+
 
             <div
               id="studyFrontPlaceholder"
@@ -462,10 +470,12 @@
 
           </div>
 
+
           <div
             id="studyFrontText"
             class="flashcard-text"
           ></div>
+
 
           <div class="flashcard-hint">
             Нажми на карточку, чтобы перевернуть
@@ -474,11 +484,15 @@
         </div>
 
 
+
+        <!-- BACK -->
+
         <div class="flashcard-side flashcard-back">
 
           <div class="flashcard-label">
             Обратная сторона
           </div>
+
 
           <div class="flashcard-image-wrap">
 
@@ -487,6 +501,7 @@
               class="study-card-image hidden"
               alt=""
             >
+
 
             <div
               id="studyBackPlaceholder"
@@ -497,10 +512,12 @@
 
           </div>
 
+
           <div
             id="studyBackText"
             class="flashcard-text"
           ></div>
+
 
           <div class="flashcard-hint">
             Нажми на карточку, чтобы вернуть
@@ -523,6 +540,7 @@
         ← Назад
       </button>
 
+
       <button
         type="button"
         id="nextButton"
@@ -540,7 +558,7 @@
 
 
     <div class="version">
-      v1.5.0
+      v3.3
     </div>
 
   </section>
@@ -569,16 +587,19 @@
 
     <div class="modal-overlay"></div>
 
+
     <div class="modal-box">
 
       <h3>
         Удалить набор?
       </h3>
 
+
       <p>
         Все карточки этого набора будут удалены
         из этого браузера.
       </p>
+
 
       <div class="modal-actions">
 
@@ -589,6 +610,7 @@
         >
           Отмена
         </button>
+
 
         <button
           type="button"
@@ -626,7 +648,8 @@
        APP
   ====================================================== -->
 
-  <script src="app.js?v=1.5.0"></script>
+  <script src="app.js?v=3.3"></script>
 
 </body>
+
 </html>
