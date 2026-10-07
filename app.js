@@ -1,17 +1,20 @@
 "use strict";
 
-const APP_VERSION = "1.5.0";
 
-const STORAGE_KEY = "flashcards_universal_v5";
+/* =====================================================
+   VERSION
+===================================================== */
 
-const IMAGE_BUCKET = "card-images";
+const APP_VERSION = "3.3";
 
 
 /* =====================================================
    TELEGRAM
 ===================================================== */
 
-const tg = window.Telegram?.WebApp || null;
+const tg =
+  window.Telegram?.WebApp || null;
+
 
 if (tg) {
 
@@ -38,14 +41,29 @@ if (tg) {
 ===================================================== */
 
 /*
-  НЕ МЕНЯЙ свои реальные значения.
+  ВАЖНО:
+
+  Здесь должны стоять ТВОИ реальные данные.
+
+  Project URL:
+  https://xxxxxxxx.supabase.co
+
+  Publishable Key:
+  твой sb_publishable_...
+
+  SECRET / SERVICE_ROLE сюда НЕ вставлять.
 */
 
 const SUPABASE_URL =
   "https://arnsfecpnwyjiuvmsoen.supabase.co";
 
+
 const SUPABASE_KEY =
   "sb_publishable_sj2rVuSxhsUtB3xKft2dDw_8-KwPsFM";
+
+
+const IMAGE_BUCKET =
+  "card-images";
 
 
 let supabaseClient = null;
@@ -64,13 +82,21 @@ let supabaseStatus = {
 };
 
 
+/* =====================================================
+   SUPABASE CONFIG
+===================================================== */
+
 function cleanConfigValue(value) {
 
-  if (typeof value !== "string") {
+  if (
+    typeof value !==
+    "string"
+  ) {
 
     return "";
 
   }
+
 
   return value
     .trim()
@@ -87,9 +113,14 @@ function isValidSupabaseUrl(url) {
     const parsed =
       new URL(url);
 
+
     return (
-      parsed.protocol === "https:" &&
-      parsed.hostname.endsWith(".supabase.co")
+      parsed.protocol ===
+        "https:" &&
+
+      parsed.hostname.endsWith(
+        ".supabase.co"
+      )
     );
 
   } catch {
@@ -110,8 +141,14 @@ function isValidSupabaseKey(key) {
   }
 
 
+  /*
+    Новые publishable keys
+  */
+
   if (
-    key.startsWith("sb_publishable_")
+    key.startsWith(
+      "sb_publishable_"
+    )
   ) {
 
     return true;
@@ -119,8 +156,14 @@ function isValidSupabaseKey(key) {
   }
 
 
+  /*
+    Старый anon JWT
+  */
+
   if (
-    key.startsWith("eyJ")
+    key.startsWith(
+      "eyJ"
+    )
   ) {
 
     return true;
@@ -162,7 +205,8 @@ function initSupabase() {
 
   if (
     !window.supabase ||
-    typeof window.supabase.createClient !== "function"
+    typeof window.supabase.createClient !==
+      "function"
   ) {
 
     supabaseStatus.error =
@@ -177,7 +221,8 @@ function initSupabase() {
   }
 
 
-  supabaseStatus.loaded = true;
+  supabaseStatus.loaded =
+    true;
 
 
   if (!url) {
@@ -190,7 +235,11 @@ function initSupabase() {
   }
 
 
-  if (!isValidSupabaseUrl(url)) {
+  if (
+    !isValidSupabaseUrl(
+      url
+    )
+  ) {
 
     supabaseStatus.error =
       "Supabase Project URL имеет неправильный формат.";
@@ -210,7 +259,11 @@ function initSupabase() {
   }
 
 
-  if (!isValidSupabaseKey(key)) {
+  if (
+    !isValidSupabaseKey(
+      key
+    )
+  ) {
 
     supabaseStatus.error =
       "Supabase key имеет неправильный формат.";
@@ -229,7 +282,8 @@ function initSupabase() {
       );
 
 
-    supabaseStatus.configured = true;
+    supabaseStatus.configured =
+      true;
 
 
     console.log(
@@ -260,13 +314,21 @@ supabaseClient =
 
 
 /* =====================================================
-   DECKS
+   STORAGE
 ===================================================== */
+
+const STORAGE_KEY =
+  "flashcards_universal_v5";
+
 
 const OLD_BUILT_IN_DECK_IDS = [
   "memory-demo-deck"
 ];
 
+
+/* =====================================================
+   DEFAULT DECK
+===================================================== */
 
 const DEFAULT_ACTIONS_DECK_ID =
   "actions-20";
@@ -417,6 +479,10 @@ const DEFAULT_ACTIONS_CARDS = [
 ];
 
 
+/* =====================================================
+   STATE
+===================================================== */
+
 let decks = [];
 
 let currentDeckId = null;
@@ -435,16 +501,27 @@ let currentStudyIndex = 0;
 ===================================================== */
 
 const homeScreen =
-  document.getElementById("homeScreen");
+  document.getElementById(
+    "homeScreen"
+  );
+
 
 const createScreen =
-  document.getElementById("createScreen");
+  document.getElementById(
+    "createScreen"
+  );
+
 
 const deckScreen =
-  document.getElementById("deckScreen");
+  document.getElementById(
+    "deckScreen"
+  );
+
 
 const studyScreen =
-  document.getElementById("studyScreen");
+  document.getElementById(
+    "studyScreen"
+  );
 
 
 /* =====================================================
@@ -457,7 +534,9 @@ let toastTimer = null;
 function showToast(message) {
 
   const toast =
-    document.getElementById("toast");
+    document.getElementById(
+      "toast"
+    );
 
 
   if (!toast) {
@@ -471,26 +550,33 @@ function showToast(message) {
     message;
 
 
-  toast.classList.add("show");
+  toast.classList.add(
+    "show"
+  );
 
 
-  clearTimeout(toastTimer);
+  clearTimeout(
+    toastTimer
+  );
 
 
   toastTimer =
-    setTimeout(() => {
+    setTimeout(
+      () => {
 
-      toast.classList.remove(
-        "show"
-      );
+        toast.classList.remove(
+          "show"
+        );
 
-    }, 3000);
+      },
+      3000
+    );
 
 }
 
 
 /* =====================================================
-   SCREENS
+   SCREEN
 ===================================================== */
 
 function showScreen(screen) {
@@ -500,17 +586,19 @@ function showScreen(screen) {
     createScreen,
     deckScreen,
     studyScreen
-  ].forEach(item => {
+  ].forEach(
+    item => {
 
-    if (item) {
+      if (item) {
 
-      item.classList.remove(
-        "active"
-      );
+        item.classList.remove(
+          "active"
+        );
+
+      }
 
     }
-
-  });
+  );
 
 
   screen.classList.add(
@@ -536,7 +624,9 @@ function saveDecks() {
 
     localStorage.setItem(
       STORAGE_KEY,
-      JSON.stringify(decks)
+      JSON.stringify(
+        decks
+      )
     );
 
   } catch (error) {
@@ -544,6 +634,7 @@ function saveDecks() {
     console.error(
       error
     );
+
 
     showToast(
       "Не удалось сохранить данные."
@@ -570,7 +661,8 @@ function removeOldBuiltInDecks() {
 
 
   if (
-    decks.length !== before
+    decks.length !==
+    before
   ) {
 
     saveDecks();
@@ -581,7 +673,7 @@ function removeOldBuiltInDecks() {
 
 
 /* =====================================================
-   DEFAULT DECK
+   DEFAULT ACTIONS
 ===================================================== */
 
 function createDefaultActionsDeck() {
@@ -654,11 +746,15 @@ function loadDecks() {
     if (raw) {
 
       const parsed =
-        JSON.parse(raw);
+        JSON.parse(
+          raw
+        );
 
 
       decks =
-        Array.isArray(parsed)
+        Array.isArray(
+          parsed
+        )
           ? parsed
           : [];
 
@@ -668,7 +764,12 @@ function loadDecks() {
 
     }
 
-  } catch {
+  } catch (error) {
+
+    console.error(
+      error
+    );
+
 
     decks = [];
 
@@ -709,10 +810,13 @@ function renderDeckList() {
   }
 
 
-  list.innerHTML = "";
+  list.innerHTML =
+    "";
 
 
-  if (!decks.length) {
+  if (
+    !decks.length
+  ) {
 
     empty?.classList.remove(
       "hidden"
@@ -728,110 +832,112 @@ function renderDeckList() {
   );
 
 
-  decks.forEach(deck => {
+  decks.forEach(
+    deck => {
 
-    /*
-      BUTTON создаём с type=button.
-    */
+      const item =
+        document.createElement(
+          "button"
+        );
 
-    const item =
-      document.createElement(
-        "button"
+
+      item.type =
+        "button";
+
+
+      item.className =
+        "deck-item";
+
+
+      const icon =
+        document.createElement(
+          "div"
+        );
+
+
+      icon.className =
+        "deck-item-icon";
+
+
+      icon.textContent =
+        deck.icon ||
+        "📚";
+
+
+      const info =
+        document.createElement(
+          "div"
+        );
+
+
+      info.className =
+        "deck-item-info";
+
+
+      const title =
+        document.createElement(
+          "div"
+        );
+
+
+      title.className =
+        "deck-item-title";
+
+
+      title.textContent =
+        deck.name ||
+        "Без названия";
+
+
+      const count =
+        document.createElement(
+          "div"
+        );
+
+
+      count.className =
+        "deck-item-count";
+
+
+      count.textContent =
+        `${deck.cards?.length || 0} карточек`;
+
+
+      info.appendChild(
+        title
       );
 
 
-    item.type =
-      "button";
-
-
-    item.className =
-      "deck-item";
-
-
-    const icon =
-      document.createElement(
-        "div"
+      info.appendChild(
+        count
       );
 
 
-    icon.className =
-      "deck-item-icon";
-
-
-    icon.textContent =
-      deck.icon || "📚";
-
-
-    const info =
-      document.createElement(
-        "div"
+      item.appendChild(
+        icon
       );
 
 
-    info.className =
-      "deck-item-info";
-
-
-    const title =
-      document.createElement(
-        "div"
+      item.appendChild(
+        info
       );
 
 
-    title.className =
-      "deck-item-title";
-
-
-    title.textContent =
-      deck.name ||
-      "Без названия";
-
-
-    const count =
-      document.createElement(
-        "div"
+      item.addEventListener(
+        "click",
+        () =>
+          openDeck(
+            deck.id
+          )
       );
 
 
-    count.className =
-      "deck-item-count";
+      list.appendChild(
+        item
+      );
 
-
-    count.textContent =
-      `${deck.cards?.length || 0} карточек`;
-
-
-    info.appendChild(
-      title
-    );
-
-
-    info.appendChild(
-      count
-    );
-
-
-    item.appendChild(
-      icon
-    );
-
-
-    item.appendChild(
-      info
-    );
-
-
-    item.addEventListener(
-      "click",
-      () => openDeck(deck.id)
-    );
-
-
-    list.appendChild(
-      item
-    );
-
-  });
+    }
+  );
 
 }
 
@@ -845,7 +951,8 @@ function openDeck(deckId) {
   const deck =
     decks.find(
       item =>
-        item.id === deckId
+        item.id ===
+        deckId
     );
 
 
@@ -863,13 +970,15 @@ function openDeck(deckId) {
   document.getElementById(
     "deckHeroIcon"
   ).textContent =
-    deck.icon || "📚";
+    deck.icon ||
+    "📚";
 
 
   document.getElementById(
     "deckHeroTitle"
   ).textContent =
-    deck.name || "Без названия";
+    deck.name ||
+    "Без названия";
 
 
   document.getElementById(
@@ -878,13 +987,30 @@ function openDeck(deckId) {
     `${deck.cards?.length || 0} карточек`;
 
 
-  document
-    .getElementById(
+  /*
+    При каждом входе в набор
+    список карточек закрываем.
+  */
+
+  const content =
+    document.getElementById(
       "deckContent"
-    )
-    .classList.add(
-      "hidden"
     );
+
+
+  const contentButton =
+    document.getElementById(
+      "contentDeckButton"
+    );
+
+
+  content.classList.add(
+    "hidden"
+  );
+
+
+  contentButton.textContent =
+    "Карточки";
 
 
   showScreen(
@@ -895,7 +1021,7 @@ function openDeck(deckId) {
 
 
 /* =====================================================
-   CONTENT
+   RENDER DECK CONTENT
 ===================================================== */
 
 function renderDeckContent() {
@@ -903,7 +1029,8 @@ function renderDeckContent() {
   const deck =
     decks.find(
       item =>
-        item.id === currentDeckId
+        item.id ===
+        currentDeckId
     );
 
 
@@ -913,17 +1040,23 @@ function renderDeckContent() {
     );
 
 
-  if (!deck || !container) {
+  if (
+    !deck ||
+    !container
+  ) {
 
     return;
 
   }
 
 
-  container.innerHTML = "";
+  container.innerHTML =
+    "";
 
 
-  (deck.cards || []).forEach(
+  (
+    deck.cards || []
+  ).forEach(
     (card, index) => {
 
       const row =
@@ -936,7 +1069,9 @@ function renderDeckContent() {
         "content-card";
 
 
-      if (card.imageUrl) {
+      if (
+        card.imageUrl
+      ) {
 
         const img =
           document.createElement(
@@ -952,7 +1087,8 @@ function renderDeckContent() {
           card.imageUrl;
 
 
-        img.alt = "";
+        img.alt =
+          "";
 
 
         row.appendChild(
@@ -1017,7 +1153,8 @@ function renderDeckContent() {
 
 
       back.textContent =
-        card.back || "";
+        card.back ||
+        "";
 
 
       info.appendChild(
@@ -1042,16 +1179,81 @@ function renderDeckContent() {
     }
   );
 
+}
 
-  container.classList.remove(
-    "hidden"
-  );
+
+/* =====================================================
+   TOGGLE CARD LIST
+===================================================== */
+
+function toggleDeckContent() {
+
+  const container =
+    document.getElementById(
+      "deckContent"
+    );
+
+
+  const button =
+    document.getElementById(
+      "contentDeckButton"
+    );
+
+
+  if (
+    !container ||
+    !button
+  ) {
+
+    return;
+
+  }
+
+
+  const isHidden =
+    container.classList.contains(
+      "hidden"
+    );
+
+
+  if (isHidden) {
+
+    /*
+      Открываем список.
+    */
+
+    renderDeckContent();
+
+
+    container.classList.remove(
+      "hidden"
+    );
+
+
+    button.textContent =
+      "Скрыть карточки";
+
+  } else {
+
+    /*
+      Закрываем список.
+    */
+
+    container.classList.add(
+      "hidden"
+    );
+
+
+    button.textContent =
+      "Карточки";
+
+  }
 
 }
 
 
 /* =====================================================
-   CREATE
+   CREATE EMPTY CARD
 ===================================================== */
 
 function createEmptyCard() {
@@ -1066,16 +1268,23 @@ function createEmptyCard() {
         .toString(36)
         .slice(2),
 
-    front: "",
+    front:
+      "",
 
-    back: "",
+    back:
+      "",
 
-    imageUrl: ""
+    imageUrl:
+      ""
 
   };
 
 }
 
+
+/* =====================================================
+   OPEN CREATE
+===================================================== */
 
 function openCreateDeck() {
 
@@ -1103,15 +1312,17 @@ function openCreateDeck() {
     .querySelectorAll(
       ".icon-option"
     )
-    .forEach(button => {
+    .forEach(
+      button => {
 
-      button.classList.toggle(
-        "selected",
-        button.dataset.icon ===
-        selectedIcon
-      );
+        button.classList.toggle(
+          "selected",
+          button.dataset.icon ===
+            selectedIcon
+        );
 
-    });
+      }
+    );
 
 
   renderEditorCards([
@@ -1127,7 +1338,7 @@ function openCreateDeck() {
 
 
 /* =====================================================
-   EDIT
+   OPEN EDIT
 ===================================================== */
 
 function openEditDeck() {
@@ -1135,7 +1346,8 @@ function openEditDeck() {
   const deck =
     decks.find(
       item =>
-        item.id === currentDeckId
+        item.id ===
+        currentDeckId
     );
 
 
@@ -1151,7 +1363,8 @@ function openEditDeck() {
 
 
   selectedIcon =
-    deck.icon || "📚";
+    deck.icon ||
+    "📚";
 
 
   document.getElementById(
@@ -1163,28 +1376,33 @@ function openEditDeck() {
   document.getElementById(
     "deckNameInput"
   ).value =
-    deck.name || "";
+    deck.name ||
+    "";
 
 
   document
     .querySelectorAll(
       ".icon-option"
     )
-    .forEach(button => {
+    .forEach(
+      button => {
 
-      button.classList.toggle(
-        "selected",
-        button.dataset.icon ===
-        selectedIcon
-      );
+        button.classList.toggle(
+          "selected",
+          button.dataset.icon ===
+            selectedIcon
+        );
 
-    });
+      }
+    );
 
 
   renderEditorCards(
     deck.cards?.length
       ? deck.cards
-      : [createEmptyCard()]
+      : [
+          createEmptyCard()
+        ]
   );
 
 
@@ -1196,10 +1414,12 @@ function openEditDeck() {
 
 
 /* =====================================================
-   EDITOR
+   RENDER EDITOR
 ===================================================== */
 
-function renderEditorCards(cards) {
+function renderEditorCards(
+  cards
+) {
 
   const list =
     document.getElementById(
@@ -1213,13 +1433,21 @@ function renderEditorCards(cards) {
 
   cards.forEach(
     card =>
-      addEditorCard(card)
+      addEditorCard(
+        card
+      )
   );
 
 }
 
 
-function addEditorCard(card = null) {
+/* =====================================================
+   ADD EDITOR CARD
+===================================================== */
+
+function addEditorCard(
+  card = null
+) {
 
   const list =
     document.getElementById(
@@ -1228,7 +1456,8 @@ function addEditorCard(card = null) {
 
 
   const cardData =
-    card || createEmptyCard();
+    card ||
+    createEmptyCard();
 
 
   const wrapper =
@@ -1334,7 +1563,8 @@ function addEditorCard(card = null) {
 
 
   frontInput.value =
-    cardData.front || "";
+    cardData.front ||
+    "";
 
 
   const backLabel =
@@ -1366,7 +1596,8 @@ function addEditorCard(card = null) {
 
 
   backInput.value =
-    cardData.back || "";
+    cardData.back ||
+    "";
 
 
   const imageEditor =
@@ -1413,10 +1644,13 @@ function addEditorCard(card = null) {
     "Фото не добавлено";
 
 
-  if (cardData.imageUrl) {
+  if (
+    cardData.imageUrl
+  ) {
 
     imagePreview.src =
       cardData.imageUrl;
+
 
     imagePlaceholder.classList.add(
       "hidden"
@@ -1509,7 +1743,8 @@ function addEditorCard(card = null) {
 
   uploadButton.addEventListener(
     "click",
-    () => fileInput.click()
+    () =>
+      fileInput.click()
   );
 
 
@@ -1615,6 +1850,11 @@ function addEditorCard(card = null) {
           "Не удалось загрузить фото."
         );
 
+        uploadButton.textContent =
+          cardData.imageUrl
+            ? "Заменить фото"
+            : "Добавить фото";
+
       } finally {
 
         uploadButton.disabled =
@@ -1695,6 +1935,10 @@ function addEditorCard(card = null) {
 }
 
 
+/* =====================================================
+   RENUMBER
+===================================================== */
+
 function renumberEditorCards() {
 
   document
@@ -1724,7 +1968,7 @@ function renumberEditorCards() {
 
 
 /* =====================================================
-   COLLECT
+   COLLECT CARDS
 ===================================================== */
 
 function collectEditorCards() {
@@ -1736,71 +1980,76 @@ function collectEditorCards() {
     .querySelectorAll(
       ".editor-card"
     )
-    .forEach(wrapper => {
+    .forEach(
+      wrapper => {
 
-      const front =
-        wrapper
-          .querySelector(
-            ".front-input"
-          )
-          ?.value
-          .trim() || "";
-
-
-      const back =
-        wrapper
-          .querySelector(
-            ".back-input"
-          )
-          ?.value
-          .trim() || "";
+        const front =
+          wrapper
+            .querySelector(
+              ".front-input"
+            )
+            ?.value
+            .trim() ||
+          "";
 
 
-      const image =
-        wrapper.querySelector(
-          ".image-preview"
-        );
+        const back =
+          wrapper
+            .querySelector(
+              ".back-input"
+            )
+            ?.value
+            .trim() ||
+          "";
 
 
-      let imageUrl = "";
+        const image =
+          wrapper.querySelector(
+            ".image-preview"
+          );
 
 
-      if (
-        image &&
-        !image.classList.contains(
-          "hidden"
-        ) &&
-        image.src
-      ) {
+        let imageUrl =
+          "";
 
-        imageUrl =
-          image.src;
+
+        if (
+          image &&
+          !image.classList.contains(
+            "hidden"
+          ) &&
+          image.src
+        ) {
+
+          imageUrl =
+            image.src;
+
+        }
+
+
+        cards.push({
+
+          id:
+            wrapper.dataset.cardId ||
+            (
+              "card_" +
+              Date.now() +
+              "_" +
+              Math.random()
+                .toString(36)
+                .slice(2)
+            ),
+
+          front,
+
+          back,
+
+          imageUrl
+
+        });
 
       }
-
-
-      cards.push({
-
-        id:
-          wrapper.dataset.cardId ||
-          (
-            "card_" +
-            Date.now() +
-            "_" +
-            Math.random()
-              .toString(36)
-              .slice(2)
-          ),
-
-        front,
-
-        back,
-
-        imageUrl
-
-      });
-
-    });
+    );
 
 
   return cards;
@@ -1809,7 +2058,7 @@ function collectEditorCards() {
 
 
 /* =====================================================
-   SAVE
+   SAVE DECK
 ===================================================== */
 
 function saveDeck() {
@@ -1949,6 +2198,7 @@ function saveDeck() {
 
   renderDeckList();
 
+
   showToast(
     "Набор сохранён."
   );
@@ -1966,7 +2216,7 @@ function saveDeck() {
 
 
 /* =====================================================
-   DELETE
+   DELETE MODAL
 ===================================================== */
 
 function openDeleteModal() {
@@ -1995,6 +2245,10 @@ function closeDeleteModal() {
 }
 
 
+/* =====================================================
+   DELETE DECK
+===================================================== */
+
 function deleteCurrentDeck() {
 
   if (!currentDeckId) {
@@ -2021,7 +2275,6 @@ function deleteCurrentDeck() {
 
   closeDeleteModal();
 
-
   renderDeckList();
 
 
@@ -2038,10 +2291,12 @@ function deleteCurrentDeck() {
 
 
 /* =====================================================
-   SUPABASE IMAGE UPLOAD
+   UPLOAD IMAGE
 ===================================================== */
 
-async function uploadImage(file) {
+async function uploadImage(
+  file
+) {
 
   if (!supabaseClient) {
 
@@ -2219,7 +2474,7 @@ async function uploadImage(file) {
 
 
 /* =====================================================
-   STUDY
+   START STUDY
 ===================================================== */
 
 function startStudy() {
@@ -2277,6 +2532,10 @@ function startStudy() {
 }
 
 
+/* =====================================================
+   STUDY CARD
+===================================================== */
+
 function renderStudyCard() {
 
   const card =
@@ -2333,7 +2592,8 @@ function renderStudyCard() {
   document.getElementById(
     "studyFrontText"
   ).textContent =
-    card.front || "";
+    card.front ||
+    "";
 
 
   setStudyImage(
@@ -2346,7 +2606,8 @@ function renderStudyCard() {
   document.getElementById(
     "studyBackText"
   ).textContent =
-    card.back || "";
+    card.back ||
+    "";
 
 
   setStudyImage(
@@ -2369,7 +2630,8 @@ function renderStudyCard() {
 
 
   prevButton.disabled =
-    currentStudyIndex === 0;
+    currentStudyIndex ===
+    0;
 
 
   nextButton.disabled =
@@ -2378,6 +2640,10 @@ function renderStudyCard() {
 
 }
 
+
+/* =====================================================
+   STUDY IMAGE
+===================================================== */
 
 function setStudyImage(
   imageId,
@@ -2399,15 +2665,19 @@ function setStudyImage(
 
   if (!url) {
 
-    image.src = "";
+    image.src =
+      "";
+
 
     image.classList.add(
       "hidden"
     );
 
+
     placeholder.classList.remove(
       "hidden"
     );
+
 
     return;
 
@@ -2430,6 +2700,10 @@ function setStudyImage(
 }
 
 
+/* =====================================================
+   FLIP
+===================================================== */
+
 function flipCard() {
 
   document
@@ -2443,10 +2717,15 @@ function flipCard() {
 }
 
 
+/* =====================================================
+   PREVIOUS
+===================================================== */
+
 function previousCard() {
 
   if (
-    currentStudyIndex <= 0
+    currentStudyIndex <=
+    0
   ) {
 
     return;
@@ -2460,6 +2739,10 @@ function previousCard() {
 
 }
 
+
+/* =====================================================
+   NEXT
+===================================================== */
 
 function nextCard() {
 
@@ -2486,6 +2769,9 @@ function nextCard() {
 
 function setupEvents() {
 
+
+  /* CREATE */
+
   document
     .getElementById(
       "createDeckButton"
@@ -2496,6 +2782,8 @@ function setupEvents() {
     );
 
 
+  /* CREATE BACK */
+
   document
     .getElementById(
       "createBackButton"
@@ -2504,7 +2792,9 @@ function setupEvents() {
       "click",
       () => {
 
-        if (editingDeckId) {
+        if (
+          editingDeckId
+        ) {
 
           openDeck(
             editingDeckId
@@ -2522,38 +2812,47 @@ function setupEvents() {
     );
 
 
+  /* ICONS */
+
   document
     .querySelectorAll(
       ".icon-option"
     )
-    .forEach(button => {
+    .forEach(
+      button => {
 
-      button.addEventListener(
-        "click",
-        () => {
+        button.addEventListener(
+          "click",
+          () => {
 
-          selectedIcon =
-            button.dataset.icon;
+            selectedIcon =
+              button.dataset.icon;
 
 
-          document
-            .querySelectorAll(
-              ".icon-option"
-            )
-            .forEach(item => {
+            document
+              .querySelectorAll(
+                ".icon-option"
+              )
+              .forEach(
+                item => {
 
-              item.classList.toggle(
-                "selected",
-                item === button
+                  item.classList.toggle(
+                    "selected",
+                    item ===
+                      button
+                  );
+
+                }
               );
 
-            });
+          }
+        );
 
-        }
-      );
+      }
+    );
 
-    });
 
+  /* ADD CARD */
 
   document
     .getElementById(
@@ -2566,6 +2865,8 @@ function setupEvents() {
     );
 
 
+  /* SAVE */
+
   document
     .getElementById(
       "saveDeckButton"
@@ -2575,6 +2876,8 @@ function setupEvents() {
       saveDeck
     );
 
+
+  /* DECK BACK */
 
   document
     .getElementById(
@@ -2587,6 +2890,7 @@ function setupEvents() {
         currentDeckId =
           null;
 
+
         showScreen(
           homeScreen
         );
@@ -2594,6 +2898,8 @@ function setupEvents() {
       }
     );
 
+
+  /* STUDY */
 
   document
     .getElementById(
@@ -2605,15 +2911,19 @@ function setupEvents() {
     );
 
 
+  /* CARD LIST TOGGLE */
+
   document
     .getElementById(
       "contentDeckButton"
     )
     .addEventListener(
       "click",
-      renderDeckContent
+      toggleDeckContent
     );
 
+
+  /* EDIT */
 
   document
     .getElementById(
@@ -2625,6 +2935,8 @@ function setupEvents() {
     );
 
 
+  /* DELETE */
+
   document
     .getElementById(
       "deleteDeckButton"
@@ -2634,6 +2946,8 @@ function setupEvents() {
       openDeleteModal
     );
 
+
+  /* CANCEL DELETE */
 
   document
     .getElementById(
@@ -2645,6 +2959,8 @@ function setupEvents() {
     );
 
 
+  /* CONFIRM DELETE */
+
   document
     .getElementById(
       "confirmDeleteButton"
@@ -2654,6 +2970,8 @@ function setupEvents() {
       deleteCurrentDeck
     );
 
+
+  /* STUDY BACK */
 
   document
     .getElementById(
@@ -2668,6 +2986,8 @@ function setupEvents() {
     );
 
 
+  /* FLIP */
+
   document
     .getElementById(
       "flashcard"
@@ -2677,6 +2997,8 @@ function setupEvents() {
       flipCard
     );
 
+
+  /* PREVIOUS */
 
   document
     .getElementById(
@@ -2693,6 +3015,8 @@ function setupEvents() {
       }
     );
 
+
+  /* NEXT */
 
   document
     .getElementById(
@@ -2713,7 +3037,7 @@ function setupEvents() {
 
 
 /* =====================================================
-   START
+   START APP
 ===================================================== */
 
 function startApp() {
@@ -2724,7 +3048,7 @@ function startApp() {
 
 
   console.log(
-    "Supabase:",
+    "Supabase status:",
     supabaseStatus
   );
 
