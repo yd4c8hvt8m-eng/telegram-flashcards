@@ -2769,7 +2769,46 @@ function nextCard() {
 
 function setupEvents() {
 
+  /* =====================================================
+     ЗАКРЫТИЕ КЛАВИАТУРЫ ПО НАЖАТИЮ НА ПУСТОЕ МЕСТО
+  ====================================================== */
 
+  document.addEventListener("touchstart", function (event) {
+
+    const target = event.target;
+
+    /*
+      Если нажали на поле ввода —
+      клавиатуру не закрываем.
+    */
+
+    if (
+      target.closest("input") ||
+      target.closest("textarea") ||
+      target.closest("button")
+    ) {
+      return;
+    }
+
+    /*
+      Убираем фокус с активного поля.
+      На iPhone это закрывает клавиатуру.
+    */
+
+    if (
+      document.activeElement &&
+      (
+        document.activeElement.tagName === "INPUT" ||
+        document.activeElement.tagName === "TEXTAREA"
+      )
+    ) {
+
+      document.activeElement.blur();
+
+    }
+
+  });
+   
   /* CREATE */
 
   document
