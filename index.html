@@ -1,72 +1,142 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
+
   <meta charset="UTF-8">
+
   <meta
     name="viewport"
-    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
   >
 
-  <meta name="theme-color" content="#07110d">
+  <meta
+    name="theme-color"
+    content="#07110d"
+  >
+
+  <meta
+    name="format-detection"
+    content="telephone=no"
+  >
 
   <title>FLASH CARDS</title>
 
-  <link rel="stylesheet" href="style.css">
+  <!-- ВАЖНО:
+       ?v=1.5.0 заставляет Telegram загрузить новый CSS -->
+  <link
+    rel="stylesheet"
+    href="style.css?v=1.5.0"
+  >
+
 </head>
 
 <body>
 
-  <!-- =========================
-       ГЛАВНЫЙ ЭКРАН
-  ========================== -->
 
-  <section id="homeScreen" class="screen active">
+  <!-- =====================================================
+       ГЛАВНЫЙ ЭКРАН
+  ====================================================== -->
+
+  <section
+    id="homeScreen"
+    class="screen active"
+  >
 
     <div class="home-header">
 
-      <div class="app-logo">▣</div>
+      <div class="app-logo">
+        🧠
+      </div>
 
-      <div>
-        <h1>FLASH CARDS</h1>
-        <p>Создавай. Запоминай. Повторяй.</p>
+      <div class="home-title-block">
+
+        <h1>
+          🧠 FLASH CARDS
+        </h1>
+
+        <p>
+          Создавай. Запоминай. Повторяй.
+        </p>
+
       </div>
 
     </div>
 
+
     <div class="section-title-row">
-      <h2>Мои наборы</h2>
+
+      <h2>
+        Мои наборы
+      </h2>
+
     </div>
 
-    <div id="deckList" class="deck-list"></div>
 
-    <div id="emptyDeckState" class="empty-state hidden">
-      <div class="empty-icon">＋</div>
-      <h3>Пока нет наборов</h3>
-      <p>Создай первый набор карточек.</p>
+    <div
+      id="deckList"
+      class="deck-list"
+    ></div>
+
+
+    <div
+      id="emptyDeckState"
+      class="empty-state hidden"
+    >
+
+      <div class="empty-icon">
+        ＋
+      </div>
+
+      <h3>
+        Пока нет наборов
+      </h3>
+
+      <p>
+        Создай первый набор карточек.
+      </p>
+
     </div>
 
-    <button id="createDeckButton" class="primary-button">
+
+    <button
+      type="button"
+      id="createDeckButton"
+      class="primary-button"
+    >
       ＋ Создать набор
     </button>
 
-    <div class="version">v3.2</div>
+
+    <div class="version">
+      v1.5.0
+    </div>
 
   </section>
 
 
-  <!-- =========================
-       СОЗДАНИЕ / РЕДАКТИРОВАНИЕ
-  ========================== -->
 
-  <section id="createScreen" class="screen">
+  <!-- =====================================================
+       СОЗДАНИЕ / РЕДАКТИРОВАНИЕ
+  ====================================================== -->
+
+  <section
+    id="createScreen"
+    class="screen"
+  >
 
     <div class="top-bar">
 
-      <button id="createBackButton" class="icon-button">
+      <button
+        type="button"
+        id="createBackButton"
+        class="icon-button"
+      >
         ←
       </button>
 
-      <h2 id="createTitle">Новый набор</h2>
+      <h2 id="createTitle">
+        Новый набор
+      </h2>
 
       <div class="top-bar-spacer"></div>
 
@@ -75,7 +145,9 @@
 
     <div class="form-group">
 
-      <label>Название набора</label>
+      <label>
+        Название набора
+      </label>
 
       <input
         id="deckNameInput"
@@ -89,18 +161,75 @@
 
     <div class="form-group">
 
-      <label>Иконка</label>
+      <label>
+        Иконка
+      </label>
 
       <div class="icon-selector">
 
-        <button class="icon-option selected" data-icon="📚">📚</button>
-        <button class="icon-option" data-icon="🧠">🧠</button>
-        <button class="icon-option" data-icon="💼">💼</button>
-        <button class="icon-option" data-icon="📊">📊</button>
-        <button class="icon-option" data-icon="🐟">🐟</button>
-        <button class="icon-option" data-icon="🚗">🚗</button>
-        <button class="icon-option" data-icon="⚙️">⚙️</button>
-        <button class="icon-option" data-icon="⭐">⭐</button>
+        <button
+          type="button"
+          class="icon-option selected"
+          data-icon="📚"
+        >
+          📚
+        </button>
+
+        <button
+          type="button"
+          class="icon-option"
+          data-icon="🧠"
+        >
+          🧠
+        </button>
+
+        <button
+          type="button"
+          class="icon-option"
+          data-icon="💼"
+        >
+          💼
+        </button>
+
+        <button
+          type="button"
+          class="icon-option"
+          data-icon="📊"
+        >
+          📊
+        </button>
+
+        <button
+          type="button"
+          class="icon-option"
+          data-icon="🐟"
+        >
+          🐟
+        </button>
+
+        <button
+          type="button"
+          class="icon-option"
+          data-icon="🚗"
+        >
+          🚗
+        </button>
+
+        <button
+          type="button"
+          class="icon-option"
+          data-icon="⚙️"
+        >
+          ⚙️
+        </button>
+
+        <button
+          type="button"
+          class="icon-option"
+          data-icon="⭐"
+        >
+          ⭐
+        </button>
 
       </div>
 
@@ -110,40 +239,68 @@
     <div class="cards-editor-header">
 
       <div>
-        <h3>Карточки</h3>
-        <p>Добавляй текст и фотографию.</p>
+
+        <h3>
+          Карточки
+        </h3>
+
+        <p>
+          Добавляй текст и фотографию.
+        </p>
+
       </div>
 
     </div>
 
 
-    <div id="newCardsList" class="new-cards-list"></div>
+    <div
+      id="newCardsList"
+      class="new-cards-list"
+    ></div>
 
 
-    <button id="addCardButton" class="secondary-button">
+    <button
+      type="button"
+      id="addCardButton"
+      class="secondary-button"
+    >
       ＋ Добавить карточку
     </button>
 
 
-    <button id="saveDeckButton" class="primary-button">
+    <button
+      type="button"
+      id="saveDeckButton"
+      class="primary-button"
+    >
       Сохранить набор
     </button>
 
 
-    <div class="version">v3.2</div>
+    <div class="version">
+      v1.5.0
+    </div>
 
   </section>
 
 
-  <!-- =========================
-       ЭКРАН НАБОРА
-  ========================== -->
 
-  <section id="deckScreen" class="screen">
+  <!-- =====================================================
+       ЭКРАН НАБОРА
+  ====================================================== -->
+
+  <section
+    id="deckScreen"
+    class="screen"
+  >
 
     <div class="top-bar">
 
-      <button id="deckBackButton" class="icon-button">
+      <button
+        type="button"
+        id="deckBackButton"
+        class="icon-button"
+      >
         ←
       </button>
 
@@ -154,62 +311,104 @@
 
     <div class="deck-hero">
 
-      <div id="deckHeroIcon" class="deck-hero-icon">
+      <div
+        id="deckHeroIcon"
+        class="deck-hero-icon"
+      >
         📚
       </div>
 
-      <h2 id="deckHeroTitle">Набор</h2>
+      <h2 id="deckHeroTitle">
+        Набор
+      </h2>
 
-      <p id="deckHeroCount">0 карточек</p>
+      <p id="deckHeroCount">
+        0 карточек
+      </p>
 
     </div>
 
 
     <div class="deck-actions">
 
-      <button id="studyDeckButton" class="primary-button">
+      <button
+        type="button"
+        id="studyDeckButton"
+        class="primary-button deck-action-button"
+      >
         ▶ Учить карточки
       </button>
 
-      <button id="contentDeckButton" class="secondary-button">
+      <button
+        type="button"
+        id="contentDeckButton"
+        class="secondary-button deck-action-button"
+      >
         Карточки
       </button>
 
-      <button id="editDeckButton" class="secondary-button">
+      <button
+        type="button"
+        id="editDeckButton"
+        class="secondary-button deck-action-button"
+      >
         ✎ Редактировать
       </button>
 
     </div>
 
 
-    <div id="deckContent" class="deck-content hidden"></div>
+    <div
+      id="deckContent"
+      class="deck-content hidden"
+    ></div>
 
 
-    <button id="deleteDeckButton" class="danger-button">
-      Удалить набор
-    </button>
+    <div class="delete-section">
+
+      <button
+        type="button"
+        id="deleteDeckButton"
+        class="danger-button"
+      >
+        Удалить набор
+      </button>
+
+    </div>
 
 
-    <div class="version">v3.2</div>
+    <div class="version">
+      v1.5.0
+    </div>
 
   </section>
 
 
-  <!-- =========================
-       ЭКРАН ОБУЧЕНИЯ
-  ========================== -->
 
-  <section id="studyScreen" class="screen">
+  <!-- =====================================================
+       ЭКРАН ОБУЧЕНИЯ
+  ====================================================== -->
+
+  <section
+    id="studyScreen"
+    class="screen"
+  >
 
     <div class="top-bar">
 
-      <button id="studyBackButton" class="icon-button">
+      <button
+        type="button"
+        id="studyBackButton"
+        class="icon-button"
+      >
         ←
       </button>
 
       <div class="study-title-wrap">
 
-        <h2 id="studyDeckName">Набор</h2>
+        <h2 id="studyDeckName">
+          Набор
+        </h2>
 
         <span id="studyProgress">
           1 / 1
@@ -239,8 +438,6 @@
 
       <div class="flashcard-inner">
 
-
-        <!-- ЛИЦЕВАЯ СТОРОНА -->
 
         <div class="flashcard-side flashcard-front">
 
@@ -276,8 +473,6 @@
 
         </div>
 
-
-        <!-- ОБРАТНАЯ СТОРОНА -->
 
         <div class="flashcard-side flashcard-back">
 
@@ -321,6 +516,7 @@
     <div class="study-navigation">
 
       <button
+        type="button"
         id="prevButton"
         class="study-nav-button"
       >
@@ -328,6 +524,7 @@
       </button>
 
       <button
+        type="button"
         id="nextButton"
         class="study-nav-button"
       >
@@ -342,29 +539,41 @@
     </div>
 
 
-    <div class="version">v3.2</div>
+    <div class="version">
+      v1.5.0
+    </div>
 
   </section>
 
 
-  <!-- =========================
+
+  <!-- =====================================================
        TOAST
-  ========================== -->
+  ====================================================== -->
 
-  <div id="toast" class="toast"></div>
+  <div
+    id="toast"
+    class="toast"
+  ></div>
 
 
-  <!-- =========================
-       МОДАЛЬНОЕ ОКНО УДАЛЕНИЯ
-  ========================== -->
 
-  <div id="deleteModal" class="modal hidden">
+  <!-- =====================================================
+       DELETE MODAL
+  ====================================================== -->
+
+  <div
+    id="deleteModal"
+    class="modal hidden"
+  >
 
     <div class="modal-overlay"></div>
 
     <div class="modal-box">
 
-      <h3>Удалить набор?</h3>
+      <h3>
+        Удалить набор?
+      </h3>
 
       <p>
         Все карточки этого набора будут удалены
@@ -374,6 +583,7 @@
       <div class="modal-actions">
 
         <button
+          type="button"
           id="cancelDeleteButton"
           class="secondary-button"
         >
@@ -381,6 +591,7 @@
         </button>
 
         <button
+          type="button"
           id="confirmDeleteButton"
           class="danger-button"
         >
@@ -394,25 +605,28 @@
   </div>
 
 
-  <!-- =========================
-       TELEGRAM WEB APP
-  ========================== -->
+
+  <!-- =====================================================
+       TELEGRAM
+  ====================================================== -->
 
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
 
-  <!-- =========================
+
+  <!-- =====================================================
        SUPABASE
-  ========================== -->
+  ====================================================== -->
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 
-  <!-- =========================
-       APP
-  ========================== -->
 
-  <script src="app.js"></script>
+  <!-- =====================================================
+       APP
+  ====================================================== -->
+
+  <script src="app.js?v=1.5.0"></script>
 
 </body>
 </html>
