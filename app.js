@@ -2768,46 +2768,96 @@ function nextCard() {
 ===================================================== */
 
 function setupEvents() {
-
   /* =====================================================
-     ЗАКРЫТИЕ КЛАВИАТУРЫ ПО НАЖАТИЮ НА ПУСТОЕ МЕСТО
+     ЗАКРЫТИЕ КЛАВИАТУРЫ ПРИ НАЖАТИИ ВНЕ ПОЛЯ
+     Telegram WebApp / iPhone / Android
   ====================================================== */
 
-  document.addEventListener("touchstart", function (event) {
+  function closeKeyboard() {
 
-    const target = event.target;
+    const active =
+      document.activeElement;
 
-    /*
-      Если нажали на поле ввода —
-      клавиатуру не закрываем.
-    */
-
-    if (
-      target.closest("input") ||
-      target.closest("textarea") ||
-      target.closest("button")
-    ) {
+    if (!active) {
       return;
     }
 
-    /*
-      Убираем фокус с активного поля.
-      На iPhone это закрывает клавиатуру.
-    */
+    const isInput =
+      active.tagName === "INPUT" ||
+      active.tagName === "TEXTAREA";
 
-    if (
-      document.activeElement &&
-      (
-        document.activeElement.tagName === "INPUT" ||
-        document.activeElement.tagName === "TEXTAREA"
-      )
-    ) {
+    if (isInput) {
 
-      document.activeElement.blur();
+      active.blur();
 
     }
 
-  });
+  }
+
+
+  document.addEventListener(
+    "pointerdown",
+    function (event) {
+
+      const target =
+        event.target;
+
+
+      /*
+        Если нажали непосредственно
+        на поле ввода — ничего не делаем.
+      */
+
+      if (
+        target.closest("input") ||
+        target.closest("textarea")
+      ) {
+
+        return;
+
+      }
+
+
+      /*
+        В любом другом месте страницы
+        убираем фокус с поля.
+      */
+
+      closeKeyboard();
+
+    },
+    true
+  );
+
+
+  /*
+    Дополнительная обработка для
+    Telegram WebView / iPhone.
+  */
+
+  document.addEventListener(
+    "touchend",
+    function (event) {
+
+      const target =
+        event.target;
+
+
+      if (
+        target.closest("input") ||
+        target.closest("textarea")
+      ) {
+
+        return;
+
+      }
+
+
+      closeKeyboard();
+
+    },
+    true
+  );
    
   /* CREATE */
 
