@@ -20,11 +20,17 @@
 
   --danger: #e25d5d;
 
+  --danger-text: #ff8888;
+
+  --button-gap: 14px;
+
+  --radius: 18px;
+
 }
 
 
 /* =====================================================
-   IOS RESET
+   GLOBAL
 ===================================================== */
 
 html {
@@ -93,13 +99,14 @@ body {
 }
 
 
-/* =====================================================
-   КРИТИЧЕСКИ ВАЖНО ДЛЯ IPHONE
+button,
+input,
+textarea {
 
-   iOS любит самостоятельно красить BUTTON
-   в синий цвет и менять внешний вид.
+  font-family: inherit;
 
-===================================================== */
+}
+
 
 button {
 
@@ -111,21 +118,7 @@ button {
 
   font-family: inherit !important;
 
-  font-size: inherit;
-
-  line-height: inherit;
-
-  font-weight: inherit;
-
-  color: inherit;
-
-  background: none;
-
-  border: 0;
-
   margin: 0;
-
-  padding: 0;
 
   outline: none;
 
@@ -142,21 +135,7 @@ button:focus,
 button:active,
 button:hover {
 
-  -webkit-text-fill-color: currentColor !important;
-
   outline: none;
-
-}
-
-
-input,
-textarea {
-
-  font-family: inherit;
-
-  -webkit-text-size-adjust: 100%;
-
-  text-size-adjust: 100%;
 
 }
 
@@ -212,7 +191,7 @@ img {
 
 
 /* =====================================================
-   HOME HEADER
+   HOME
 ===================================================== */
 
 .home-header {
@@ -267,7 +246,7 @@ img {
 
   min-width: 0;
 
-  flex: 1;
+  flex: 1 1 auto;
 
 }
 
@@ -277,6 +256,8 @@ img {
   display: block;
 
   width: 100%;
+
+  min-width: 0;
 
   margin: 0;
 
@@ -315,7 +296,7 @@ img {
 
 
 /* =====================================================
-   SECTION
+   SECTION TITLE
 ===================================================== */
 
 .section-title-row {
@@ -361,10 +342,6 @@ img {
 }
 
 
-/*
-  УБИРАЕМ системное поведение iOS BUTTON
-*/
-
 .deck-item {
 
   display: flex;
@@ -383,7 +360,7 @@ img {
 
   border: 1px solid var(--border);
 
-  border-radius: 18px;
+  border-radius: var(--radius);
 
   background: var(--surface) !important;
 
@@ -395,7 +372,12 @@ img {
 
   overflow: hidden;
 
-  position: relative;
+}
+
+
+.deck-item:active {
+
+  transform: scale(0.99);
 
 }
 
@@ -477,9 +459,7 @@ img {
 
   display: block;
 
-  color: var(--muted) !important;
-
-  -webkit-text-fill-color: var(--muted) !important;
+  color: var(--muted);
 
   font-size: 13px;
 
@@ -493,6 +473,8 @@ img {
 ===================================================== */
 
 .empty-state {
+
+  width: 100%;
 
   padding: 48px 20px;
 
@@ -534,6 +516,8 @@ img {
 
   font-size: 18px;
 
+  line-height: 1.25;
+
 }
 
 
@@ -549,7 +533,7 @@ img {
 
 
 /* =====================================================
-   ВСЕ ОСНОВНЫЕ КНОПКИ
+   ALL MAIN BUTTONS
 ===================================================== */
 
 .primary-button,
@@ -566,19 +550,17 @@ img {
 
   min-width: 0 !important;
 
+  height: 54px !important;
+
   min-height: 54px !important;
 
-  height: auto !important;
+  max-height: 54px !important;
 
   margin: 0 !important;
 
-  padding: 12px 16px !important;
+  padding: 0 16px !important;
 
-  flex: 0 0 auto !important;
-
-  position: relative !important;
-
-  z-index: 1;
+  flex: 0 0 54px !important;
 
   border-radius: 15px !important;
 
@@ -586,7 +568,7 @@ img {
 
   font-size: 15px !important;
 
-  line-height: 1.25 !important;
+  line-height: 1.2 !important;
 
   font-weight: 800 !important;
 
@@ -594,11 +576,7 @@ img {
 
   white-space: normal !important;
 
-  overflow: visible !important;
-
-  -webkit-appearance: none !important;
-
-  appearance: none !important;
+  overflow: hidden !important;
 
 }
 
@@ -635,9 +613,9 @@ img {
 
   border: 1px solid rgba(226,93,93,0.35) !important;
 
-  color: #ff8888 !important;
+  color: var(--danger-text) !important;
 
-  -webkit-text-fill-color: #ff8888 !important;
+  -webkit-text-fill-color: var(--danger-text) !important;
 
 }
 
@@ -667,7 +645,7 @@ img {
 
   min-width: 0;
 
-  flex: 1;
+  flex: 1 1 auto;
 
   margin: 0;
 
@@ -761,6 +739,8 @@ img {
 
   font-size: 13px;
 
+  line-height: 1.3;
+
   font-weight: 700;
 
 }
@@ -796,6 +776,19 @@ img {
 
   line-height: 1.3;
 
+  -webkit-appearance: none;
+
+  appearance: none;
+
+}
+
+
+.form-group input::placeholder {
+
+  color: #62756b;
+
+  opacity: 1;
+
 }
 
 
@@ -810,9 +803,9 @@ img {
   width: 100%;
 
   grid-template-columns:
-    repeat(4, minmax(0, 1fr));
+    repeat(4, minmax(0,1fr));
 
-  gap: 8px;
+  gap: 10px;
 
 }
 
@@ -823,9 +816,11 @@ img {
 
   min-width: 0 !important;
 
+  height: 46px !important;
+
   min-height: 46px !important;
 
-  height: 46px !important;
+  max-height: 46px !important;
 
   margin: 0 !important;
 
@@ -864,10 +859,12 @@ img {
 
 
 /* =====================================================
-   CARD EDITOR
+   EDITOR HEADER
 ===================================================== */
 
 .cards-editor-header {
+
+  width: 100%;
 
   margin: 26px 0 12px;
 
@@ -882,6 +879,10 @@ img {
 
   font-size: 17px;
 
+  line-height: 1.25;
+
+  font-weight: 800;
+
 }
 
 
@@ -893,8 +894,14 @@ img {
 
   font-size: 13px;
 
+  line-height: 1.35;
+
 }
 
+
+/* =====================================================
+   EDITOR CARDS
+===================================================== */
 
 .new-cards-list {
 
@@ -906,7 +913,7 @@ img {
 
   gap: 12px;
 
-  margin-bottom: 14px;
+  margin: 0 0 var(--button-gap);
 
 }
 
@@ -921,7 +928,7 @@ img {
 
   border: 1px solid var(--border);
 
-  border-radius: 18px;
+  border-radius: var(--radius);
 
   background: var(--surface);
 
@@ -951,6 +958,8 @@ img {
 
   font-size: 13px;
 
+  line-height: 1.3;
+
   font-weight: 800;
 
 }
@@ -960,25 +969,35 @@ img {
 
   width: auto !important;
 
-  min-width: auto !important;
-
-  min-height: auto !important;
+  min-width: 0 !important;
 
   height: auto !important;
+
+  min-height: 0 !important;
+
+  max-height: none !important;
+
+  flex: 0 0 auto !important;
 
   margin: 0 !important;
 
   padding: 6px 0 !important;
 
-  background: transparent !important;
-
   border: 0 !important;
+
+  border-radius: 0 !important;
+
+  background: transparent !important;
 
   color: #ff7777 !important;
 
   -webkit-text-fill-color: #ff7777 !important;
 
   font-size: 13px !important;
+
+  line-height: 1.2 !important;
+
+  font-weight: 700 !important;
 
 }
 
@@ -992,6 +1011,8 @@ img {
   color: var(--muted);
 
   font-size: 12px;
+
+  line-height: 1.3;
 
   font-weight: 700;
 
@@ -1028,12 +1049,25 @@ img {
 
   line-height: 1.4;
 
+  -webkit-appearance: none;
+
+  appearance: none;
+
 }
 
 
 /* =====================================================
    IMAGE
 ===================================================== */
+
+.image-editor {
+
+  width: 100%;
+
+  margin-top: 6px;
+
+}
+
 
 .image-preview-wrap {
 
@@ -1085,6 +1119,8 @@ img {
 
   font-size: 13px;
 
+  line-height: 1.3;
+
 }
 
 
@@ -1098,7 +1134,14 @@ img {
     minmax(0,1fr)
     minmax(0,1fr);
 
-  gap: 8px;
+  gap: var(--button-gap);
+
+}
+
+
+.image-actions > button {
+
+  margin: 0 !important;
 
 }
 
@@ -1110,13 +1153,15 @@ img {
 
   min-width: 0 !important;
 
+  height: 44px !important;
+
   min-height: 44px !important;
 
-  height: auto !important;
+  max-height: 44px !important;
 
   margin: 0 !important;
 
-  padding: 8px !important;
+  padding: 0 8px !important;
 
   border-radius: 12px !important;
 
@@ -1131,9 +1176,9 @@ img {
 
 .image-upload-button {
 
-  background: var(--surface-2) !important;
-
   border: 1px solid var(--border) !important;
+
+  background: var(--surface-2) !important;
 
   color: var(--text) !important;
 
@@ -1144,9 +1189,9 @@ img {
 
 .image-remove-button {
 
-  background: rgba(226,93,93,0.06) !important;
-
   border: 1px solid rgba(226,93,93,0.2) !important;
+
+  background: rgba(226,93,93,0.06) !important;
 
   color: #ff8585 !important;
 
@@ -1158,6 +1203,36 @@ img {
 .hidden-file-input {
 
   display: none !important;
+
+}
+
+
+/* =====================================================
+   EDITOR ACTIONS
+===================================================== */
+
+.editor-actions {
+
+  display: flex;
+
+  flex-direction: column;
+
+  width: 100%;
+
+  gap: var(--button-gap);
+
+  margin: 0;
+
+  padding: 0;
+
+}
+
+
+.editor-actions > button {
+
+  width: 100% !important;
+
+  margin: 0 !important;
 
 }
 
@@ -1180,6 +1255,8 @@ img {
 .deck-hero-icon {
 
   width: 76px;
+
+  min-width: 76px;
 
   height: 76px;
 
@@ -1231,13 +1308,13 @@ img {
 
   font-size: 14px;
 
+  line-height: 1.3;
+
 }
 
 
 /* =====================================================
-   САМО КНОПКИ НА ЭКРАНЕ НАБОРА
-
-   ГЛАВНОЕ ИСПРАВЛЕНИЕ НАЛЕЗАНИЯ
+   DECK ACTIONS
 ===================================================== */
 
 .deck-actions {
@@ -1250,7 +1327,7 @@ img {
 
   width: 100% !important;
 
-  gap: 14px !important;
+  gap: var(--button-gap) !important;
 
   margin: 0 !important;
 
@@ -1259,11 +1336,14 @@ img {
 }
 
 
+.deck-actions > button {
+
+  margin: 0 !important;
+
+}
+
+
 .deck-action-button {
-
-  display: flex !important;
-
-  position: relative !important;
 
   width: 100% !important;
 
@@ -1273,45 +1353,43 @@ img {
 
   max-height: 58px !important;
 
+  flex: 0 0 58px !important;
+
   margin: 0 !important;
 
   padding: 0 16px !important;
 
-  flex: 0 0 58px !important;
-
-  align-items: center !important;
-
-  justify-content: center !important;
-
-  overflow: hidden !important;
-
 }
 
 
-/*
-  Отдельный блок для удаления.
-  Поэтому удалить набор физически не может
-  залезть на предыдущую кнопку.
-*/
+/* =====================================================
+   DELETE
+===================================================== */
 
 .delete-section {
 
   width: 100%;
 
-  margin-top: 18px;
+  margin-top: var(--button-gap);
 
-  padding-top: 0;
+  padding: 0;
 
 }
 
 
 .delete-section .danger-button {
 
+  width: 100% !important;
+
   height: 56px !important;
 
   min-height: 56px !important;
 
   max-height: 56px !important;
+
+  margin: 0 !important;
+
+  flex: 0 0 56px !important;
 
 }
 
@@ -1343,7 +1421,7 @@ img {
 
   padding: 11px;
 
-  margin-bottom: 9px;
+  margin: 0 0 9px;
 
   border: 1px solid var(--border);
 
@@ -1372,6 +1450,8 @@ img {
 
 .content-card-image {
 
+  display: block;
+
   object-fit: cover;
 
 }
@@ -1391,6 +1471,10 @@ img {
 
   font-size: 11px;
 
+  line-height: 1.2;
+
+  text-align: center;
+
 }
 
 
@@ -1398,12 +1482,16 @@ img {
 
   min-width: 0;
 
-  flex: 1;
+  flex: 1 1 auto;
+
+  overflow: hidden;
 
 }
 
 
 .content-card-front {
+
+  width: 100%;
 
   margin-bottom: 4px;
 
@@ -1421,6 +1509,8 @@ img {
 
 
 .content-card-back {
+
+  width: 100%;
 
   color: var(--muted);
 
@@ -1441,7 +1531,7 @@ img {
 
   min-width: 0;
 
-  flex: 1;
+  flex: 1 1 auto;
 
   text-align: center;
 
@@ -1452,6 +1542,8 @@ img {
 
 .study-title-wrap h2 {
 
+  width: 100%;
+
   margin: 0;
 
   color: var(--text);
@@ -1459,6 +1551,8 @@ img {
   font-size: 16px;
 
   line-height: 1.25;
+
+  font-weight: 800;
 
   overflow: hidden;
 
@@ -1478,6 +1572,8 @@ img {
   color: var(--muted);
 
   font-size: 12px;
+
+  line-height: 1.25;
 
 }
 
@@ -1525,6 +1621,8 @@ img {
   min-width: 0;
 
   perspective: 1200px;
+
+  cursor: pointer;
 
 }
 
@@ -1597,9 +1695,13 @@ img {
 
   font-size: 12px;
 
+  line-height: 1.3;
+
   font-weight: 800;
 
   text-transform: uppercase;
+
+  letter-spacing: 0.6px;
 
 }
 
@@ -1655,7 +1757,7 @@ img {
 
 .flashcard-text {
 
-  flex: 1;
+  flex: 1 1 auto;
 
   min-width: 0;
 
@@ -1692,11 +1794,13 @@ img {
 
   font-size: 11px;
 
+  line-height: 1.3;
+
 }
 
 
 /* =====================================================
-   STUDY BUTTONS
+   STUDY NAVIGATION
 ===================================================== */
 
 .study-navigation {
@@ -1709,9 +1813,9 @@ img {
     minmax(0,1fr)
     minmax(0,1fr) !important;
 
-  gap: 12px !important;
+  gap: var(--button-gap) !important;
 
-  margin-top: 16px !important;
+  margin-top: var(--button-gap) !important;
 
 }
 
@@ -1760,90 +1864,6 @@ img {
 .study-nav-button:disabled {
 
   opacity: 0.28;
-
-}
-
-
-.study-bottom-hint {
-
-  margin-top: 12px;
-
-  color: var(--muted);
-
-  text-align: center;
-
-  font-size: 11px;
-
-}
-
-
-/* =====================================================
-   VERSION
-===================================================== */
-
-.version {
-
-  padding-top: 24px;
-
-  color: #50645a;
-
-  font-size: 10px;
-
-  text-align: center;
-
-}
-
-
-/* =====================================================
-   TOAST
-===================================================== */
-
-.toast {
-
-  position: fixed;
-
-  left: 50%;
-
-  bottom: 22px;
-
-  z-index: 1000;
-
-  width: max-content;
-
-  max-width: calc(100vw - 32px);
-
-  padding: 12px 16px;
-
-  border-radius: 13px;
-
-  background: #1d3027;
-
-  color: #ffffff;
-
-  font-size: 13px;
-
-  font-weight: 700;
-
-  text-align: center;
-
-  transform: translate(-50%,20px);
-
-  opacity: 0;
-
-  pointer-events: none;
-
-  transition:
-    opacity 0.2s ease,
-    transform 0.2s ease;
-
-}
-
-
-.toast.show {
-
-  opacity: 1;
-
-  transform: translate(-50%,0);
 
 }
 
@@ -1903,6 +1923,8 @@ img {
 
   font-size: 19px;
 
+  line-height: 1.25;
+
 }
 
 
@@ -1929,13 +1951,98 @@ img {
     minmax(0,1fr)
     minmax(0,1fr);
 
-  gap: 10px;
+  gap: var(--button-gap);
+
+}
+
+
+.modal-actions > button {
+
+  margin: 0 !important;
 
 }
 
 
 /* =====================================================
-   IPHONE
+   VERSION
+===================================================== */
+
+.version {
+
+  padding-top: 24px;
+
+  color: #50645a;
+
+  font-size: 10px;
+
+  line-height: 1.3;
+
+  text-align: center;
+
+}
+
+
+/* =====================================================
+   TOAST
+===================================================== */
+
+.toast {
+
+  position: fixed;
+
+  left: 50%;
+
+  bottom: 22px;
+
+  z-index: 1000;
+
+  width: max-content;
+
+  max-width: calc(100vw - 32px);
+
+  padding: 12px 16px;
+
+  border-radius: 13px;
+
+  background: #1d3027;
+
+  color: #ffffff;
+
+  font-size: 13px;
+
+  line-height: 1.3;
+
+  font-weight: 700;
+
+  text-align: center;
+
+  box-shadow:
+    0 10px 30px rgba(0,0,0,0.35);
+
+  transform: translate(-50%,20px);
+
+  opacity: 0;
+
+  pointer-events: none;
+
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
+
+}
+
+
+.toast.show {
+
+  opacity: 1;
+
+  transform: translate(-50%,0);
+
+}
+
+
+/* =====================================================
+   MOBILE
 ===================================================== */
 
 @media (max-width: 430px) {
@@ -1963,6 +2070,34 @@ img {
   }
 
 
+  .deck-actions {
+
+    gap: 14px !important;
+
+  }
+
+
+  .editor-actions {
+
+    gap: 14px !important;
+
+  }
+
+
+  .delete-section {
+
+    margin-top: 14px;
+
+  }
+
+
+  .study-navigation {
+
+    gap: 14px !important;
+
+  }
+
+
   .flashcard-inner,
   .flashcard-side {
 
@@ -1981,7 +2116,7 @@ img {
 
 
 /* =====================================================
-   VERY SMALL SCREEN
+   SMALL PHONES
 ===================================================== */
 
 @media (max-width: 360px) {
